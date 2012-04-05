@@ -190,6 +190,14 @@ li.status_build_failed {
    */
 }
 
+div.span12.build-sep {
+  margin-left: 0 !important;
+}
+
+ul.in-recent-builds {
+  margin-left: 0 !important;
+}
+
 li.status_build_failed {
   color: #333;
 }
