@@ -1,5 +1,5 @@
 class HooksController < ApplicationController
-  skip_before_filter :verify_authenticity_token
+  skip_before_filter :verify_authenticity_token, :authenticate
 
   def autobuild
     project = Project.where(:hook_name => params[:hook_name]).first
