@@ -119,3 +119,11 @@ h1.project-title {
   margin-top: 15px;
   font-weight: normal;
 }
+
+div.span12.build-sep {
+  margin-left: 0 !important;
+}
+
+ul.in-recent-builds {
+  margin-left: 0 !important;
+}

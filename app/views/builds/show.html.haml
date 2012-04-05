@@ -22,7 +22,7 @@
 
 
 #build.row
-  .span8
+  .span7
     #ajax-reload= @build.ajax_reload?
 
     = render :partial => 'build', :locals => { :build => @build }
@@ -30,7 +30,7 @@
     - unless @build.finished?
       - build_path_params = params[:stderr] ? {:format => :js, :stderr => 1} : {:format => :js}
       = ajaxReload(build_path(@build, build_path_params))
-  .span4
+  .span5
     - unless BigTuna.read_only?
       %div.project-actions
         - unless BigTuna.read_only?
