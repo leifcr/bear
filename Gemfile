@@ -10,6 +10,8 @@ gem "json"
 gem "jquery-rails"
 gem "thin"
 
+gem 'newrelic_rpm'
+
 # ruby 1.9 compatible version
 gem "scashin133-xmpp4r-simple", '0.8.9', :require => 'xmpp4r-simple'
 
