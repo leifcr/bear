@@ -4,11 +4,13 @@ gem "rails", "3.2.1"
 
 gem "haml"
 gem "delayed_job"
+gem 'delayed_job_active_record'
 gem "stringex"
 gem "open4"
 gem "json"
 gem "jquery-rails"
 gem "thin"
+gem 'acts_as_list'
 
 gem 'newrelic_rpm'
 

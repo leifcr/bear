@@ -1,3 +1,4 @@
+# encoding: UTF-8
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -20,8 +21,8 @@ ActiveRecord::Schema.define(:version => 20110326142448) do
     t.string   "status"
     t.datetime "started_at"
     t.datetime "finished_at"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
     t.text     "shared_variables"
   end
 
@@ -30,8 +31,8 @@ ActiveRecord::Schema.define(:version => 20110326142448) do
     t.string   "commit"
     t.string   "status"
     t.text     "output"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
     t.string   "build_dir"
     t.datetime "started_at"
     t.datetime "scheduled_at"
@@ -52,8 +53,8 @@ ActiveRecord::Schema.define(:version => 20110326142448) do
     t.datetime "locked_at"
     t.datetime "failed_at"
     t.string   "locked_by"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                :null => false
+    t.datetime "updated_at",                :null => false
   end
 
   add_index "delayed_jobs", ["priority", "run_at"], :name => "delayed_jobs_priority"
@@ -61,8 +62,8 @@ ActiveRecord::Schema.define(:version => 20110326142448) do
   create_table "hooks", :force => true do |t|
     t.integer  "project_id",    :null => false
     t.string   "hook_name",     :null => false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
     t.text     "configuration"
     t.text     "hooks_enabled"
   end
@@ -71,8 +72,8 @@ ActiveRecord::Schema.define(:version => 20110326142448) do
     t.string   "name",                               :null => false
     t.string   "vcs_type",                           :null => false
     t.string   "vcs_source",                         :null => false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                         :null => false
+    t.datetime "updated_at",                         :null => false
     t.integer  "max_builds"
     t.string   "hook_name"
     t.integer  "position"
@@ -86,16 +87,16 @@ ActiveRecord::Schema.define(:version => 20110326142448) do
     t.integer  "step_list_id"
     t.string   "name"
     t.string   "value"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
   end
 
   create_table "step_lists", :force => true do |t|
     t.string   "name"
     t.text     "steps"
     t.integer  "project_id", :null => false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
 end
