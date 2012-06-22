@@ -12,7 +12,7 @@ class MailerHookTest < ActiveSupport::TestCase
     build = project.recent_build
     job = jobs.last
     mail = YAML.load(job.handler).perform
-    assert_equal "Build '#{build.display_name}' in '#{project.name}' failed", mail.subject
+    assert_equal "Build FAILED! - '#{build.display_name}' in '#{project.name}'", mail.subject
     assert ! mail.body.to_s.blank?
   end
 
@@ -27,7 +27,7 @@ class MailerHookTest < ActiveSupport::TestCase
     build = project.recent_build
     job = jobs.last
     mail = YAML.load(job.handler).perform
-    assert_equal "Build '#{build.display_name}' in '#{project.name}' fixed", mail.subject
+    assert_equal "Build FIXED! - '#{build.display_name}' in '#{project.name}'", mail.subject
     assert ! mail.body.to_s.blank?
   end
 
@@ -41,7 +41,7 @@ class MailerHookTest < ActiveSupport::TestCase
     build = project.recent_build
     job = jobs[-1]
     mail = YAML.load(job.handler).perform
-    assert_equal "Build '#{build.display_name}' in '#{project.name}' still fails", mail.subject
+    assert_equal "Build STILL FAILS! -  '#{build.display_name}' in '#{project.name}'", mail.subject
     assert ! mail.body.to_s.blank?
   end
 
