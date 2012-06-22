@@ -4,7 +4,7 @@ module BigTuna
 
     def build_passed(build, config)
       recipients = config["recipients"]
-      Sender.delay.passed(build, recipients) unless recipients.blank?
+      Sender.delay.build_passed(build, recipients) unless recipients.blank?
     end
 
     def build_fixed(build, config)
