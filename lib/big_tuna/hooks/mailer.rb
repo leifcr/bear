@@ -2,7 +2,7 @@ module BigTuna
   class Hooks::Mailer < Hooks::Base
     NAME = "mailer"
 
-    def passed(build, config)
+    def build_passed(build, config)
       recipients = config["recipients"]
       Sender.delay.passed(build, recipients) unless recipients.blank?
     end
