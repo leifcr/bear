@@ -2,6 +2,11 @@ module BigTuna
   class Hooks::Mailer < Hooks::Base
     NAME = "mailer"
 
+    def passed(build, config)
+      recipients = config["recipients"]
+      Sender.delay.passed(build, recipients) unless recipients.blank?
+    end
+
     def build_fixed(build, config)
       recipients = config["recipients"]
       Sender.delay.build_fixed(build, recipients) unless recipients.blank?
@@ -20,6 +25,14 @@ module BigTuna
     class Sender < ActionMailer::Base
       self.append_view_path("lib/big_tuna/hooks")
       default :from => "info@ci.appelier.com"
+
+      def build_passed(build, recipients)
+        @build = build
+        @project = @build.project
+        mail(:to => recipients, :subject => "Build '#{@build.display_name}' in '#{@project.name}' passed") do |format|
+          format.text { render "mailer/build_passed" }
+        end
+      end
 
       def build_failed(build, recipients)
         @build = build
