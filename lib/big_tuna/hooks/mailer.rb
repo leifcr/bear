@@ -29,7 +29,7 @@ module BigTuna
       def build_passed(build, recipients)
         @build = build
         @project = @build.project
-        mail(:to => recipients, :subject => "Build '#{@build.display_name}' in '#{@project.name}' passed") do |format|
+        mail(:to => recipients, :subject => "Build PASSED! - '#{@build.display_name}' in '#{@project.name}'") do |format|
           format.text { render "mailer/build_passed" }
         end
       end
@@ -37,7 +37,7 @@ module BigTuna
       def build_failed(build, recipients)
         @build = build
         @project = @build.project
-        mail(:to => recipients, :subject => "Build '#{@build.display_name}' in '#{@project.name}' failed") do |format|
+        mail(:to => recipients, :subject => "Build FAILED! - '#{@build.display_name}' in '#{@project.name}'") do |format|
           format.text { render "mailer/build_failed" }
         end
       end
@@ -45,7 +45,7 @@ module BigTuna
       def build_still_fails(build, recipients)
         @build = build
         @project = @build.project
-        mail(:to => recipients, :subject => "Build '#{@build.display_name}' in '#{@project.name}' still fails") do |format|
+        mail(:to => recipients, :subject => "Build STILL FAILS! - '#{@build.display_name}' in '#{@project.name}'") do |format|
           format.text { render "mailer/build_still_fails" }
         end
       end
@@ -53,7 +53,7 @@ module BigTuna
       def build_fixed(build, recipients)
         @build = build
         @project = @build.project
-        mail(:to => recipients, :subject => "Build '#{@build.display_name}' in '#{@project.name}' fixed") do |format|
+        mail(:to => recipients, :subject => "Build FIXED! - '#{@build.display_name}' in '#{@project.name}'") do |format|
           format.text { render "mailer/build_fixed" }
         end
       end
