@@ -159,6 +159,8 @@ GEM
     ruby_core_source (0.1.5)
       archive-tar-minitar (>= 0.5.2)
     rubyzip (0.9.8)
+    rvm-capistrano (1.2.7)
+      capistrano (>= 2.0.0)
     scashin133-xmpp4r-simple (0.8.9)
       xmpp4r (>= 0.3.2)
     selenium-webdriver (2.21.2)
@@ -233,6 +235,7 @@ DEPENDENCIES
   rails (= 3.2.1)
   ruby-debug
   ruby-debug19
+  rvm-capistrano
   scashin133-xmpp4r-simple (= 0.8.9)
   shout-bot
   stringex
