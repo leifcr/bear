@@ -28,6 +28,8 @@ gem "tinder"
 
 gem 'mysql2', '~> 0.3.10'
 
+gem 'capistrano'
+
 # Error Tracking
 gem 'airbrake', '3.1.2'
 
