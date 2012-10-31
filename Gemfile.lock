@@ -30,6 +30,9 @@ GEM
       multi_json (~> 1.0)
     acts_as_list (0.1.6)
     addressable (2.2.8)
+    airbrake (3.1.2)
+      activesupport
+      builder
     archive-tar-minitar (0.5.2)
     arel (3.0.2)
     builder (3.0.0)
@@ -194,6 +197,7 @@ PLATFORMS
 
 DEPENDENCIES
   acts_as_list
+  airbrake (= 3.1.2)
   capybara
   crack
   database_cleaner

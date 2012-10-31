@@ -28,6 +28,9 @@ gem "tinder"
 
 gem 'mysql2', '~> 0.3.10'
 
+# Error Tracking
+gem 'airbrake', '3.1.2'
+
 group :development, :test do
   gem "capybara"
   gem "launchy"
