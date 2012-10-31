@@ -11,18 +11,18 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110326142448) do
+ActiveRecord::Schema.define(:version => 20121031195332) do
 
   create_table "build_parts", :force => true do |t|
-    t.integer  "build_id",         :null => false
+    t.integer  "build_id",                               :null => false
     t.string   "name"
     t.text     "steps"
-    t.text     "output"
+    t.text     "output",           :limit => 2147483647
     t.string   "status"
     t.datetime "started_at"
     t.datetime "finished_at"
-    t.datetime "created_at",       :null => false
-    t.datetime "updated_at",       :null => false
+    t.datetime "created_at",                             :null => false
+    t.datetime "updated_at",                             :null => false
     t.text     "shared_variables"
   end
 
