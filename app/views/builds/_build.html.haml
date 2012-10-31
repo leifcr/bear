@@ -9,9 +9,13 @@
     %h3{ :class => part.status.nil? ? "" : (part.status == "status_build_part_ok" ? "status_build_ok" : "status_build_failed") }
       = part.name
     %ul{:id => "part_#{index}", :class => 'unstyled' }
-      - part.output.each_with_index do |output, index|
-        %li{:id => "step_#{index + 1}"}
-          = render :partial => "builds/step", :locals => {:step => output, :step_no => index + 1}
+      - if part.output.class == "Array"
+        - part.output.each_with_index do |output, index|
+          %li{:id => "step_#{index + 1}"}
+            = render :partial => "builds/step", :locals => {:step => output, :step_no => index + 1}
+      - if part.output.class == "String"
+        %li{:id => "step_1"}
+          = render :partial => "builds/step", :locals => {:step => part.output, :step_no => 1}
       - if build.status == Build::STATUS_PROGRESS
         %li{ :class => Build::STATUS_PROGRESS }
           %div.pulse
