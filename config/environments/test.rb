@@ -7,6 +7,10 @@ BigTuna::Application.configure do
   # and recreated between test runs.  Don't rely on the data there!
   config.cache_classes = true
 
+  # Configure static asset server for tests with Cache-Control for performance
+  config.serve_static_assets = true
+  config.static_cache_control = "public, max-age=3600"
+
   # Log error messages when you accidentally call methods on nil.
   config.whiny_nils = true
 
@@ -33,5 +37,23 @@ BigTuna::Application.configure do
   # config.active_record.schema_format = :sql
 
   # Print deprecation notices to the stderr
+  # Raise exception on mass assignment protection for Active Record models
+  config.active_record.mass_assignment_sanitizer = :strict
+
+  # Print deprecation notices to the stderr
   config.active_support.deprecation = :stderr
+
+  config.colorize_logging = false
+end
+
+Grizzled::Rails::Logger.configure do |cfg|
+  cfg.flatten = true
+  cfg.flatten_patterns = [
+    /.*/
+  ]
+  cfg.dont_flatten_patterns = [
+  ]
+  cfg.colorize = false
+  cfg.timeformat = '%Y/%m/%d %H:%M:%S'
+  cfg.format = '[%T] (%S) %M'
 end

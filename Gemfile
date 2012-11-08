@@ -12,7 +12,7 @@ gem "jquery-rails"
 gem "thin"
 gem 'acts_as_list'
 
-gem 'newrelic_rpm'
+# gem 'newrelic_rpm'
 
 # ruby 1.9 compatible version
 gem "scashin133-xmpp4r-simple", '0.8.9', :require => 'xmpp4r-simple'
@@ -62,3 +62,7 @@ end
 group :test do
   gem "webmock"
 end
+
+# better logging
+gem 'grizzled-ra
+ils-logger'
