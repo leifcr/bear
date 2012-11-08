@@ -17,7 +17,7 @@ BigTuna was created by "Michał Bugno":http://twitter.com/michalbugno and "Antek
 * "Pawel Pierzchala":https://github.com/wrozka
 * ...and others (some mentioned in the "pull request * list":https://github.com/appelier/bigtuna/pulls)
 
-h1. Build Status !https://secure.travis-ci.org/appelier/bigtuna.png!:http://travis-ci.org/appelier/bigtuna
+h1. Build Status !https://secure.travis-ci.org/leifcr/bigtuna.png!:http://travis-ci.org/leifcr/bigtuna
 
 h1. License
 
