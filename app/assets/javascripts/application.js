@@ -1,3 +1,6 @@
+//= require jquery
+//= require jquery_ujs 
+
 function setAjaxReload(url){
   $(document).ready(function(){setInterval('ajaxReload("' + url + '")', 5000);});
 }

@@ -34,6 +34,12 @@ gem 'rvm-capistrano'
 # Error Tracking
 # gem 'airbrake', '3.1.2'
 
+group :assets do
+  gem "twitter-bootstrap-rails"
+  gem 'coffee-rails', '~> 3.2.2'
+  gem 'uglifier', '>= 1.2.6'
+end
+
 group :development, :test do
   gem "capybara"
   gem "launchy"
