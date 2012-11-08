@@ -32,7 +32,7 @@ gem 'capistrano'
 gem 'rvm-capistrano'
 
 # Error Tracking
-gem 'airbrake', '3.1.2'
+# gem 'airbrake', '3.1.2'
 
 group :development, :test do
   gem "capybara"
