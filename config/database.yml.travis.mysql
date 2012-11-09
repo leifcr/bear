@@ -1,6 +1,6 @@
 test:
   adapter: mysql2
-  database: myapp_test
+  database: bigtuna_test
   username: 
   encoding: utf8
 
