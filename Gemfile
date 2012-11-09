@@ -64,5 +64,4 @@ group :test do
 end
 
 # better logging
-gem 'grizzled-ra
-ils-logger'
+gem 'grizzled-rails-logger'
