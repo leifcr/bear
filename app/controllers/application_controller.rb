@@ -7,6 +7,7 @@ class ApplicationController < ActionController::Base
   protected
 
   	def authenticate
+      return if Rails.env.development?
   		authenticate_or_request_with_http_basic do |username, password|
   			username == BigTuna.username && password == BigTuna.password
   		end

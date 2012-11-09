@@ -40,5 +40,13 @@ module BigTuna
     config.filter_parameters += [:password]
     Haml::Template.options[:ugly] = true
     # config.action_view.javascript_expansions[:defaults] = %w(jquery.min rails application)
+
+    # Enable escaping HTML in JSON.
+    config.active_support.escape_html_entities_in_json = true
+
+    # assets
+    config.assets.enabled = true
+    config.assets.version = '1.0'
+
   end
 end

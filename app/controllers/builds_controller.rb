@@ -1,19 +1,18 @@
 class BuildsController < ApplicationController
-  before_filter :locate_build, :only => [:show, :destroy]
-  respond_to :js, :only => :show
 
   def show
-
+    @build = Build.find(params[:id])
+    respond_to do |format|
+      format.js
+      format.html
+    end
   end
 
   def destroy
+    @build = Build.find(params[:id])
     project = @build.project
     @build.destroy
     redirect_to project_path(project)
   end
 
-  private
-  def locate_build
-    @build = Build.find(params[:id])
-  end
 end

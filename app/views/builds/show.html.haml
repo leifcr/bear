@@ -38,4 +38,4 @@
 
 - content_for :topbar do
   %li= link_to("#{@build.project.name} home", project_path(@build.project))
-  %li= link_to("", feed_project_path(@project, :format => "atom"), :class => "rss")
+  / %li= link_to("", feed_project_path(@project, :format => "atom"), :class => "rss")
