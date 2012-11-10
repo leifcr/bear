@@ -25,6 +25,7 @@ class ProjectTest < ActiveSupport::TestCase
 
 
     assert(Project.ajax_reload?, "Should be true.")
+    project.save!
 
     project.build!
     build = project.recent_build
@@ -63,6 +64,7 @@ class ProjectTest < ActiveSupport::TestCase
 
     assert(!Project.ajax_reload?, "Should be false.")
 
+    project.save!
     project.build!
     build = project.recent_build
 
@@ -100,6 +102,7 @@ class ProjectTest < ActiveSupport::TestCase
 
     assert(!Project.ajax_reload?, "Should be false.")
 
+    project.save!
     project.build!
     build = project.recent_build
 
@@ -136,6 +139,7 @@ class ProjectTest < ActiveSupport::TestCase
 
     assert(project.ajax_reload?, "Should be true.")
 
+    project.save!
     project.build!
     build = project.recent_build
 
@@ -171,6 +175,7 @@ class ProjectTest < ActiveSupport::TestCase
 
     assert(!project.ajax_reload?, "Should be false.")
 
+    project.save!
     project.build!
     build = project.recent_build
 
@@ -209,6 +214,7 @@ class ProjectTest < ActiveSupport::TestCase
 
     assert(!Project.ajax_reload?, "Should be false.")
 
+    project.save!
     project.build!
     build = project.recent_build
 
@@ -239,6 +245,7 @@ class ProjectTest < ActiveSupport::TestCase
       :vcs_source => "test/files/repo",
       :max_builds => 1,
     }, "ls -al file")
+    project.save!
     assert_difference("Dir[File.join(project.build_dir, '*')].size", +1) do
       project.build!
       run_delayed_jobs()
@@ -256,6 +263,7 @@ class ProjectTest < ActiveSupport::TestCase
       :vcs_source => "test/files/repo",
       :max_builds => 1,
     }, "ls -al file")
+    project.save!
     project.build!
     project.build!
     assert_difference("Build.count", -2) do
@@ -269,6 +277,7 @@ class ProjectTest < ActiveSupport::TestCase
       :vcs_source => "test/files/repo",
       :max_builds => 1,
     }, "git diff file\necho 'lol'")
+    project.save!
     project.build!
     run_delayed_jobs()
     build = project.recent_build
@@ -288,6 +297,7 @@ class ProjectTest < ActiveSupport::TestCase
       :vcs_type => "git",
       :max_builds => 1,
     }, "ls -al file\nls -al not_a_file\necho 'not_here'")
+    project.save!
     project.build!
     run_delayed_jobs()
     build = project.recent_build
@@ -356,6 +366,7 @@ class ProjectTest < ActiveSupport::TestCase
   test "project dir should be renamed if project name changes" do
     project = project_with_steps({:name => "my name"}, "ls -al")
     dir = project.send(:build_dir_from_name, project.name)
+    project.save!
     project.build!
     run_delayed_jobs()
     assert File.directory?(dir)
@@ -387,6 +398,7 @@ class ProjectTest < ActiveSupport::TestCase
       :vcs_source => "test/files/repo",
       :max_builds => 1,
     }, "ls -al file")
+    project.save!
     assert_equal 0, project.total_builds
     project.build!
     project.build!
@@ -410,6 +422,7 @@ class ProjectTest < ActiveSupport::TestCase
       :name => "Project",
       :vcs_source => "test/files/repo",
     }, "ls -al file")
+    project.save!    
     create_project_builds(project, Build::STATUS_OK, Build::STATUS_FAILED, Build::STATUS_OK, Build::STATUS_OK)
     assert_equal -1, project.stability
   end
@@ -419,6 +432,7 @@ class ProjectTest < ActiveSupport::TestCase
       :name => "Project",
       :vcs_source => "test/files/repo",
     }, "ls -al file")
+    project.save!
     hard_update_project_builds(project, Build::STATUS_FAILED, Build::STATUS_PROGRESS, Build::STATUS_IN_QUEUE, Build::STATUS_FAILED, Build::STATUS_OK, Build::STATUS_OK, Build::STATUS_FAILED)
     project.reload
     assert_equal 2, project.stability
@@ -429,6 +443,7 @@ class ProjectTest < ActiveSupport::TestCase
       :name => "Project",
       :vcs_source => "test/files/repo",
     }, "command1\ncommand2 #not3\n#not4\n     #not5\n")
+    project.save!
     project.build!
     run_delayed_jobs()
     output = project.recent_build.parts[0].output
@@ -443,6 +458,7 @@ class ProjectTest < ActiveSupport::TestCase
 
   test "invoking #build! cancels previously queued build" do
     project = project_with_steps({:vcs_source => "test/files/repo"}, "true", "true\nfalse")
+    project.save!
     assert_difference("Delayed::Job.count", +1) do
       3.times { project.build! }
     end
