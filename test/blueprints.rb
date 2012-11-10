@@ -1,13 +1,7 @@
 require "machinist/active_record"
 
-Sham.define do
-  name { Faker::Name.name }
-  email { Faker::Internet.user_name + "@example.org" }
-  commit(:unique => false) { "a" * 40 }
-end
-
 Project.blueprint do
-  name { Sham.name }
+  name { Faker::Name.name }
   max_builds { 1 }
   vcs_type { "git" }
   vcs_source { "test/files/repo" }
@@ -16,7 +10,7 @@ Project.blueprint do
 end
 
 StepList.blueprint do
-  name { Sham.name }
+  name { Faker::Name.name }
   steps { "ls -al\ntrue" }
   project { Project.make }
 end
@@ -24,5 +18,5 @@ end
 Build.blueprint do
   project { Project.make }
   scheduled_at { Time.now }
-  commit { Sham.commit }
+  commit { "a" * 40 }
 end
