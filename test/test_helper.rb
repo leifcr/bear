@@ -92,4 +92,4 @@ class ActiveSupport::TestCase
   end
 end
 
-require "mocha/setup"
+require 'mocha'
