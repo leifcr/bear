@@ -24,7 +24,7 @@ module BigTuna
 
     class Sender < ActionMailer::Base
       self.append_view_path("lib/big_tuna/hooks")
-      default :from => "info@ci.appelier.com"
+      default :from => "ci-foo@foo.bar"
 
       def build_passed(build, recipients)
         @build = build
