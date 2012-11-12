@@ -140,9 +140,9 @@ class ProjectsTest < ActionController::IntegrationTest
       :vcs_source => "no/such/repo",
       :max_builds => 3,
     }, "echo 'ha'")
-    build_1 = Build.make(:project => project, :build_no => 1, :created_at => 3.weeks.ago)
-    build_2 = Build.make(:project => project, :build_no => 2, :created_at => 2.week.ago)
-    build_3 = Build.make(:project => project, :build_no => 3, :created_at => 1.week.ago)
+    build_1 = Build.make!(:project => project, :build_no => 1, :created_at => 3.weeks.ago)
+    build_2 = Build.make!(:project => project, :build_no => 2, :created_at => 2.week.ago)
+    build_3 = Build.make!(:project => project, :build_no => 3, :created_at => 1.week.ago)
     build_1.update_attributes!({:status => Build::STATUS_FAILED})
     build_2.update_attributes!({:status => Build::STATUS_OK})
     build_3.update_attributes!({:status => Build::STATUS_PROGRESS})

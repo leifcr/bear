@@ -69,7 +69,7 @@ class BuildsTest < ActionController::IntegrationTest
   end
 
   test "test with no steps has green status after build" do
-    project = Project.make(:name => "myproject", :vcs_source => "test/files/repo", :vcs_type => "git")
+    project = Project.make!(:name => "myproject", :vcs_source => "test/files/repo", :vcs_type => "git")
     visit "/projects/#{[project.id, project.name.to_url].join("-")}"
     click_link_or_button "Build now"
     run_delayed_jobs()

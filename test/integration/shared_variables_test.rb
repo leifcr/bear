@@ -3,8 +3,8 @@ require "integration_test_helper"
 class SharedVariablesTest < ActionController::IntegrationTest
   def setup
     super
-    @project = Project.make(:name => "my project")
-    @step = StepList.make(:name => "short", :project => @project, :steps => "ls")
+    @project = Project.make!(:name => "my project")
+    @step = StepList.make!(:name => "short", :project => @project, :steps => "ls")
     visit edit_project_path(@project)
     click_link "Edit configuration specific variables"
   end

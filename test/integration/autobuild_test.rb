@@ -97,8 +97,8 @@ class AutobuildTest < ActionController::IntegrationTest
 
   private
   def github_project(opts = {})
-    project = Project.make({:vcs_source => "git://github.com/appelier/bigtuna.git", :vcs_branch => "master", :vcs_type => "git", :max_builds => 2}.merge(opts))
-    step_list = StepList.make(:project => project, :steps => "ls")
+    project = Project.make!({:vcs_source => "git://github.com/appelier/bigtuna.git", :vcs_branch => "master", :vcs_type => "git", :max_builds => 2}.merge(opts))
+    step_list = StepList.make!(:project => project, :steps => "ls")
     project
   end
 

@@ -40,9 +40,9 @@ class ActiveSupport::TestCase
   end
 
   def project_with_steps(project_attrs, *steps)
-    project = Project.make(project_attrs)
+    project = Project.make!(project_attrs)
     steps.each do |step_list|
-      StepList.make(:project => project, :steps => step_list)
+      StepList.make!(:project => project, :steps => step_list)
     end
     project
   end

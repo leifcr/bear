@@ -3,9 +3,9 @@ require "integration_test_helper"
 class StepListTest < ActionController::IntegrationTest
   def setup
     super
-    @project = Project.make(:name => "my project")
-    @step1 = StepList.make(:name => "short", :project => @project, :steps => "ls")
-    @step2 = StepList.make(:name => "long", :project => @project, :steps => "ls -al\ntrue")
+    @project = Project.make!(:name => "my project")
+    @step1 = StepList.make!(:name => "short", :project => @project, :steps => "ls")
+    @step2 = StepList.make!(:name => "long", :project => @project, :steps => "ls -al\ntrue")
   end
 
   test "user can remove step list from project" do

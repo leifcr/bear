@@ -220,7 +220,7 @@ class BuildTest < ActiveSupport::TestCase
   end
   
   def mock_build(project, vcs)
-    build = Build.make(:project => project)
+    build = Build.make!(:project => project)
     build.project = project
     build.stubs(:vcs).returns(vcs)
     build

@@ -70,8 +70,8 @@ class BitbucketAutobuildTest < ActionController::IntegrationTest
 
   private
   def bitbucket_project(opts = {})
-    project = Project.make({:vcs_source => "ssh://hg@bitbucket.org/foo/bigtuna/", :vcs_branch => "default", :vcs_type => "hg", :max_builds => 2}.merge(opts))
-    step_list = StepList.make(:project => project, :steps => "ls")
+    project = Project.make!({:vcs_source => "ssh://hg@bitbucket.org/foo/bigtuna/", :vcs_branch => "default", :vcs_type => "hg", :max_builds => 2}.merge(opts))
+    step_list = StepList.make!(:project => project, :steps => "ls")
     project
   end
 
