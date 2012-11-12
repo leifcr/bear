@@ -24,6 +24,10 @@ class BitbucketAutobuildTest < ActionController::IntegrationTest
     begin
       BigTuna.config[:bitbucket_secure] = "mytoken"
       token = BigTuna.bitbucket_secure
+      puts "-------"
+      puts "TOKEN:"
+      puts token.inspect
+      puts "------"
       assert_difference("project1.builds.count", +1) do
         assert_difference("project2.builds.count", 0) do
           post "/hooks/build/bitbucket/#{token}", :payload => bitbucket_payload(project1)
@@ -76,6 +80,39 @@ class BitbucketAutobuildTest < ActionController::IntegrationTest
   end
 
   def bitbucket_payload(project)
-    "{\"repository\": {\"owner\": \"foo\", \"website\": \"\", \"absolute_url\": \"/foo/bigtuna/\", \"slug\": \"bigtuna\", \"name\": \"bigtuna\"}, \"commits\": [{\"node\": \"94608d070caf\", \"files\": [{\"type\": \"modified\", \"file\": \"app/controllers/hooks_controller.rb\"}], \"author\": \"unsay\", \"timestamp\": \"2010-12-09 04:59:38\", \"raw_node\": \"94608d070caf01aeb60c39e099c528cebf62e9eb\", \"parents\": [\"e069646e9522\"], \"branch\": \"default\", \"message\": \"Ahh.\", \"size\": 57, \"revision\": 10}], \"user\": \"merp\"}"
+    "{
+       \"repository\":{
+          \"absolute_url\":\"/foo/bigtuna/\",
+          \"fork\": false, 
+          \"is_private\": false,
+          \"name\":\"#{project.name}\",
+          \"owner\":\"foo\",
+          \"scm\": \"hg\",
+          \"slug\":\"bigtuna\",
+          \"website\":\"\"
+       },
+       \"commits\":[
+          {
+             \"node\":\"94608d070caf\",
+             \"files\":[
+                {
+                   \"type\":\"modified\",
+                   \"file\":\"app/controllers/hooks_controller.rb\"
+                }
+             ],
+             \"author\":\"unsay\",
+             \"timestamp\":         \"2010-12-09 04:59:38         \",
+             \"raw_node\":\"94608d070caf01aeb60c39e099c528cebf62e9eb\",
+             \"parents\":[
+                \"e069646e9522\"
+             ],
+             \"branch\":\"#{project.vcs_branch}\",
+             \"message\":\"Ahh.\",
+             \"size\":57,
+             \"revision\":10
+          }
+       ],
+       \"user\":\"merp\"
+    }"
   end
 end

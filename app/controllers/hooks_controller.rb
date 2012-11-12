@@ -35,7 +35,8 @@ class HooksController < ApplicationController
     payload = JSON.parse(params[:payload])
     branch = payload["commits"][0]["branch"]
     url = payload["repository"]["absolute_url"]
-    source = "ssh://git@bitbucket.org#{url}"
+    repotype = payload["repository"]["scm"]
+    source = "ssh://#{repotype}@bitbucket.org#{url}"
 
     project = Project.where(:vcs_source => source, :vcs_branch => branch).first
 
