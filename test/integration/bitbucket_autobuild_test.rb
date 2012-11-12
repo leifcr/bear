@@ -24,10 +24,6 @@ class BitbucketAutobuildTest < ActionController::IntegrationTest
     begin
       BigTuna.config[:bitbucket_secure] = "mytoken"
       token = BigTuna.bitbucket_secure
-      puts "-------"
-      puts "TOKEN:"
-      puts token.inspect
-      puts "------"
       assert_difference("project1.builds.count", +1) do
         assert_difference("project2.builds.count", 0) do
           post "/hooks/build/bitbucket/#{token}", :payload => bitbucket_payload(project1)
