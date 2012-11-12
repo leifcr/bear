@@ -71,7 +71,7 @@ class NotifoHookTest < ActiveSupport::TestCase
   end
 
   def stub_notifo(hook, message)
-    mock = Mocha::Mock.new
+    s = mock()
     mock.expects(:initialize).with(hook.configuration["user"], hook.configuration["key"]).returns(mock)
     hook.configuration["recipients"].to_s.split(",").each do |recipient|
       mock.expects(:deliver).with(recipient).returns(mock)

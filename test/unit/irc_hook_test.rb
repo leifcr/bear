@@ -79,7 +79,7 @@ class IrcHookTest < ActiveSupport::TestCase
   end
 
   def stub_irc(hook, message)
-    s = Mocha::Mock.new
+    s = mock()
     s.expects(:shout).with(message).returns(s)
     s
   end
