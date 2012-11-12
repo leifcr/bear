@@ -9,6 +9,7 @@ class ProjectTest < ActiveSupport::TestCase
   def build_and_run_project_with_steps(steps = nil, project_attrs = {})
     steps ||= "ls -al file"
     project = project_with_steps(project_attrs, steps)
+    
     project.build!
     run_delayed_jobs
     project
@@ -25,7 +26,7 @@ class ProjectTest < ActiveSupport::TestCase
 
 
     assert(Project.ajax_reload?, "Should be true.")
-    project.save!
+    
 
     project.build!
     build = project.recent_build
@@ -64,7 +65,7 @@ class ProjectTest < ActiveSupport::TestCase
 
     assert(!Project.ajax_reload?, "Should be false.")
 
-    project.save!
+    
     project.build!
     build = project.recent_build
 
@@ -102,7 +103,7 @@ class ProjectTest < ActiveSupport::TestCase
 
     assert(!Project.ajax_reload?, "Should be false.")
 
-    project.save!
+    
     project.build!
     build = project.recent_build
 
@@ -139,7 +140,7 @@ class ProjectTest < ActiveSupport::TestCase
 
     assert(project.ajax_reload?, "Should be true.")
 
-    project.save!
+    
     project.build!
     build = project.recent_build
 
@@ -175,7 +176,7 @@ class ProjectTest < ActiveSupport::TestCase
 
     assert(!project.ajax_reload?, "Should be false.")
 
-    project.save!
+    
     project.build!
     build = project.recent_build
 
@@ -214,7 +215,7 @@ class ProjectTest < ActiveSupport::TestCase
 
     assert(!Project.ajax_reload?, "Should be false.")
 
-    project.save!
+    
     project.build!
     build = project.recent_build
 
@@ -245,7 +246,7 @@ class ProjectTest < ActiveSupport::TestCase
       :vcs_source => "test/files/repo",
       :max_builds => 1,
     }, "ls -al file")
-    project.save!
+    
     assert_difference("Dir[File.join(project.build_dir, '*')].size", +1) do
       project.build!
       run_delayed_jobs()
@@ -263,7 +264,7 @@ class ProjectTest < ActiveSupport::TestCase
       :vcs_source => "test/files/repo",
       :max_builds => 1,
     }, "ls -al file")
-    project.save!
+    
     project.build!
     project.build!
     assert_difference("Build.count", -2) do
@@ -277,7 +278,7 @@ class ProjectTest < ActiveSupport::TestCase
       :vcs_source => "test/files/repo",
       :max_builds => 1,
     }, "git diff file\necho 'lol'")
-    project.save!
+    
     project.build!
     run_delayed_jobs()
     build = project.recent_build
@@ -297,7 +298,7 @@ class ProjectTest < ActiveSupport::TestCase
       :vcs_type => "git",
       :max_builds => 1,
     }, "ls -al file\nls -al not_a_file\necho 'not_here'")
-    project.save!
+    
     project.build!
     run_delayed_jobs()
     build = project.recent_build
@@ -344,18 +345,18 @@ class ProjectTest < ActiveSupport::TestCase
 
   test "hook_name should be unique" do
     hook_name = "my_unique_hook_name"
-    Project.make(:hook_name => hook_name)
+    Project.make!(:hook_name => hook_name)
     assert_invalid(Project, :hook_name) { |p| p.hook_name = hook_name }
   end
 
   test "if hook_name is empty it can be not-unique" do
-    Project.make(:hook_name => "")
-    Project.make(:hook_name => "")
+    Project.make!(:hook_name => "")
+    Project.make!(:hook_name => "")
   end
 
   test "project name should be unique" do
     name = "unique project name"
-    Project.make(:name => name)
+    Project.make!(:name => name)
     assert_invalid(Project, :name) { |p| p.name = name }
   end
 
@@ -366,17 +367,18 @@ class ProjectTest < ActiveSupport::TestCase
   test "project dir should be renamed if project name changes" do
     project = project_with_steps({:name => "my name"}, "ls -al")
     dir = project.send(:build_dir_from_name, project.name)
-    project.save!
+    
     project.build!
     run_delayed_jobs()
-    assert File.directory?(dir)
+    assert File.directory?(dir), "#{dir} should be a directory and exist"
     project.name = "my other name"
     project.save!
-    assert ! File.directory?(dir)
+    
+    assert ! File.directory?(dir), "#{dir} should not be a directory or exist"
     project.build!
     run_delayed_jobs()
     new_dir = project.send(:build_dir_from_name, project.name)
-    assert File.directory?(new_dir)
+    assert File.directory?(new_dir), "#{new_dir} should be a directory and exist"
   end
 
   test "vcs_type should be one of vcs types available" do
@@ -398,7 +400,7 @@ class ProjectTest < ActiveSupport::TestCase
       :vcs_source => "test/files/repo",
       :max_builds => 1,
     }, "ls -al file")
-    project.save!
+    
     assert_equal 0, project.total_builds
     project.build!
     project.build!
@@ -422,7 +424,7 @@ class ProjectTest < ActiveSupport::TestCase
       :name => "Project",
       :vcs_source => "test/files/repo",
     }, "ls -al file")
-    project.save!    
+        
     create_project_builds(project, Build::STATUS_OK, Build::STATUS_FAILED, Build::STATUS_OK, Build::STATUS_OK)
     assert_equal -1, project.stability
   end
@@ -432,7 +434,7 @@ class ProjectTest < ActiveSupport::TestCase
       :name => "Project",
       :vcs_source => "test/files/repo",
     }, "ls -al file")
-    project.save!
+    
     hard_update_project_builds(project, Build::STATUS_FAILED, Build::STATUS_PROGRESS, Build::STATUS_IN_QUEUE, Build::STATUS_FAILED, Build::STATUS_OK, Build::STATUS_OK, Build::STATUS_FAILED)
     project.reload
     assert_equal 2, project.stability
@@ -443,7 +445,7 @@ class ProjectTest < ActiveSupport::TestCase
       :name => "Project",
       :vcs_source => "test/files/repo",
     }, "command1\ncommand2 #not3\n#not4\n     #not5\n")
-    project.save!
+    
     project.build!
     run_delayed_jobs()
     output = project.recent_build.parts[0].output
@@ -458,7 +460,7 @@ class ProjectTest < ActiveSupport::TestCase
 
   test "invoking #build! cancels previously queued build" do
     project = project_with_steps({:vcs_source => "test/files/repo"}, "true", "true\nfalse")
-    project.save!
+    
     assert_difference("Delayed::Job.count", +1) do
       3.times { project.build! }
     end
@@ -474,7 +476,7 @@ class ProjectTest < ActiveSupport::TestCase
   test 'by default a project should build by cloning' do
     project = project_with_steps({:vcs_source => "test/files/repo"}, "true", "true\nfalse")
 
-    project.save!
+    
 
     assert_equal :clone, project.fetch_type, 'by default a project should build by cloning'
   end
@@ -482,7 +484,7 @@ class ProjectTest < ActiveSupport::TestCase
   test 'should persist the fetch_type' do
     project = project_with_steps({:vcs_source => "test/files/repo", :fetch_type => :incremental}, "true", "true\nfalse")
 
-    project.save!
+    
 
     assert_equal :incremental, project.fetch_type, 'should persist the fetch_type'
   end
@@ -533,7 +535,7 @@ class ProjectTest < ActiveSupport::TestCase
 
   def hard_update_project_builds(project, *statuses)
     statuses.reverse.each_with_index do |status, index|
-      build = Build.make(:project => project, :created_at => index.weeks.ago)
+      build = Build.make!(:project => project, :created_at => index.weeks.ago)
       build.update_attributes!({:status => status})
      end
   end

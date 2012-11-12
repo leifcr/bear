@@ -28,7 +28,7 @@ class Project < ActiveRecord::Base
   end
 
   def duplicate_project
-    project_clone = self.clone
+    project_clone = self.dup
     project_clone.name += " COPY"
 
     if !self.hook_name.blank?
@@ -40,7 +40,7 @@ class Project < ActiveRecord::Base
     end
 
     self.step_lists.each do |step_list|
-      new_step_list = step_list.clone
+      new_step_list = step_list.dup
       new_step_list.project = project_clone
       new_step_list.save
     end
