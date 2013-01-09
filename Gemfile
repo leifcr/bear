@@ -38,7 +38,7 @@ group :assets do
   gem 'coffee-rails', '~> 3.2.2'
   gem 'less-rails'
   gem 'uglifier', '>= 1.2.6'
-  gem 'libv8', '3.11.8.11'
+  gem 'libv8', '3.11.8.13'
   gem 'therubyracer', '>= 0.11.1'
 end
 

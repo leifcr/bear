@@ -111,7 +111,7 @@ GEM
     less-rails (2.2.6)
       actionpack (>= 3.1)
       less (~> 2.2.0)
-    libv8 (3.11.8.11)
+    libv8 (3.11.8.13)
     libwebsocket (0.1.7.1)
       addressable
       websocket
@@ -274,7 +274,7 @@ DEPENDENCIES
   json
   launchy
   less-rails
-  libv8 (= 3.11.8.11)
+  libv8 (= 3.11.8.13)
   machinist
   meta_request (= 0.2.1)
   mocha
