@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-gem "rails", "3.2.10"
+gem "rails", "3.2.11"
 
 gem "haml"
 gem "delayed_job"
@@ -11,6 +11,8 @@ gem "json"
 gem "jquery-rails"
 gem "thin"
 gem 'acts_as_list'
+gem 'devise'
+gem 'simple_form'
 
 # gem 'newrelic_rpm'
 
@@ -34,6 +36,7 @@ gem 'mysql2', '~> 0.3.10'
 group :assets do
   gem "twitter-bootstrap-rails"
   gem 'coffee-rails', '~> 3.2.2'
+  gem 'less-rails'
   gem 'uglifier', '>= 1.2.6'
   gem 'libv8', '3.11.8.11'
   gem 'therubyracer', '>= 0.11.1'
@@ -45,6 +48,7 @@ group :development do
   gem "awesome_print"
   gem 'capistrano'
   gem 'rvm-capistrano'
+  gem 'binding_of_caller'
   gem "better_errors"
   gem 'meta_request', '0.2.1'
 end
