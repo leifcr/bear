@@ -9,20 +9,36 @@
     %meta{:name => "keywords", :content => "keywords"}
     %meta{:name => "description", :content => "description"}
   %body{ :style => 'padding-top: 60px;' }
-    .navbar.navbar-fixed-top
+    .navbar.navbar-inverse.navbar-fixed-top
       .navbar-inner
         .container
-          = link_to("BigTuna", "http://bigtuna.appelier.com", :target => "_blank", :title => "BigTuna v#{BigTuna::VERSION}", :class => "brand")
-          %span.brand.hint checked with
-          %ul.nav
-            %li
-              = link_to("Projects", root_path)
-            = yield :topbar
-
+          %button.btn.btn-navbar.collapsed{:data => {:toggle => "collapse", :target => ".nav.collapse"}}
+            %span.icon-bar
+            %span.icon-bar
+            %span.icon-bar
+          = content_tag :a, "BigTuna-CI #{BigTuna::VERSION}", :class => "brand"
+          .nav-collapse.collapse
+            %ul.nav
+              %li
+                = link_to("Projects", root_path)
+              %li
+                = link_to("Users", users_path)
+              = yield :topbar
+            %ul.nav.pull-right
+              - if user_signed_in?
+                %li
+                  %p.navbar-text
+                    ="#{current_user.name}"
+                %li
+                  = link_to("(Sign out)", destroy_user_session_path, :method => :delete)
+              - else
+                %li
+                  = link_to("Sign in", new_user_session_path)          
 
     .container
-      = flash[:error]
-      = flash[:notice]
+      = bootstrap_flash
+      / = flash[:error]
+      / = flash[:notice]
       = yield
 
     = yield :sidebar

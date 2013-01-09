@@ -1,0 +1,39 @@
+<%# content_for :topbar do %>
+   <%#= content_tag :li, link_to("New User", new_user_path) %>
+<%# end %>
+
+<div class="row">
+  <div class="span12">
+    <h1>Users</h1>
+    <% if @users.length == 0 %>
+      <p>No users...  </p>
+    <% else %>
+      <table class="table table-hover">
+        <tbody>
+        <% @users.each do |user| %>
+          <tr>
+            <%= content_tag :td, user.name %>
+            <%= content_tag :td, user.email %>
+            <%= content_tag :td, link_to('Remove', user, :data => { :confirm => "Are you sure?" }, :method => :delete, class: 'btn btn-danger btn-small right') %>
+          </tr>
+        <% end %>
+        </tbody>
+      </table>
+    <% end %>
+  </div>
+</div>
+
+<h2>New user</h2>
+<div class="row">
+  <div class="span12">
+    <%= simple_form_for(@new_user, :html => {:class => 'form-horizontal' }) do |f| %>
+      <%= f.input :name %>
+      <%= f.input :email %>
+      <%= f.input :password %>
+      <%= f.input :password_confirmation %>
+      <div class="form-actions">
+        <%= f.button :submit, :class => "btn btn-success" %>
+      </div>
+    <% end %>
+  </div>
+</div>

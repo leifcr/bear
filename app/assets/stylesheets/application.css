@@ -1,9 +1,6 @@
 /*
  *= require_self
- *= require bootstrap
- *= require bootstrap-responsive
+ *= require bootstrap_and_overrides
  *= require master_new
- *
- * bootstrap_and_overrides
  * 
  */

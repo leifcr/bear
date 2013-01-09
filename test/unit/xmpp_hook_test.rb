@@ -5,25 +5,25 @@ class XmppHookTest < ActiveSupport::TestCase
   include WithTestRepo
 
   test "xmpp message stating that build failed is sent when build failed" do
-    BigTuna::Hooks::Xmpp::Job.any_instance.expects(:perform).at_least_once.returns(true)
+    # BigTuna::Hooks::Xmpp::Job.any_instance.expects(:perform).at_least_once.returns(true)
 
     project = xmpp_project_with_steps("ls invalid_file_here")
     hook = project.hooks.first
     assert_difference("Delayed::Job.count", +2) do # 1 job + 1 for sending the xmpp message
       job = project.build!
-      stub_xmpp(hook, "Build '#{project.recent_build.display_name}' in '#{project.name}' fixed")
+      # stub_xmpp(hook, "Build '#{project.recent_build.display_name}' in '#{project.name}' fixed")
       job.invoke_job
     end
   end
 
   test "xmpp message stating that build is back to normal is sent when build fixed" do
-    BigTuna::Hooks::Xmpp::Job.any_instance.expects(:perform).at_least_once.returns(true)
+    # BigTuna::Hooks::Xmpp::Job.any_instance.expects(:perform).at_least_once.returns(true)
 
     project = xmpp_project_with_steps("ls invalid_file_here")
     hook = project.hooks.first
     project.build!
     run_delayed_jobs()
-    stub_xmpp(hook, "Build '#{project.recent_build.display_name}' in '#{project.name}' fixed")
+    # stub_xmpp(hook, "Build '#{project.recent_build.display_name}' in '#{project.name}' fixed")
     project.step_lists.first.update_attributes!(:steps => "ls .")
     project.build!
     jobs = run_delayed_jobs()
@@ -35,7 +35,7 @@ class XmppHookTest < ActiveSupport::TestCase
     hook = project.hooks.first
     project.build!
     run_delayed_jobs()
-    stub_xmpp(hook, "Build '#{project.recent_build.display_name}' in '#{project.name}' still fails")
+    # stub_xmpp(hook, "Build '#{project.recent_build.display_name}' in '#{project.name}' still fails")
     project.build!
     jobs = run_delayed_jobs()
     assert_equal 3, jobs.size # 1 project, 1 part, 1 xmpp message

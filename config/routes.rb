@@ -1,4 +1,8 @@
 BigTuna::Application.routes.draw do
+
+  devise_for :users
+  resources :users, :only => [:index, :create, :destroy]
+
   if BigTuna.read_only?
 
     resources :projects, :only => [:index, :show] do

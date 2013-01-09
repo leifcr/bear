@@ -1,5 +1,6 @@
 //= require jquery
 //= require jquery_ujs 
+//= require bootstrap
 
 function setAjaxReload(url){
   $(document).ready(function(){setInterval('ajaxReload("' + url + '")', 5000);});
