@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-gem "rails", "3.2.8"
+gem "rails", "3.2.10"
 
 gem "haml"
 gem "delayed_job"
@@ -28,9 +28,6 @@ gem "tinder"
 
 gem 'mysql2', '~> 0.3.10'
 
-gem 'capistrano'
-gem 'rvm-capistrano'
-
 # Error Tracking
 # gem 'airbrake', '3.1.2'
 
@@ -38,7 +35,18 @@ group :assets do
   gem "twitter-bootstrap-rails"
   gem 'coffee-rails', '~> 3.2.2'
   gem 'uglifier', '>= 1.2.6'
-  gem 'therubyracer'
+  gem 'libv8', '3.11.8.11'
+  gem 'therubyracer', '>= 0.11.1'
+end
+
+group :development do
+  gem "wirble"
+  gem "hirb"
+  gem "awesome_print"
+  gem 'capistrano'
+  gem 'rvm-capistrano'
+  gem "better_errors"
+  gem 'meta_request', '0.2.1'
 end
 
 group :development, :test do
