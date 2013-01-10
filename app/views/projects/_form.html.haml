@@ -58,7 +58,8 @@
   = f.label(:hook_name, :class => 'control-label')
   .controls
     = f.text_field(:hook_name)
-    %p.help-block POST to http://big.tuna.host/hooks/build/:hook_name: to build automatically
+    %p.help-block 
+      = "POST to http://#{request.host_with_port}/hooks/build/:hook_name: to build automatically"
     = f.hidden_field(:hook_update, {:value => true})
 
 .form-actions
