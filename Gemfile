@@ -32,8 +32,10 @@ gem 'mysql2', '~> 0.3.10'
 # Error Tracking
 # gem 'airbrake', '3.1.2'
 
+# this must be outside assets, as the helpers are required all the time.
+gem "twitter-bootstrap-rails"
+
 group :assets do
-  gem "twitter-bootstrap-rails"
   gem 'coffee-rails', '~> 3.2.2'
   gem 'less-rails'
   gem 'uglifier', '>= 1.2.6'
