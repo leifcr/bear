@@ -9,7 +9,6 @@ gem "stringex"
 gem "open4"
 gem "json"
 gem "jquery-rails"
-gem "thin"
 gem 'acts_as_list'
 gem 'devise'
 gem 'simple_form'
@@ -43,6 +42,7 @@ group :assets do
 end
 
 group :development do
+  gem "thin"
   gem "wirble"
   gem "hirb"
   gem "awesome_print"
@@ -66,6 +66,11 @@ group :development, :test do
   platforms :mri_19 do
     gem "ruby-debug19"
   end
+end
+
+group :production do
+  gem "bluepill"
+  gem "puma"
 end
 
 group :test do
