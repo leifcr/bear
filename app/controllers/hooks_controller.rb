@@ -17,11 +17,10 @@ class HooksController < ApplicationController
     search_term = "%github.com_#{github_project_path}.git"
 
     projects = Project.where(["vcs_source LIKE ?", search_term]).where(:vcs_branch => branch).all
-    user    = User.where(:secure_post_token => params[:secure]).first
 
-    if user == nil
+    if BigTuna.github_secure.nil?
       render :text => "github secure token is not set up", :status => 403
-    elsif projects.present? && user
+    elsif projects.present? && params[:secure] == BigTuna.github_secure
       projects.each(&:build!)
       render :text => "build for the following projects were triggered: " +
         projects.map(&:name).map(&:inspect).join(', '), :status => 200
@@ -42,11 +41,10 @@ class HooksController < ApplicationController
     end
 
     project = Project.where(:vcs_source => source, :vcs_branch => branch).first
-    user    = User.where(:secure_post_token => params[:secure]).first
 
-    if user == nil
-      render :text => "No user has a secure token matching the parameter.", :status => 403
-    elsif project and user
+    if BigTuna.bitbucket_secure.nil?
+      render :text => "bitbucket secure token is not set up", :status => 403
+    elsif project and params[:secure] == BigTuna.bitbucket_secure
       trigger_and_respond(project)
     else
       render :text => "invalid secure token", :status => 404
@@ -66,6 +64,6 @@ class HooksController < ApplicationController
   private
   def trigger_and_respond(project)
     project.build!
-    render :text => "build for %p triggered" % project.name, :status => 200
+    render :text => "build for %p triggered" % [project.name], :status => 200
   end
 end
