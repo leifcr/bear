@@ -2,11 +2,24 @@ h1. About
 
 BigTuna is a continuous integration software built on top of the Rails 3 framework. It aims to be project--agnostic and extendible.
 
-Find out more on "bigtuna.appelier.com":http://bigtuna.appelier.com
+This version implements Devise for authentication, it is updated to Rails 3.2, and uses newer bootstrap integration.
+
+It is currently running in-house and works quite well with testing rails/ruby, php and node.js applications.
+For rails/ruby applications, I recommend having a .rvmrc file in the project.
+
+h2. Future plans
+
+It's up to what people want, but here are some thoughts:
+
+* Relation between projects/users, and owners/admins
+* Removal of unused hooks, and perhaps implement new ones
+* Multiple post hooks
 
 h1. Contributors
 
-BigTuna was created by "Michał Bugno":http://twitter.com/michalbugno and "Antek Piechnik":http://twitter.com/antekpiechnik. The following people have kindly contributed to make it a better project:
+BigTuna was originally created by "Michał Bugno":http://twitter.com/michalbugno and "Antek Piechnik":http://twitter.com/antekpiechnik. The following people have kindly contributed to make it a better project:
+
+This updated version is maintained by "Leif Ringstad":http://twitter.com/leifcr
 
 * "David Rouchy":https://github.com/drouchy
 * "François Lamontagne":http://twitter.com/franklamontagne
@@ -19,9 +32,13 @@ BigTuna was created by "Michał Bugno":http://twitter.com/michalbugno and "Antek
 
 h1. Build Status !https://secure.travis-ci.org/leifcr/bigtuna.png!:http://travis-ci.org/leifcr/bigtuna
 
+Note: Build status is failing due to compile issue with libv8/therubyracer on travis-ci
+There are known issues with xmpp and irc hook tests. Please contact me (@leifcr) if you can help fix them
+
 h1. License
 
 bc.. Copyright (c) 2010  Michal Bugno, Antek Piechnik
+Copytight (c) 2012 Leif Ringstad
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
