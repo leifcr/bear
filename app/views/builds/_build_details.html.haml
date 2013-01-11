@@ -47,8 +47,4 @@
       %td
         %span.label.label-info Directory
       %td
-        %code.dark= truncate(strip_rails_root(@build.build_dir), :length => 40, :omission => '..')
-
-
-
-
+        %code.dark.wordwrap= strip_rails_root(@build.build_dir)

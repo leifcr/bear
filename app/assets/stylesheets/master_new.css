@@ -54,14 +54,21 @@ h1.status_build_ok a, h3.status_build_ok {
   color: #39B549;
 }
 
-.btn-tiny {
-  padding: 2px;
+.btn-remove-step {
+  margin-right: 190px;
+  margin-top: -30px;
 }
 
 .btn-shared-variable-removal {
   float: right;
   margin-right: 190px;
   margin-top: -20px;
+}
+
+.btn-edit-variables {
+  float: right;
+  margin-right: 190px;
+  margin-top: -40px;  
 }
 
 h1.status_build_failed a, h3.status_build_failed {
@@ -99,4 +106,19 @@ div.span12.build-sep {
 
 ul.in-recent-builds {
   margin-left: 0 !important;
+}
+
+.hooks_input {
+  margin-top:6px;
+}
+.single_hook a{
+  display:inline-block;
+}
+.steps-text-field {
+  height:190px;
+}
+.wordwrap {
+  word-wrap: break-word;
+  word-break: break-all;
+  white-space: normal;
 }

@@ -8,11 +8,11 @@
     %meta{:"http-equiv" => "Content-Type", :content => "text/html;charset=UTF-8"}
     %meta{:name => "keywords", :content => "keywords"}
     %meta{:name => "description", :content => "description"}
-  %body{ :style => 'padding-top: 60px;' }
+  %body
     .navbar.navbar-inverse.navbar-fixed-top
       .navbar-inner
         .container
-          %button.btn.btn-navbar.collapsed{:data => {:toggle => "collapse", :target => ".nav.collapse"}}
+          %button.btn.btn-navbar.collapsed{:data => {:toggle => "collapse", :target => ".nav-collapse"}}
             %span.icon-bar
             %span.icon-bar
             %span.icon-bar
@@ -37,8 +37,6 @@
 
     .container
       = bootstrap_flash
-      / = flash[:error]
-      / = flash[:notice]
       = yield
 
     = yield :sidebar

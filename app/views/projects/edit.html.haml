@@ -7,36 +7,40 @@
 
 .row
   .span6
-    %h2 Edit project
-    = form_for(@project, :url => project_path(@project), :html => { :class => 'form-horizontal'}) do |f|
+    %h3 Edit project
+    = simple_form_for(@project, :url => project_path(@project), :html => { :class => 'form-horizontal'}) do |f|
       = render :partial => "form", :locals => {:f => f}
   .span6.right-column
-    %h2 Edit configurations
+    %h3 Edit configurations
 
-    %div.hint
+    %h5
       Special variables are available.
-      %ul
-        %li= "<tt><b>%build_dir%</b> directory where build is checked out</tt>".html_safe
-        %li= "<tt><b>%project_dir%</b> directory shared by all builds in project</tt>".html_safe
-      %span.help-block= "You can comment a step with <tt>#</tt>".html_safe
+    %p.text-info
+      %tt= "<b>%build_dir%</b> directory where build is checked out".html_safe
+      %br
+      %tt= "<b>%project_dir%</b> directory shared by all builds in project".html_safe
 
+    %p.help-block= "You can comment a step with <tt>#</tt>".html_safe
+    - step_count = 0
     - unless @project.step_lists.empty?
       - @project.step_lists.each do |step_list|
         %hr
-        %h3.step-list-header= step_list.name
+        %h4.step-list-header= (step_count + 1).to_s + ": " + step_list.name
         - unless step_list.new_record?
-          = form_for(step_list, :url => step_list_path(step_list, :project_id => @project), :html => {:method => "DELETE", :id => "remove_step_list_#{step_list.id}"}) do |f|
-            %button{:class => 'btn btn-danger btn-small btn-tiny btn-shared-variable-removal' , :type => "submit"} Remove
-        %div.hint
-          %ul
+          = link_to("Remove step", step_list_path(step_list, :project_id => @project.id), :method => :delete, :confirm => "Are you sure?", :class => "btn btn-danger btn-small pull-right btn-remove-step")
+        %div.step-variables
+          %h5
+            Shared variables
+          %p.shared_variables.text-info
             - step_list.shared_variables.each do |variable|
-              %li= "<tt><b>%#{variable.name}%</b> #{variable.value}</tt>".html_safe
-          = link_to("Edit configuration specific variables", shared_variables_path(:step_list_id => step_list), :class => 'pull-up')
-        = form_for(step_list, :url => step_list_path(step_list, :project_id => @project), :html => { :class => 'form-horizontal', :method => "PUT"}) do |f|
+              %tt= "<b>%#{variable.name}%</b> #{variable.value}".html_safe
+              %br
+          = link_to("Edit variables", shared_variables_path(:step_list_id => step_list), :class => 'btn btn-mini btn-primary btn-edit-variables pull-right')
+        = simple_form_for(step_list, :url => step_list_path(step_list, :project_id => @project), :html => { :class => 'form-vertical', :method => "PUT"}) do |f|
           = render :partial => "step_lists/form", :locals => {:f => f}
 
     %h3 New configuration
-    = form_for(StepList.new, :url => step_lists_path(:project_id => @project), :html => { :class => 'form-horizontal'}) do |f|
+    = simple_form_for(StepList.new, :url => step_lists_path(:project_id => @project), :html => { :class => 'form-vertical'}) do |f|
       = render :partial => "step_lists/form", :locals => {:f => f}
 
 

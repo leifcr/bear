@@ -12,14 +12,12 @@
 
   .btn-group.light
     - if params[:stderr].nil?
-      = link_to("Show stderr", build_path(@build, :stderr => 1), :class => "btn btn-warning")
+      = link_to("Show stderr", build_path(@build, :stderr => 1), :class => "btn btn-inverse")
     - else
-      = link_to("Hide stderr", build_path(@build), :class => "btn btn-warning")
+      = link_to("Hide stderr", build_path(@build), :class => "btn btn-inverse")
     - unless BigTuna.read_only?
-      = link_to("Edit project", edit_project_path(@build.project), :class => "btn")
-      = form_tag(build_path(@build), :method => "DELETE") do
-        %button{:class => 'btn btn-danger', :type => "submit"} Delete build
-
+      = link_to("Edit project", edit_project_path(@build.project), :class => "btn btn-primary")
+      = link_to("Delete build", build_path(@build), :method => :delete, :confirm => "Are you sure?", :class => "btn btn-danger")
 
 #build.row
   .span7

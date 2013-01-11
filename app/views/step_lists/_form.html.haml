@@ -1,12 +1,5 @@
-.control-group
-  = f.label(:name, :class => 'control-label')
-  .controls
-    = f.text_field(:name)
-
-.control-group
-  = f.label(:steps, :class => 'control-label')
-  .controls
-    = f.text_area(:steps, :cols => 10, :rows => 5)
+= f.input :name, :input_html => {:class => "span6"}
+= f.input :steps, :input_html => {:class => "span6 steps-text-field"}
 
 .form-actions
   %button.btn.btn-primary{:type => "submit"}

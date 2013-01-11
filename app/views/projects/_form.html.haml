@@ -2,65 +2,36 @@
   - f.object.errors.full_messages.each do |msg|
     %p= msg
 
-.control-group
-  = f.label(:name, :class => 'control-label')
-  .controls
-    = f.text_field(:name)
+.inputs
+  = f.input :name, :input_html => {:class => "span3"}
+  = f.input :vcs_type do 
+    = f.select(:vcs_type, BigTuna.vcses.map { |klass| [klass::NAME, klass::VALUE] }, {}, {:class => 'span3'})
+  = f.input :vcs_source, :hint => "Typically the address of your repo", :input_html => {:class => "span3"}
+  = f.input :vcs_branch, :hint => "Branch for BigTuna to pull from", :input_html => {:class => "span3"}
+  = f.input :fetch_type, :collection => [[:clone, 'Clone (New copy for each build)'] ,[:incremental, 'Incremental (Build over previous build, and save fetch time)']], :label_method => :last, :value_method => :first, :as => :radio_buttons
+  = f.input :max_builds, :hint => "How many builds to keep in memory", :input_html => {:class => "span1"}
 
-.control-group
-  = f.label(:vcs_type, :class => 'control-label')
-  .controls
-    = f.select(:vcs_type, BigTuna.vcses.map { |klass| [klass::NAME, klass::VALUE] }, :class => 'textfield')
+  .control-group
+    %label.control-label.string Hooks
+    .controls
+      .hooks_input
+        - BigTuna.hooks.each do |hook|
+          %div{:id => "hook_#{hook::NAME}", :class => "single_hook"}
+            %label{:class => 'checkbox', :for => "project_hooks_#{hook::NAME}"}
+              = check_box_tag("project[hooks][#{hook::NAME}]", hook::NAME, f.object.hooks.map { |e| e.hook_name }.include?(hook::NAME))
+              = hook::NAME
+              = "(#{link_to("Configure", project_config_hook_path(f.object, hook::NAME))})".html_safe if f.object.hooks.map { |e| e.hook_name }.include?(hook::NAME)
 
-.control-group
-  = f.label(:vcs_source, :class => 'control-label')
-  .controls
-    = f.text_field(:vcs_source, :class => 'span4')
-    %p.help-block Typically the address of your repo
-
-.control-group
-  = f.label(:vcs_branch, :class => 'control-label')
-  .controls
-    = f.text_field(:vcs_branch)
-    %p.help-block  Branch for BigTuna to pull from
-
-
-.control-group
-  = f.label(:fetch_type, :class => 'control-label')
-  .controls
-    %label.radio
-      = f.radio_button(:fetch_type, :clone)
-      Clone
-    %span.help-block Will set up a brand new copy of the repo every time
-    %label.radio
-      = f.radio_button(:fetch_type, :incremental)
-      Incremental
-    %span.help-block Will build over the previous build (saves time)
-
-
-.control-group
-  = f.label(:max_builds, :class => 'control-label')
-  .controls
-    = f.text_field(:max_builds, :class => 'span1')
-    %p.help-block How many builds to keep in memory
-
-.control-group
-  %label Hooks
-  .controls
-    - BigTuna.hooks.each do |hook|
-      %div{:id => "hook_#{hook::NAME}", :class => "hint"}
-        %label{:class => 'checkbox', :for => "project_hooks_#{hook::NAME}"}
-          = check_box_tag("project[hooks][#{hook::NAME}]", hook::NAME, f.object.hooks.map { |e| e.hook_name }.include?(hook::NAME))
-          = hook::NAME
-        = link_to("Configure", project_config_hook_path(f.object, hook::NAME)) if f.object.hooks.map { |e| e.hook_name }.include?(hook::NAME)
-
-.control-group
-  = f.label(:hook_name, :class => 'control-label')
-  .controls
-    = f.text_field(:hook_name)
-    %p.help-block 
-      = "POST to http://#{request.host_with_port}/hooks/build/:hook_name: to build automatically"
-    = f.hidden_field(:hook_update, {:value => true})
+  = f.input :hook_name, :hint => "POST to http://#{request.host_with_port}/hooks/build/:hook_name: to build automatically" do
+    = f.text_field(:hook_name, :class => "span3")
+    = f.hidden_field(:hook_update)
+/ .control-group
+/   = f.label(:hook_name, :class => 'control-label')
+/   .controls
+/     = f.text_field(:hook_name)
+/     %p.help-block 
+/       = "POST to http://#{request.host_with_port}/hooks/build/:hook_name: to build automatically"
+/     = f.hidden_field(:hook_update, {:value => true})
 
 .form-actions
   %button.btn.btn-primary{:type => "submit"}

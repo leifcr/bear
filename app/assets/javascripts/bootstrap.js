@@ -1,3 +1,4 @@
+//= require twitter/bootstrap
 jQuery(function() {
   $("a[rel=popover]").popover();
   $(".tooltip").tooltip();
