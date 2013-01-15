@@ -11,19 +11,17 @@ class HooksController < ApplicationController
   end
 
   def github
-    payload = JSON.parse(params[:payload])
-    branch = payload["ref"].split("/").last
+    payload             = JSON.parse(params[:payload])
+    branch              = payload["ref"].split("/").last
     github_project_path = payload["repository"]["url"].match( %r{github\.com/(.*)} )[1]
-    search_term = "%github.com_#{github_project_path}.git"
+    search_term         = "%github.com_#{github_project_path}.git"
 
     projects = Project.where(["vcs_source LIKE ?", search_term]).where(:vcs_branch => branch).all
 
     if BigTuna.github_secure.nil?
       render :text => "github secure token is not set up", :status => 403
     elsif projects.present? && params[:secure] == BigTuna.github_secure
-      projects.each(&:build!)
-      render :text => "build for the following projects were triggered: " +
-        projects.map(&:name).map(&:inspect).join(', '), :status => 200
+      trigger_and_respond(projects)
     elsif projects.empty?
       render :text => "project not found", :status => 404
     else
@@ -32,20 +30,24 @@ class HooksController < ApplicationController
   end
 
   def bitbucket
-    payload = JSON.parse(params[:payload])
-    branch = payload["commits"][0]["branch"]
+    payload  = JSON.parse(params[:payload])
+    branches = Array.new
+    payload["commits"].each do |commit|
+      branches.push commit["branch"] if (commit["branch"]  != nil)
+    end
+    # get branches
     if (payload["repository"]["scm"] == "git")
       source = "git@bitbucket.org:#{payload["repository"]["owner"]}/#{payload["repository"]["slug"]}.git"
     else
       source = "ssh://hg@bitbucket.org#{payload["repository"]["absolute_url"]}"
     end
 
-    project = Project.where(:vcs_source => source, :vcs_branch => branch).first
+    projects = Project.where(:vcs_source => source).where(:vcs_branch => branch).first
 
     if BigTuna.bitbucket_secure.nil?
       render :text => "bitbucket secure token is not set up", :status => 403
-    elsif project and params[:secure] == BigTuna.bitbucket_secure
-      trigger_and_respond(project)
+    elsif projects and params[:secure] == BigTuna.bitbucket_secure
+      trigger_and_respond(projects)
     else
       render :text => "invalid secure token", :status => 404
     end
@@ -62,8 +64,9 @@ class HooksController < ApplicationController
   end
 
   private
-  def trigger_and_respond(project)
-    project.build!
-    render :text => "build for %p triggered" % [project.name], :status => 200
+  def trigger_and_respond(projects)
+    projects.each(&:build!)
+    render :text => "build for the following projects were triggered: " +
+      projects.map(&:name).map(&:inspect).join(', '), :status => 200
   end
 end
