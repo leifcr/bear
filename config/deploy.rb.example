@@ -1,0 +1,96 @@
+# This is an example deployment file for capistrano and BigTuna
+#
+# You need to put github.com/leifcr/capistrano-recipes in /code/github/capistrano-recipes/ 
+# or change the line LOAD_PATH
+#
+# The recipes uses Bluepill to monitor both delayed_job and puma
+# It sets up
+# 
+# You need to setup mysql, nginx and rvm on the server before deploying
+# 
+# 
+# Notes on apps you want to run through the CI:
+# 
+# You need to setup your mysql server with proper accounts.
+# 
+# I suggest setting up a user account bigtuna_test with bigtuna_test
+# as password and lock your mysql instance to localhost only
+# The account should have full access to all bigtuna_test_% databases, as well as create rights
+# 
+# You can then setup your applications to use bigtuna_test_my_app_test as DB and 
+# username bigtuna_test password bigtuna_test
+#
+
+$LOAD_PATH << '/code/github/capistrano-recipes/lib/'
+require 'capistrano_recipes'
+
+load "deploy/assets"
+set :rvm_type, :system
+set :app_server, 'puma'
+set :web_server, 'nginx'
+set :application, 'bigtuna'
+set :deploy_via, :remote_cache
+set :repository,  "git://github.com/leifcr/bigtuna.git"
+set :scm, :git
+set :database, 'mysql'
+set :keep_releases, 3 # only need 3 releases to be kept for production
+
+role :web, "ci.example.com"                            # Your HTTP server, Apache/etc
+role :app, "ci.example.com"                            # This may be the same as your `Web` server
+role :db,  "ci.example.com", :primary => true          # This is where Rails migrations will run
+
+after "deploy:update", "deploy:cleanup" 
+
+set :rails_env, "production"
+set :deploy_env, "#{rails_env}"
+set :deploy_to, "/web/#{rails_env}/#{application}"
+#set :branch, 'master'
+set :server_names, 'ci.example.com'
+set :bluepill_use_delayed_job, true
+# RVM stuff
+namespace :rvm do
+  task :trust_rvmrc do
+    run "rvm rvmrc trust #{release_path}"
+  end
+end
+
+# keep cache in shared path...
+namespace :deploy do
+  desc "Link cache folder to the new release"
+  task :link_cache_folder, :roles => :app, :on_error => :continue do
+    run "mkdir -p #{shared_path}/cache"
+    run "ln -s #{shared_path}/cache #{latest_release}/public/cache"  
+  end
+end
+
+namespace :bigtuna do
+  desc "Link bigtuna configs"
+  task :link_config, :roles => :app, :on_error => :continue do
+    run "ln -s #{shared_path}/config/bigtuna.yml #{latest_release}/config/bigtuna.yml"      
+    run "ln -s #{shared_path}/config/email.yml #{latest_release}/config/email.yml"      
+  end
+  desc "Link bigtuna build folder"
+  task :link_builds_folder, :roles => :app, :on_error => :continue do
+    run "rm -rf #{latest_release}/builds"
+    run "mkdir -p #{shared_path}/builds"
+    run "ln -s #{shared_path}/builds #{latest_release}/builds"
+  end
+  namespace :setup do
+    desc "Upload bigtuna email config"
+    task :email_config, :roles => :app, :on_error => :continue do
+      upload("config/email.yml", "#{shared_path}/config/email.yml")
+    end
+    desc "Upload bigtuna config"
+    task :config, :roles => :app, :on_error => :continue do
+      upload("config/bigtuna.yml", "#{shared_path}/config/bigtuna.yml")
+    end
+  end
+end
+
+after "deploy:setup", "bigtuna:setup:email_config"
+after "deploy:setup", "bigtuna:setup:config"
+
+after "deploy:update_code", "deploy:link_cache_folder"
+after "deploy:update_code", "bigtuna:link_config"
+after "deploy:update_code", "bigtuna:link_builds_folder"
+
