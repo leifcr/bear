@@ -148,9 +148,9 @@ class Project < ActiveRecord::Base
 
   def rename_build_folder
     if self.name_changed? && self.total_builds != 0
-      old_dir = build_dir_from_name(self.name_was)
-      new_dir = build_dir_from_name(self.name)
-      FileUtils.mv(old_dir, new_dir)
+      if (File.directory?(build_dir_from_name(self.name_was)))
+        FileUtils.mv(build_dir_from_name(self.name_was), build_dir_from_name(self.name))
+      end
     end
   end
 
