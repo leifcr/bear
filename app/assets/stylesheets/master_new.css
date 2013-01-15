@@ -84,11 +84,11 @@ h1.status_build_in_progress a {
 }
 
 h1.project-title {
-  margin-top: 52px;
+  margin-top: 45px;
 }
 
 .in-recent-builds h1.project-title {
-  margin-top: 35px;
+  margin-top: 25px;
 }
 
 .table.commit-data td {
@@ -122,3 +122,6 @@ ul.in-recent-builds {
   word-break: break-all;
   white-space: normal;
 }
+.row.project {
+  min-height: 140px;
+};

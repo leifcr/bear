@@ -4,7 +4,7 @@
       %h1{:class => "project-title #{build.status}"}= link_to("Build ##{build.build_no}", build_path(build, :stderr => build.status == Build::STATUS_OK ? nil : 1))
 
     .span6
-      %table.table.commit-data
+      %table.table.table-condensed.commit-data
         %thead
           %tr
             %th{:style => 'width: 20%'}
