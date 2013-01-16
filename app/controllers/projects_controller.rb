@@ -97,7 +97,7 @@ class ProjectsController < ApplicationController
   
   def verify_user
     unless @project.users.include?(current_user)
-      flash[:error] = "You are not assigned to the project and cannot #{params[:action]}..."
+      flash[:error] = "You are not assigned to the project and cannot do: #{params[:action]}..."
       redirect_to project_path(@project)
     end
   end
