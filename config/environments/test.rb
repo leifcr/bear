@@ -45,15 +45,3 @@ BigTuna::Application.configure do
 
   config.colorize_logging = false
 end
-
-Grizzled::Rails::Logger.configure do |cfg|
-  cfg.flatten = true
-  cfg.flatten_patterns = [
-    /.*/
-  ]
-  cfg.dont_flatten_patterns = [
-  ]
-  cfg.colorize = false
-  cfg.timeformat = '%Y/%m/%d %H:%M:%S'
-  cfg.format = '[%T] (%S) %M'
-end
