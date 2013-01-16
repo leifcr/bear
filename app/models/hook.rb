@@ -10,6 +10,14 @@ class Hook < ActiveRecord::Base
     @backend ||= BigTuna.hooks.find { |e| e::NAME == hook_name }.new
   end
 
+  # def configuration=(attr={})
+  #   new_config = Hash.new
+  #   new_config.keys.each do |k|
+  #     new_config.send(:"#{k}=", attr.fetch(k, nil))
+  #   end
+  #   super(new_config)
+  # end
+
   def configuration
     super || {}
   end

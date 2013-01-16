@@ -57,9 +57,15 @@ class HooksController < ApplicationController
     @project = Project.find(params[:project_id])
     @hook = Hook.where(:project_id => @project.id, :hook_name => params[:name]).first
     return render if request.get?
-    @hook.configuration = params["configuration"]
-    @hook.hooks_enabled = (params["hooks_enabled"] || {}).keys
+    puts "--------------"
+    puts params["hook"]["configuration"].inspect
+    puts "--------------"
+    puts params["hook"].inspect
+    puts "--------------"
+    @hook.configuration = params["hook"]["configuration"]
+    @hook.hooks_enabled = (params["hook"]["hooks_enabled"] || {}).keys
     @hook.save!
+    flash[:success] = "Successfully updated configuration for #{@project.name} - #{@hook.hook_name.humanize} at #{@hook.updated_at}"
     redirect_to(project_config_hook_path(@project, @hook.backend.class::NAME))
   end
 

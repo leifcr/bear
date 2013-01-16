@@ -1,3 +1,1 @@
-%div
-  = label_tag("recipients")
-  = text_area_tag("configuration[recipients]", @hook.configuration["recipients"])
+= f.input :recipients, :as => :text, :input_html => {:class => "span6 standard-low-text-field"}, :hint => "Use ; to separate recipients."

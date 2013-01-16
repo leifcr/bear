@@ -117,6 +117,9 @@ ul.in-recent-builds {
 .steps-text-field {
   height:190px;
 }
+.standard-low-text-field {
+  height:60px;
+}
 .wordwrap {
   word-wrap: break-word;
   word-break: break-all;
@@ -124,4 +127,9 @@ ul.in-recent-builds {
 }
 .row.project {
   min-height: 140px;
-};
+}
+
+.control-label.checkbox {
+  text-align: left;
+  margin-left: 10px;
+}
