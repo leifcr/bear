@@ -21,9 +21,6 @@ gem "scashin133-xmpp4r-simple", '0.8.9', :require => 'xmpp4r-simple'
 # irc notification
 gem "shout-bot"
 
-# notifo notifications
-gem "notifo"
-
 # campfire notifications
 gem "tinder"
 
@@ -71,7 +68,7 @@ group :development, :test do
 end
 
 group :production do
-  gem "bluepill"
+  gem "bluepill", "~> 0.0.60"
   gem "puma"
 end
 
@@ -79,5 +76,7 @@ group :test do
   gem "webmock"
 end
 
-# better logging
-gem 'grizzled-rails-logger'
+# better logging in development and production
+group :development, :production do
+  gem 'grizzled-rails-logger'
+end
