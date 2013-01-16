@@ -3,7 +3,7 @@ class UsersController < ApplicationController
 
   def index
     @users = User.all
-    @new_user = User.new
+    @user = User.new
   end
 
   def edit
@@ -11,6 +11,11 @@ class UsersController < ApplicationController
 
   def create
     @user = User.create(params[:user])
+    if @user.errors.count > 0
+      @users = User.all
+      render :index
+      return
+    end
 
     redirect_to users_path
   end

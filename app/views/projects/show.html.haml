@@ -6,17 +6,17 @@
       %code.dark= @project.vcs_source
       on
       %code.dark= @project.vcs_branch
-    - unless BigTuna.read_only?
+    - if (current_user.projects.include?(@project))
       = link_to("Build now", build_project_path(@project), :class => "btn crm btn-large btn-success pull-right")
     .btn-toolbar
-      - unless BigTuna.read_only?
+      - if (current_user.projects.include?(@project))
         .btn-group.light
           = link_to("Edit project", edit_project_path(@project), :class => "btn btn-primary")
+          = link_to("User assignments", assignments_project_path(@project), :class => "btn btn-primary")
           = link_to("Duplicate project", duplicate_project_path(@project), :class => "btn btn-primary")
           = link_to("Remove project", project_path(@project), :method => :delete, :confirm => "Are you sure?", :class => "btn btn-danger")
       .btn-group.light
         = link_to("RSS Feed", feed_project_path(@project, :format => "atom"), :class => "btn btn-inverse")
-
 
 - if @project.builds.any?
   = render :partial => 'builds'

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130109112553) do
+ActiveRecord::Schema.define(:version => 20130116122850) do
 
   create_table "build_parts", :force => true do |t|
     t.integer  "build_id",                               :null => false
@@ -83,6 +83,14 @@ ActiveRecord::Schema.define(:version => 20130109112553) do
     t.integer  "failed_builds"
     t.string   "fetch_type",    :default => "clone"
   end
+
+  create_table "projects_users", :id => false, :force => true do |t|
+    t.integer "user_id"
+    t.integer "project_id"
+  end
+
+  add_index "projects_users", ["project_id", "user_id"], :name => "index_projects_users_on_project_id_and_user_id"
+  add_index "projects_users", ["user_id", "project_id"], :name => "index_projects_users_on_user_id_and_project_id"
 
   create_table "shared_variables", :force => true do |t|
     t.integer  "step_list_id"

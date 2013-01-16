@@ -1,0 +1,11 @@
+.page-header
+  %h1
+    User assignment
+    %small 
+      = @project.name
+
+= simple_form_for(@project, :url => assignments_project_path(@project), :html => { :class => 'form-horizontal'}) do |f|
+  .inputs
+    = f.association :users, :as => :check_boxes
+  .form-actions  
+    = f.button :submit, "Update assignments", :class => "btn btn-primary"

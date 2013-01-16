@@ -13,7 +13,15 @@ BigTuna::Application.routes.draw do
   else
 
     resources :projects do
-      member { get "build"; get "remove"; get "arrange"; get "feed"; get "duplicate" }
+      member { 
+        get "build"
+        get "remove"
+        get "arrange"
+        get "feed"
+        get "duplicate"
+        get "assignments"
+        put "assignments"
+      }
       match "/hooks/:name/configure", :to => "hooks#configure", :as => "config_hook"
     end
     resources :builds

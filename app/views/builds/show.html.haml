@@ -7,7 +7,7 @@
       %code.dark= @build.project.vcs_source
       on
       %code.dark= @build.project.vcs_branch
-    - unless BigTuna.read_only?
+    - if (current_user.projects.include?(@build.project))
       = link_to("Build now", build_project_path(@build.project), :class => "btn crm btn-large btn-success pull-right")
 
   .btn-group.light
@@ -15,7 +15,7 @@
       = link_to("Show stderr", build_path(@build, :stderr => 1), :class => "btn btn-inverse")
     - else
       = link_to("Hide stderr", build_path(@build), :class => "btn btn-inverse")
-    - unless BigTuna.read_only?
+    - if (current_user.projects.include?(@project))
       = link_to("Edit project", edit_project_path(@build.project), :class => "btn btn-primary")
       = link_to("Delete build", build_path(@build), :method => :delete, :confirm => "Are you sure?", :class => "btn btn-danger")
 
@@ -29,10 +29,8 @@
       - build_path_params = params[:stderr] ? {:format => :js, :stderr => 1} : {:format => :js}
       = ajaxReload(build_path(@build, build_path_params))
   .span5
-    - unless BigTuna.read_only?
-      %div.project-actions
-        - unless BigTuna.read_only?
-          = render :partial => 'build_details'
+    %div.project-actions
+      = render :partial => 'build_details'
 
 - content_for :topbar do
   %li= link_to("#{@build.project.name} home", project_path(@build.project))
