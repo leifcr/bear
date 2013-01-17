@@ -13,9 +13,9 @@ class StepListTest < ActionController::IntegrationTest
 
   test "user can remove step list from project" do
     visit edit_project_path(@project)
-    within("#remove_step_list_#{@step1.id}") do
+    within("#step-#{@step1.id}") do
       assert_difference("StepList.count", -1) do
-        click_button "Remove"
+        click_link "Remove"
       end
     end
   end
@@ -24,7 +24,7 @@ class StepListTest < ActionController::IntegrationTest
     visit edit_project_path(@project)
     new_name = "not long"
     new_steps = "ls ."
-    within("#edit_step_list_#{@step2.id}") do
+    within("#step-#{@step2.id}") do
       fill_in "Name", :with => new_name
       fill_in "Steps", :with => new_steps
       click_button "Update configuration"
@@ -37,7 +37,7 @@ class StepListTest < ActionController::IntegrationTest
   test "user cant add a step list without steps" do
     visit edit_project_path(@project)
     new_steps = "  "
-    within("#edit_step_list_#{@step2.id}") do
+    within("#step-#{@step2.id}") do
       fill_in "Steps", :with => new_steps
       click_button "Update"
     end
@@ -47,7 +47,7 @@ class StepListTest < ActionController::IntegrationTest
   test "user cant add a step list with only commented steps" do
     visit edit_project_path(@project)
     new_steps = "#invalid\n   \n#very invalid"
-    within("#edit_step_list_#{@step2.id}") do
+    within("#step-#{@step2.id}") do
       fill_in "Steps", :with => new_steps
       click_button "Update"
     end
