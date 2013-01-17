@@ -24,6 +24,7 @@ module BigTuna
       end
 
       def perform
+        return if Rails.env.test? # Should not send jabber messages during testing
         recipients = @config["recipients"].to_s.split(",")
         if recipients.size > 0
           im = Jabber::Simple.new(@config["sender_full_jid"], @config["sender_password"])

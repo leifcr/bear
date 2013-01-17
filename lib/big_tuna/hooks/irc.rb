@@ -1,3 +1,4 @@
+require 'lib/shout-bot' # note : this should be updated in newer versions
 module BigTuna
   class Hooks::Irc < Hooks::Base
     NAME = "irc"
@@ -29,14 +30,16 @@ module BigTuna
       end
 
       def perform
+        return if Rails.env.test? # shouldn't shout out when testing...
         uri = "irc://#{@config[:user_name]}"
-
-        #Password protected channels not currently supported by shout-bot
-        #uri += ":#{@config[:room_password]}" if @config[:room_password].present?
-
+        uri += ":#{@config[:user_password]}" if @config[:user_password].present? and @config[:user_password] != ""
         uri += "@#{@config[:server]}:#{@config[:port].present? ? @config[:port] : '6667'}"
         uri += "/##{@config[:room].to_s.gsub("#","") }"
-        ShoutBot.shout(uri) { |channel| channel.say @message }
+        if @config[:room_password] and @config[:room_password] != ""
+          ::ShoutBot.shout(uri, @config[:room_password]) { |channel| channel.say @message }
+        else
+          ::ShoutBot.shout(uri) { |channel| channel.say @message }          
+        end
       end
     end
   end
