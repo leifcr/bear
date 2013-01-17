@@ -15,7 +15,7 @@
       = link_to("Show stderr", build_path(@build, :stderr => 1), :class => "btn btn-inverse")
     - else
       = link_to("Hide stderr", build_path(@build), :class => "btn btn-inverse")
-    - if (current_user.projects.include?(@project))
+    - if (current_user.projects.include?(@build.project))
       = link_to("Edit project", edit_project_path(@build.project), :class => "btn btn-primary")
       = link_to("Delete build", build_path(@build), :method => :delete, :confirm => "Are you sure?", :class => "btn btn-danger")
 
