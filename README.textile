@@ -35,10 +35,9 @@ BigTuna was originally created by "Michał Bugno":http://twitter.com/michalbugno
 * "Pawel Pierzchala":https://github.com/wrozka
 * ...and others (some mentioned in the "pull request * list":https://github.com/appelier/bigtuna/pulls)
 
-h1. Build Status !https://secure.travis-ci.org/leifcr/bigtuna.png!:http://travis-ci.org/leifcr/bigtuna
+h1. Test Status 
 
-Note: Build status is failing due to compile issue with libv8/therubyracer on travis-ci
-There are issues with xmpp and irc hook tests. Please contact me (@leifcr) if you can help fix them
+!https://travis-ci.org/leifcr/bigtuna.png?branch=master!:http://travis-ci.org/leifcr/bigtuna
 
 h1. License
 
