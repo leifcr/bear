@@ -29,10 +29,14 @@ module BigTuna
         headers = {'Accept' => 'application/json', 
                    'Content-Type' => 'application/json',
                    'X-Talker-Token' => @config[:token]}
-
-        http = Net::HTTP.new(@config[:subdomain], 443)
-        http.use_ssl = (@config['use_ssl'].to_i == 1) 
-        response, data = http.post(path, payload, headers)
+        if Rails.env.test?
+          response = ""
+          data = ""
+        else
+          http = Net::HTTP.new(@config[:subdomain], 443)
+          http.use_ssl = (@config['use_ssl'].to_i == 1) 
+          response, data = http.post(path, payload, headers)
+        end
 
         { :message => @message, :room => @config[:room], :response => response, :data => data }
       end
