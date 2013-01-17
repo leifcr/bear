@@ -24,10 +24,11 @@ class HooksTest < ActionController::IntegrationTest
     end
     assert page.has_content?("Recipients"), "Page has Recipients"
     assert page.has_field?("Build still fails"), "Page has field Build still fails"
-    assert page.has_xpath?("//*[@name='hooks_enabled[build_still_fails]' and @checked='checked']"), "Build still fails is cheked"
+    assert page.has_xpath?("//*[@name='hook[hooks_enabled][build_still_fails]' and @checked='checked']"), "Build still fails is checked"
+    #//*[@id="hook_hooks_enabled_build_still_fails"]
     uncheck "Build still fails"
-    click_button "Edit"
-    assert ! page.has_xpath?("//*[@name='hooks_enabled[build_still_fails]' and @checked='checked']"), "Build still fails isn't checked"
+    click_button "Update"
+    assert ! page.has_xpath?("//*[@name='hook[hooks_enabled][build_still_fails]' and @checked='checked']"), "Build still fails isn't checked"
   end
 
   test "hooks with no config work as usually" do
@@ -63,7 +64,7 @@ class HooksTest < ActionController::IntegrationTest
     assert page.has_field?("hook_configuration_sender_full_jid")
     assert page.has_field?("hook_configuration_sender_password")
     assert page.has_field?("hook_configuration_recipients")
-    click_button "Edit"
+    click_button "Update"
     assert_status_code 200
   end
 
@@ -87,7 +88,7 @@ class HooksTest < ActionController::IntegrationTest
     assert page.has_field?("hook_configuration_room")
     assert page.has_field?("hook_configuration_room_password")
     
-    click_button "Edit"
+    click_button "Update"
     assert_status_code 200
   end
 end
