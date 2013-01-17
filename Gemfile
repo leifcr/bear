@@ -50,6 +50,10 @@ group :development do
   gem 'binding_of_caller'
   gem "better_errors"
   gem 'meta_request', '0.2.1'
+
+  platforms :mri_19 do
+    gem "ruby-debug19"
+  end
 end
 
 group :development, :test do
@@ -61,10 +65,6 @@ group :development, :test do
   gem "mocha", :require => false
   gem "database_cleaner"
   gem "crack"
-
-  platforms :mri_19 do
-    gem "ruby-debug19"
-  end
 end
 
 group :production do
