@@ -8,6 +8,7 @@
     %meta{:"http-equiv" => "Content-Type", :content => "text/html;charset=UTF-8"}
     %meta{:name => "keywords", :content => "keywords"}
     %meta{:name => "description", :content => "description"}
+    %meta{:name => "viewport", :content => "width=device-width, initial-scale=1.0"}
   %body
     .navbar.navbar-inverse.navbar-fixed-top
       .navbar-inner
@@ -23,6 +24,7 @@
                 = link_to("Projects", root_path)
               %li
                 = link_to("Users", users_path)
+            %ul.nav.projects
               = yield :topbar
             %ul.nav.pull-right
               - if user_signed_in?
