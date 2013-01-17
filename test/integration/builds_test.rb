@@ -1,11 +1,12 @@
 require "integration_test_helper"
 
 class BuildsTest < ActionController::IntegrationTest
-
+  
   include WithTestRepo
 
   test "one can delete build" do
     project = project_with_steps({:name => "myproject", :vcs_source => "test/files/repo", :vcs_type => "git"}, "ls -al file")
+    login_as project.users.first, scope: :user
     project.build!
     visit "/"
     click_link_or_button "myproject"
@@ -15,13 +16,14 @@ class BuildsTest < ActionController::IntegrationTest
     end
     within(".page-header .btn-group") do
       assert_difference("Build.count", -1) do
-        click_button "Delete build"
+        click_link_or_button "Delete build"
       end
     end
   end
 
   test "if command fails we mark it on build view and show further commands as unexecuted" do
     project = project_with_steps({:name => "myproject", :vcs_source => "test/files/repo", :vcs_type => "git"}, "git log\ngit diff crapper\nls -al")
+    login_as project.users.first, scope: :user
     visit "/"
     click_link_or_button "myproject"
     assert_difference("Delayed::Job.count", +1) do
@@ -43,6 +45,7 @@ class BuildsTest < ActionController::IntegrationTest
 
   test "if build is scheduled then visiting its page should work" do
     project = project_with_steps({:name => "myproject", :vcs_source => "test/files/repo", :vcs_type => "git"}, "true\ntrue\ntrue")
+    login_as project.users.first, scope: :user
     visit "/"
     click_link_or_button "myproject"
     assert_difference("Delayed::Job.count", +1) do
@@ -57,6 +60,7 @@ class BuildsTest < ActionController::IntegrationTest
       :name => "Valid",
       :vcs_source => "test/files/repo",
     }, "ls -al file")
+    login_as project.users.first, scope: :user
     visit "/projects/#{[project.id, project.name.to_url].join("-")}"
     assert_difference("Delayed::Job.count", +1) do
       click_link_or_button "Build now"
@@ -70,6 +74,9 @@ class BuildsTest < ActionController::IntegrationTest
 
   test "test with no steps has green status after build" do
     project = Project.make!(:name => "myproject", :vcs_source => "test/files/repo", :vcs_type => "git")
+    user = User.make!
+    project.users << user    
+    login_as project.users.first, scope: :user
     visit "/projects/#{[project.id, project.name.to_url].join("-")}"
     click_link_or_button "Build now"
     run_delayed_jobs()

@@ -41,6 +41,8 @@ class ActiveSupport::TestCase
 
   def project_with_steps(project_attrs, *steps)
     project = Project.make!(project_attrs)
+    user = User.make!
+    project.users << user
     steps.each do |step_list|
       StepList.make!(:project => project, :steps => step_list)
     end
@@ -90,6 +92,10 @@ class ActiveSupport::TestCase
       super
     end
   end
+
 end
 
+class ActionController::TestCase
+  include Devise::TestHelpers
+end
 require 'mocha/setup'

@@ -18,8 +18,8 @@ class BitbucketAutobuildTest < ActionController::IntegrationTest
   end
 
   test "if bitbucket posts hook we look for specified branch to build" do
-    project1 = bitbucket_project(:name => "obywatelgc", :vcs_branch => "default")
-    project2 = bitbucket_project(:name => "obywatelgc2", :vcs_branch => "development")
+    project1 = bitbucket_project(:name => "superproject1", :vcs_source => "ssh://hg@bitbucket.org/foo/bigtuna/", :vcs_branch => "default")
+    project2 = bitbucket_project(:name => "superproject2", :vcs_source => "ssh://hg@bitbucket.org/foo/bigtuna/", :vcs_branch => "development")
     old_token = BigTuna.config[:bitbucket_secure]
     begin
       BigTuna.config[:bitbucket_secure] = "mytoken"
@@ -28,7 +28,7 @@ class BitbucketAutobuildTest < ActionController::IntegrationTest
         assert_difference("project2.builds.count", 0) do
           post "/hooks/build/bitbucket/#{token}", :payload => bitbucket_payload(project1)
           assert_status_code(200)
-          assert response.body.include?("build for \"#{project1.name}\" triggered")
+          assert response.body.include?(%{build for the following projects were triggered: "#{project1.name}"})
         end
       end
     ensure
@@ -37,8 +37,7 @@ class BitbucketAutobuildTest < ActionController::IntegrationTest
   end
 
   test "bitbucket post with invalid token won't build anything" do
-    project1 = bitbucket_project(:name => "obywatelgc", :vcs_branch => "default")
-    project2 = bitbucket_project(:name => "obywatelgc2", :vcs_branch => "development")
+    project1 = bitbucket_project(:name => "obywatelgc",  :vcs_source => "ssh://hg@bitbucket.org/foo/bigtuna/", :vcs_branch => "default")
     old_token = BigTuna.config[:bitbucket_secure]
     begin
       BigTuna.config[:bitbucket_secure] = "mytoken"

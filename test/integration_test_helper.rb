@@ -1,6 +1,9 @@
 require "test_helper"
 require "capybara/rails"
 
+include Warden::Test::Helpers
+Warden.test_mode!
+
 module ActionController
   class IntegrationTest
     include Capybara::DSL

@@ -17,16 +17,17 @@ class HooksTest < ActionController::IntegrationTest
       :max_builds => 2,
       :hooks => {"mailer" => "mailer"},
     }, "ls")
+    login_as project.users.first, scope: :user
     visit edit_project_path(project)
     within("#hook_mailer") do
       click_link "Configure"
     end
-    assert page.has_content?("Recipients")
-    assert page.has_field?("Build still fails")
-    assert page.has_xpath?("//*[@name='hooks_enabled[build_still_fails]' and @checked='checked']")
+    assert page.has_content?("Recipients"), "Page has Recipients"
+    assert page.has_field?("Build still fails"), "Page has field Build still fails"
+    assert page.has_xpath?("//*[@name='hooks_enabled[build_still_fails]' and @checked='checked']"), "Build still fails is cheked"
     uncheck "Build still fails"
     click_button "Edit"
-    assert ! page.has_xpath?("//*[@name='hooks_enabled[build_still_fails]' and @checked='checked']")
+    assert ! page.has_xpath?("//*[@name='hooks_enabled[build_still_fails]' and @checked='checked']"), "Build still fails isn't checked"
   end
 
   test "hooks with no config work as usually" do
@@ -37,6 +38,7 @@ class HooksTest < ActionController::IntegrationTest
         :max_builds => 2,
         :hooks => {"no_config" => "no_config"},
       }, "ls")
+      login_as project.users.first, scope: :user
       visit edit_project_path(project)
       within("#hook_no_config") do
         click_link "Configure"
@@ -53,13 +55,14 @@ class HooksTest < ActionController::IntegrationTest
       :hooks => {"xmpp" => "xmpp"},
     }, "ls")
 
+    login_as project.users.first, scope: :user
     visit edit_project_path(project)
     within("#hook_xmpp") do
       click_link "Configure"
     end
-    assert page.has_field?("configuration_sender_full_jid")
-    assert page.has_field?("configuration_sender_password")
-    assert page.has_field?("configuration_recipients")
+    assert page.has_field?("hook_configuration_sender_full_jid")
+    assert page.has_field?("hook_configuration_sender_password")
+    assert page.has_field?("hook_configuration_recipients")
     click_button "Edit"
     assert_status_code 200
   end
@@ -72,16 +75,18 @@ class HooksTest < ActionController::IntegrationTest
       :hooks => {"irc" => "irc"},
     }, "ls")
 
+    login_as project.users.first, scope: :user
     visit edit_project_path(project)
     within("#hook_irc") do
       click_link "Configure"
     end
-    assert page.has_field?("configuration_user_name")
-    assert page.has_field?("configuration_server")
-    assert page.has_field?("configuration_port")
-    assert page.has_field?("configuration_room")
-    #assert page.has_field?("configuration_room_password")
-
+    assert page.has_field?("hook_configuration_user_name")
+    assert page.has_field?("hook_configuration_user_password")
+    assert page.has_field?("hook_configuration_server")
+    assert page.has_field?("hook_configuration_port")
+    assert page.has_field?("hook_configuration_room")
+    assert page.has_field?("hook_configuration_room_password")
+    
     click_button "Edit"
     assert_status_code 200
   end
