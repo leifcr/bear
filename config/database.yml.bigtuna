@@ -1,0 +1,31 @@
+#
+# This is used for testing BigTuna-CI on BigTuna-CI
+# (even if it's tested on travis as well...)
+#
+
+development:
+  adapter: mysql2
+  encoding: utf8
+  collation: utf8_general_ci
+  database: bigtunatest_dev_bigtuna
+  host: localhost
+  username: bigtunatest
+  password: bigtunatest
+
+test:
+  adapter: mysql2
+  encoding: utf8
+  collation: utf8_general_ci
+  database: bigtunatest_test_bigtuna
+  host: localhost
+  username: bigtunatest
+  password: bigtunatest
+
+production:
+  adapter: mysql2
+  encoding: utf8
+  collation: utf8_general_ci
+  database: bigtunatest_prod_bigtuna
+  host: localhost
+  username: bigtunatest
+  password: bigtunatest
