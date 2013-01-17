@@ -42,7 +42,7 @@ class HooksController < ApplicationController
       source = "ssh://hg@bitbucket.org#{payload["repository"]["absolute_url"]}"
     end
 
-    projects = Project.where(:vcs_source => source).where(:vcs_branch => branch).first
+    projects = Project.where(:vcs_source => source).where(:vcs_branch => branches).all
 
     if BigTuna.bitbucket_secure.nil?
       render :text => "bitbucket secure token is not set up", :status => 403
@@ -57,11 +57,6 @@ class HooksController < ApplicationController
     @project = Project.find(params[:project_id])
     @hook = Hook.where(:project_id => @project.id, :hook_name => params[:name]).first
     return render if request.get?
-    puts "--------------"
-    puts params["hook"]["configuration"].inspect
-    puts "--------------"
-    puts params["hook"].inspect
-    puts "--------------"
     @hook.configuration = params["hook"]["configuration"]
     @hook.hooks_enabled = (params["hook"]["hooks_enabled"] || {}).keys
     @hook.save!
