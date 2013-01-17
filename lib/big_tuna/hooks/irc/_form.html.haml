@@ -1,4 +1,6 @@
 = f.input :user_name, :label => "Send the notification as the following username"
+= f.input :user_password, :as => :string, :label => "Send the password to the server upon login"
 = f.input :server, :label => "IRC server"
 = f.input :port, :label => "IRC port"
-= f.input :room, :label => "Room"
+= f.input :room, :label => "Room/Channel"
+= f.input :room_password, :as => :string, :label => "Password for the channel/room"
