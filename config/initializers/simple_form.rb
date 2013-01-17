@@ -142,12 +142,12 @@ SimpleForm.setup do |config|
   # config.cache_discovery = !Rails.env.development?
 
   config.wrappers :checkbox_inline, :tag => false do |b|
-    b.use :label_input
+    b.wrapper :label_input
   end  
 
   config.wrappers :checkbox, :tag => 'div', :class => 'control-group', :error_class => 'error' do |b|
-    b.use :tag => 'div', :class => 'controls' do |ba|
-      ba.use :label_input
+    b.wrapper :tag => 'div', :class => 'controls' do |ba|
+      ba.wrapper :label_input
     end
   end  
   
