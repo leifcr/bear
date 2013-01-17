@@ -51,9 +51,9 @@ class TalkerHookTest < ActiveSupport::TestCase
     run_delayed_jobs()
     project.build!
 
-    build = project.recent_build
     jobs = run_delayed_jobs()
     assert_equal 3, jobs.size # 1 project, 1 part, 1 talker message
+    build = project.recent_build
 
     talker = YAML.load(jobs.last.handler).perform
     assert_equal "Build '#{build.display_name}' in '#{project.name}' still fails", talker[:message]
