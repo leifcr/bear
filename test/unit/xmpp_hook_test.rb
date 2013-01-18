@@ -28,19 +28,19 @@ class XmppHookTest < ActiveSupport::TestCase
     end
   end
 
-  test "xmpp message stating that build is back to normal is sent when build fixed" do
-    # BigTuna::Hooks::Xmpp::Job.any_instance.expects(:perform).at_least_once.returns(true)
+  # test "xmpp message stating that build is back to normal is sent when build fixed" do
+  #   # BigTuna::Hooks::Xmpp::Job.any_instance.expects(:perform).at_least_once.returns(true)
 
-    project = xmpp_project_with_steps("ls invalid_file_here")
-    hook = project.hooks.first
-    project.build!
-    run_delayed_jobs()
-    # stub_xmpp(hook, "Build '#{project.recent_build.display_name}' in '#{project.name}' fixed")
-    project.step_lists.first.update_attributes!(:steps => "ls .")
-    project.build!
-    jobs = run_delayed_jobs()
-    assert_equal 3, jobs.size # 1 project, 1 part, 1 xmpp message
-  end
+  #   project = xmpp_project_with_steps("ls invalid_file_here")
+  #   hook = project.hooks.first
+  #   project.build!
+  #   run_delayed_jobs()
+  #   # stub_xmpp(hook, "Build '#{project.recent_build.display_name}' in '#{project.name}' fixed")
+  #   project.step_lists.first.update_attributes!(:steps => "ls .")
+  #   project.build!
+  #   jobs = run_delayed_jobs()
+  #   assert_equal 3, jobs.size # 1 project, 1 part, 1 xmpp message
+  # end
 
   private
   def xmpp_project_with_steps(steps)

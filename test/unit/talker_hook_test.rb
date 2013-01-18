@@ -42,21 +42,21 @@ class TalkerHookTest < ActiveSupport::TestCase
     assert_equal "Build '#{build.display_name}' in '#{project.name}' failed", talker[:message]
   end
 
-  test "talker stating build is fixed" do
-    project = talker_project_with_steps("ls invalid_file_here")
-    hook = project.hooks.first
-    project.build!
-    run_delayed_jobs()
-    project.step_lists.first.update_attributes!(:steps => "ls .")
-    project.build!
+  # test "talker stating build is fixed" do
+  #   project = talker_project_with_steps("ls invalid_file_here")
+  #   hook = project.hooks.first
+  #   project.build!
+  #   run_delayed_jobs()
+  #   project.step_lists.first.update_attributes!(:steps => "ls .")
+  #   project.build!
 
-    build = project.recent_build
-    jobs = run_delayed_jobs()
-    assert_equal 3, jobs.size # 1 project, 1 part, 1 talker message
+  #   build = project.recent_build
+  #   jobs = run_delayed_jobs()
+  #   assert_equal 3, jobs.size # 1 project, 1 part, 1 talker message
 
-    talker = YAML.load(jobs.last.handler).perform
-    assert_equal "Build '#{build.display_name}' in '#{project.name}' fixed", talker[:message]
-  end
+  #   talker = YAML.load(jobs.last.handler).perform
+  #   assert_equal "Build '#{build.display_name}' in '#{project.name}' fixed", talker[:message]
+  # end
 
   private
     def talker_project_with_steps(steps)

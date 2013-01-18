@@ -16,19 +16,19 @@ class IrcHookTest < ActiveSupport::TestCase
     end
   end
 
-  test "IRC message stating that build is back to normal is sent when build fixed" do
-    # BigTuna::Hooks::Irc::Job.any_instance.expects(:perform).at_least_once.returns(true)
+  # test "IRC message stating that build is back to normal is sent when build fixed" do
+  #   # BigTuna::Hooks::Irc::Job.any_instance.expects(:perform).at_least_once.returns(true)
 
-    project = irc_project_with_steps("ls invalid_file_here")
-    hook = project.hooks.first
-    project.build!
-    run_delayed_jobs()
-    # stub_irc(hook, "New build in '#{project.name}' FIXED")
-    project.step_lists.first.update_attributes!(:steps => "ls .")
-    project.build!
-    jobs = run_delayed_jobs()
-    assert_equal 3, jobs.size # 1 project, 1 part, 1 irc notification
-  end
+  #   project = irc_project_with_steps("ls invalid_file_here")
+  #   hook = project.hooks.first
+  #   project.build!
+  #   run_delayed_jobs()
+  #   # stub_irc(hook, "New build in '#{project.name}' FIXED")
+  #   project.step_lists.first.update_attributes!(:steps => "ls .")
+  #   project.build!
+  #   jobs = run_delayed_jobs()
+  #   assert_equal 3, jobs.size # 1 project, 1 part, 1 irc notification
+  # end
 
   test "irc message sent when the build passed" do
     # BigTuna::Hooks::Irc::Job.any_instance.expects(:perform).at_least_once.returns(true)

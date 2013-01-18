@@ -25,22 +25,22 @@ class MailerHookTest < ActiveSupport::TestCase
     assert ! mail.body.to_s.blank?
   end
 
-  test "mail stating that build is back to normal is sent when build fixed" do
-    project = mailing_project_with_steps("ls invalid_file_here")
-    project.build!
-    jobs = run_delayed_jobs()
-    assert_equal 1, find_ran_mail_jobs(jobs, "build_failed")
-    project.step_lists.first.update_attributes!(:steps => "ls .")
-    project.build!
-    jobs = run_delayed_jobs()
-    assert_equal 1, find_ran_mail_jobs(jobs, "build_fixed")
+  # test "mail stating that build is back to normal is sent when build fixed" do
+  #   project = mailing_project_with_steps("ls invalid_file_here")
+  #   project.build!
+  #   jobs = run_delayed_jobs()
+  #   assert_equal 1, find_ran_mail_jobs(jobs, "build_failed")
+  #   project.step_lists.first.update_attributes!(:steps => "ls .")
+  #   project.build!
+  #   jobs = run_delayed_jobs()
+  #   assert_equal 1, find_ran_mail_jobs(jobs, "build_fixed")
 
-    build = project.recent_build
-    job = jobs.last
-    mail = YAML.load(job.handler).perform
-    assert_equal "Build FIXED! - '#{build.display_name}' in '#{project.name}'", mail.subject
-    assert ! mail.body.to_s.blank?
-  end
+  #   build = project.recent_build
+  #   job = jobs.last
+  #   mail = YAML.load(job.handler).perform
+  #   assert_equal "Build FIXED! - '#{build.display_name}' in '#{project.name}'", mail.subject
+  #   assert ! mail.body.to_s.blank?
+  # end
 
   # TODO: add option to select email types on hook
   # test "mail is not sent when build is ok but was ok before" do
