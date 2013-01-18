@@ -123,7 +123,7 @@ class ProjectsTest < ActionController::IntegrationTest
   test "project with invalid repo shows appropriate errors" do
     project = project_with_steps({
       :name => "Valid",
-      :vcs_source => "no/such/repo",
+      :vcs_source => "/invalid_repo",
     }, "echo 'ha'")
     login_as project.users.first, scope: :user    
     visit "/"
@@ -135,7 +135,8 @@ class ProjectsTest < ActionController::IntegrationTest
     job = Delayed::Job.order("created_at DESC").first
     job.invoke_job
     click_link "##{build.build_no}"
-    assert page.has_content?("fatal: repository 'no/such/repo' does not exist")
+    # cannot check for specific error, as different errors occuron different git versions
+    assert page.has_content?("fatal:") 
   end
 
   test "project should have a link to the atom feed" do
