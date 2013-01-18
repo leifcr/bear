@@ -42,15 +42,6 @@ class XmppHookTest < ActiveSupport::TestCase
     assert_equal 3, jobs.size # 1 project, 1 part, 1 xmpp message
   end
 
-  test "no xmpp message sent when build is ok but was ok before" do
-    project = xmpp_project_with_steps("ls .")
-    project.build!
-    run_delayed_jobs()
-    project.build!
-    jobs = run_delayed_jobs()
-    assert_equal 2, jobs.size
-  end
-
   private
   def xmpp_project_with_steps(steps)
     project = project_with_steps({
