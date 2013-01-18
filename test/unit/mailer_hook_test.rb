@@ -33,30 +33,12 @@ class MailerHookTest < ActiveSupport::TestCase
     project.step_lists.first.update_attributes!(:steps => "ls .")
     project.build!
     jobs = run_delayed_jobs()
-    # assert_equal 3, jobs.size # 1 project, 1 part, 1 mail
-#    assert_equal 1, find_ran_mail_jobs(jobs, "build_passed")  ??
     assert_equal 1, find_ran_mail_jobs(jobs, "build_fixed")
 
     build = project.recent_build
     job = jobs.last
     mail = YAML.load(job.handler).perform
     assert_equal "Build FIXED! - '#{build.display_name}' in '#{project.name}'", mail.subject
-    assert ! mail.body.to_s.blank?
-  end
-
-  test "mail stating that build is still failing is sent when build still fails" do
-    project = mailing_project_with_steps("ls invalid_file_here")
-    project.build!
-    jobs = run_delayed_jobs()
-    assert_equal 1, find_ran_mail_jobs(jobs, "build_failed")
-    project.build!
-    jobs = run_delayed_jobs()
-    assert_equal 1, find_ran_mail_jobs(jobs, "build_still_fails")
-    # assert_equal 3, jobs.size # 1 project, 1 part, 1 mail
-    build = project.recent_build
-    job = jobs[-1]
-    mail = YAML.load(job.handler).perform
-    assert_equal "Build STILL FAILS! - '#{build.display_name}' in '#{project.name}'", mail.subject
     assert ! mail.body.to_s.blank?
   end
 

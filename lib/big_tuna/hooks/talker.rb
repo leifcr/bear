@@ -2,19 +2,19 @@ module BigTuna
   class Hooks::Talker < Hooks::Base
     NAME = "talker"
 
-    def build_fixed(build, config)
-      enqueue(config, full_msg(build, 'fixed'))
+    def build_passed(build, config)
+      enqueue(config, full_msg(build, 'passed'))
     end
 
-    def build_still_fails(build, config)
-      enqueue(config, full_msg(build, 'still fails'))
+    def build_fixed(build, config)
+      enqueue(config, full_msg(build, 'fixed'))
     end
 
     def build_failed(build, config)
       enqueue(config, full_msg(build, 'failed'))
     end
 
-    class Job 
+    class Job
       require 'net/http'
       require 'net/https'
 

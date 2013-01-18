@@ -3,19 +3,14 @@ module BigTuna
   class Hooks::Irc < Hooks::Base
     NAME = "irc"
 
-    def build_still_passes(build, config)
+    def build_passed(build, config)
       project = build.project
-      Delayed::Job.enqueue(Job.new(config, "New build in '#{project.name}' STILL PASSES (#{build_url(build)})"))
+      Delayed::Job.enqueue(Job.new(config, "New build in '#{project.name}' PASSED (#{build_url(build)})"))
     end
 
     def build_fixed(build, config)
       project = build.project
       Delayed::Job.enqueue(Job.new(config, "New build in '#{project.name}' FIXED (#{build_url(build)})"))
-    end
-
-    def build_still_fails(build, config)
-      project = build.project
-      Delayed::Job.enqueue(Job.new(config, "New build in '#{project.name}' STILL FAILS (#{build_url(build)})"))
     end
 
     def build_failed(build, config)

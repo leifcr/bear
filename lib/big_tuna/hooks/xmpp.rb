@@ -2,14 +2,14 @@ module BigTuna
   class Hooks::Xmpp < Hooks::Base
     NAME = "xmpp"
 
+    def build_passed(build, config)
+      project = build.project
+      Delayed::Job.enqueue(Job.new(config, "Build '#{build.display_name}' in '#{project.name}' passed (#{build_url(build)})"))
+    end
+
     def build_fixed(build, config)
       project = build.project
       Delayed::Job.enqueue(Job.new(config, "Build '#{build.display_name}' in '#{project.name}' fixed (#{build_url(build)})"))
-    end
-
-    def build_still_fails(build, config)
-      project = build.project
-      Delayed::Job.enqueue(Job.new(config, "Build '#{build.display_name}' in '#{project.name}' still fails (#{build_url(build)})"))
     end
 
     def build_failed(build, config)

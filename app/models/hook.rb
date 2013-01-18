@@ -28,21 +28,9 @@ class Hook < ActiveRecord::Base
     end
   end
 
-  def build_still_passes(build)
-    invoke_with_log(build) do
-      self.backend.build_still_passes(build, self.configuration) if hook_available?("build_still_passes")
-    end
-  end
-
   def build_fixed(build)
     invoke_with_log(build) do
       self.backend.build_fixed(build, self.configuration) if hook_available?("build_fixed")
-    end
-  end
-
-  def build_still_fails(build)
-    invoke_with_log(build) do
-      self.backend.build_still_fails(build, self.configuration) if hook_available?("build_still_fails")
     end
   end
 

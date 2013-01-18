@@ -12,11 +12,6 @@ module BigTuna
       Sender.delay.build_fixed(build, recipients) unless recipients.blank?
     end
 
-    def build_still_fails(build, config)
-      recipients = config["recipients"]
-      Sender.delay.build_still_fails(build, recipients) unless recipients.blank?
-    end
-
     def build_failed(build, config)
       recipients = config["recipients"]
       Sender.delay.build_failed(build, recipients) unless recipients.blank?
@@ -39,14 +34,6 @@ module BigTuna
         @project = @build.project
         mail(:to => recipients, :subject => "Build FAILED! - '#{@build.display_name}' in '#{@project.name}'") do |format|
           format.text { render "mailer/build_failed" }
-        end
-      end
-
-      def build_still_fails(build, recipients)
-        @build = build
-        @project = @build.project
-        mail(:to => recipients, :subject => "Build STILL FAILS! - '#{@build.display_name}' in '#{@project.name}'") do |format|
-          format.text { render "mailer/build_still_fails" }
         end
       end
 

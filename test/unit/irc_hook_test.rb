@@ -30,30 +30,16 @@ class IrcHookTest < ActiveSupport::TestCase
     assert_equal 3, jobs.size # 1 project, 1 part, 1 irc notification
   end
 
-  test "irc message stating that build is still failing is sent when build still fails" do
-    # BigTuna::Hooks::Irc::Job.any_instance.expects(:perform).at_least_once.returns(true)
-
-    project = irc_project_with_steps("ls invalid_file_here")
-    hook = project.hooks.first
-    project.build!
-    run_delayed_jobs()
-    # stub_irc(hook, "New build in '#{project.name}' STILL FAILS")
-    project.build!
-    jobs = run_delayed_jobs()
-    assert_equal 3, jobs.size # 1 project, 1 part, 1 irc notification
-  end
-
-  test "irc message sent when the build is still ok" do
+  test "irc message sent when the build passed" do
     # BigTuna::Hooks::Irc::Job.any_instance.expects(:perform).at_least_once.returns(true)
 
     project = irc_project_with_steps("ls .")
     hook = project.hooks.first
-    project.build!
-    run_delayed_jobs()
-    # stub_irc(hook, "New build in '#{project.name}' STILL PASSES")
-    project.build!
-    jobs = run_delayed_jobs()
-    assert_equal 3, jobs.size # 1 project, 1 part, 1 irc notification
+    assert_difference("Delayed::Job.count", +2) do # 1 job + 1 for sending the irc message
+      job = project.build!
+      # stub_irc(hook, "New build in '#{project.name}' PASSED")
+      job.invoke_job
+    end
   end
 
   private
