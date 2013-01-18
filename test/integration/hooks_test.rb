@@ -23,12 +23,12 @@ class HooksTest < ActionController::IntegrationTest
       click_link "Configure"
     end
     assert page.has_content?("Recipients"), "Page has Recipients"
-    assert page.has_field?("Build still fails"), "Page has field Build still fails"
-    assert page.has_xpath?("//*[@name='hook[hooks_enabled][build_still_fails]' and @checked='checked']"), "Build still fails is checked"
-    #//*[@id="hook_hooks_enabled_build_still_fails"]
-    uncheck "Build still fails"
+    assert page.has_field?("Build passed"), "Page has field 'Build passed'"
+    assert page.has_xpath?("//*[@name='hook[hooks_enabled][build_passed]' and @checked='checked']"), "Build passed is checked"
+    #//*[@id="hook_hooks_enabled_build_passed"]
+    uncheck "Build passed"
     click_button "Update"
-    assert ! page.has_xpath?("//*[@name='hook[hooks_enabled][build_still_fails]' and @checked='checked']"), "Build still fails isn't checked"
+    assert ! page.has_xpath?("//*[@name='hook[hooks_enabled][build_passed]' and @checked='checked']"), "Build passed isn't checked"
   end
 
   test "hooks with no config work as usually" do

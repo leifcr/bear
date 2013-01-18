@@ -2,7 +2,7 @@ class Hook < ActiveRecord::Base
   belongs_to :project
   serialize :configuration, Hash
   serialize :hooks_enabled, Array
-  AVAILABLE_HOOKS = ["build_passed", "build_fixed", "build_still_fails", "build_still_passes", "build_finished", "build_failed"]
+  AVAILABLE_HOOKS = ["build_passed", "build_fixed", "build_finished", "build_failed"]
 
   before_create :enable_all_hooks
 
