@@ -19,4 +19,19 @@ class BuildsController < ApplicationController
     redirect_to project_path(project)
   end
 
+  def capybara_output
+    @build = Build.find(params[:id])
+    # check if path exists, else redirect back one step
+    unless Dir.exists?(File.join(@build.build_dir, params[:path]))
+      redirect_to :back
+      # rescue ActionController::RedirectBackError
+      #   redirect_to :show
+      # end
+      return
+    end
+    # @files = Dir.glob(File.join(@build.build_dir, path, '*'))
+    @dirs = Dir.glob(File.join(@build.build_dir, params[:path], '*/'))
+    @files = Dir.glob(File.join(@build.build_dir, params[:path], '*'))
+  end
+
 end

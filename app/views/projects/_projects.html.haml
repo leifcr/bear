@@ -39,8 +39,7 @@
             %tr
               %td Stability
               %td= format_stability(project.stability)
-    - unless BigTuna.read_only?
-      .span1
-        .updown
-          = link_to(content_tag(:i, "".html_safe, :class => "icon-chevron-up icon-2x"), arrange_project_path(project, :up => true)) unless project.first?
-          = link_to(content_tag(:i, "".html_safe, :class => "icon-chevron-down icon-2x"), arrange_project_path(project, :down => true)) unless project.last?
+    .span1
+      .updown
+        = link_to(content_tag(:i, "".html_safe, :class => "icon-chevron-up icon-2x"), arrange_project_path(project, :up => true)) unless project.first?
+        = link_to(content_tag(:i, "".html_safe, :class => "icon-chevron-down icon-2x"), arrange_project_path(project, :down => true)) unless project.last?

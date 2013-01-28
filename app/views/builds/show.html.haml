@@ -2,6 +2,7 @@
   %h1
     = @build.project.name
     = "##{@build.build_no}"
+    %br
     %small
       via
       %code.dark= @build.project.vcs_source
@@ -19,6 +20,7 @@
       = link_to("Edit project", edit_project_path(@build.project), :class => "btn btn-primary")
       = link_to("Delete build", build_path(@build), :method => :delete, :confirm => "Are you sure?", :class => "btn btn-danger")
 
+
 #build.row
   .span7
     #ajax-reload= @build.ajax_reload?
@@ -34,4 +36,4 @@
 
 - content_for :topbar do
   %li= link_to("#{@build.project.name} home", project_path(@build.project))
-  / %li= link_to("", feed_project_path(@project, :format => "atom"), :class => "rss")
+  %li= link_to("RSS feed", feed_project_path(@build.project, :format => "atom"), :class => "rss")

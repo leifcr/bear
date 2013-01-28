@@ -37,8 +37,16 @@ BigTuna::Application.configure do
 
   # Expands the lines which load the assets
   config.assets.debug = true
+
+  config.assets.paths << Rails.root.join("builds")
   
   config.colorize_logging = false
+
+  if File.exists?(File.join(Rails.root, 'config', 'email.yml'))
+    config.action_mailer.delivery_method = :smtp
+    config.action_mailer.smtp_settings = YAML.load_file("config/email.yml")[Rails.env]
+  end
+
 end
 
 Grizzled::Rails::Logger.configure do |cfg|

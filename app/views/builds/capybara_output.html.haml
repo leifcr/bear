@@ -1,0 +1,32 @@
+.page-header
+  %h1
+    = @build.project.name
+    = "##{@build.build_no}"
+    %br
+    %small
+      Capybara output files
+
+%ul.thumbnails.capybara
+  - @dirs.each do |dir|
+    %li.span2
+      .thumbnail
+        = link_to(content_tag(:i, "", :class => 'icon-160-120 icon-folder-open').html_safe, "/builds/capybara_output/#{@build.id}#{dir.gsub(@build.build_dir, "")}")
+        .caption
+          %p 
+            = File.basename(dir)
+
+  - @files.each do |file|
+  - if !Dir.exists?(file)
+    - file_url = fullpath_to_asset_inside_build(file)
+      %li.span2
+        .thumbnail
+          - if file.end_with?(".jpg") || file.end_with?(".png")
+            = link_to(image_tag(file_url, :class => 'image-160-120'), file_url)
+          - elsif file.end_with?(".html") || file.end_with?(".htm")
+            = link_to(content_tag(:i, "", :class => 'icon-160-120 icon-file-alt').html_safe, file_url)
+          - else
+            = link_to(content_tag(:i, "", :class => 'icon-160-120 icon-file').html_safe, file_url)
+
+          .caption
+            %p 
+              = File.basename(file)

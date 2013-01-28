@@ -84,6 +84,10 @@ class Build < ActiveRecord::Base
     project.truncate_builds!
   end
 
+  def build_url_from_dir
+    self.build_dir.gsub(Rails.root.to_s + "/", "")    
+  end
+
   private
   def remove_build_dir
     if project.fetch_type == :clone
@@ -188,4 +192,5 @@ class Build < ActiveRecord::Base
   def project_sources_already_present?
     File.directory? self.build_dir 
   end
+
 end

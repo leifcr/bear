@@ -12,6 +12,10 @@ module ApplicationHelper
     ret
   end
 
+  def fullpath_to_asset_inside_build(asset)
+    "#{request.protocol}#{request.host_with_port}/#{strip_rails_root(asset)}"
+  end
+
   def strip_shell_colorization(text)
     text.gsub(/\e\[[^m]+m/, '')
   end
