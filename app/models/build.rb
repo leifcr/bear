@@ -85,7 +85,7 @@ class Build < ActiveRecord::Base
   end
 
   def build_dir_public
-    File.join(Rails.root.to_s, "public", "builds", self.build_dir.gsub(Rails.root.to_s + "/", ""))
+    File.join(Rails.root.to_s, "public", self.build_dir.gsub(Rails.root.to_s + "/", ""))
   end
 
   private
