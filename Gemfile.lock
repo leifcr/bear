@@ -210,8 +210,8 @@ GEM
     state_machine (1.1.2)
     stringex (1.5.1)
     term-ansicolor (1.0.7)
-    therubyracer (0.11.1)
-      libv8 (~> 3.11.8.7)
+    therubyracer (0.11.3)
+      libv8 (~> 3.11.8.12)
       ref
     thin (1.5.0)
       daemons (>= 1.0.9)
@@ -294,7 +294,7 @@ DEPENDENCIES
   shout-bot
   simple_form
   stringex
-  therubyracer (>= 0.11.1)
+  therubyracer (>= 0.11.3)
   thin
   tinder
   twitter-bootstrap-rails

@@ -37,7 +37,7 @@ group :assets do
   gem 'less-rails'
   gem 'uglifier', '>= 1.2.6'
   gem 'libv8', '3.11.8.13'
-  gem 'therubyracer', '>= 0.11.1'
+  gem 'therubyracer', '>= 0.11.3'
 end
 
 group :development do
@@ -56,14 +56,13 @@ group :development do
   end
 end
 
-group :development, :test do
+group :test do
   gem "capybara"
   gem "launchy"
   gem "faker"
   gem "machinist"
   gem "nokogiri"
   gem "mocha", :require => false
-  gem "database_cleaner"
   gem "crack"
 end
 
@@ -74,6 +73,7 @@ end
 
 group :test do
   gem "webmock"
+  gem "database_cleaner"
 end
 
 # better logging in development and production
