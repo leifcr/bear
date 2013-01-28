@@ -12,8 +12,9 @@
       .thumbnail
         = link_to(content_tag(:i, "", :class => 'icon-160-120 icon-folder-open').html_safe, "/builds/capybara_output/#{@build.id}#{dir.gsub(@build.build_dir, "")}")
         .caption
-          %p 
-            = File.basename(dir)
+          %p
+            %strong
+              = link_to(File.basename(dir), "/builds/capybara_output/#{@build.id}#{dir.gsub(@build.build_dir, "")}")
 
   - @files.each do |file|
   - if !Dir.exists?(file)
@@ -28,5 +29,5 @@
             = link_to(content_tag(:i, "", :class => 'icon-160-120 icon-file').html_safe, file_url)
 
           .caption
-            %p 
-              = File.basename(file)
+            %p
+              = link_to(File.basename(file), "/builds/capybara_output/#{@build.id}#{file.gsub(@build.build_dir, "")}") 

@@ -19,7 +19,8 @@
     - if (current_user.projects.include?(@build.project))
       = link_to("Edit project", edit_project_path(@build.project), :class => "btn btn-primary")
       = link_to("Delete build", build_path(@build), :method => :delete, :confirm => "Are you sure?", :class => "btn btn-danger")
-
+    - if Dir.exists?(File.join(@build.build_dir, 'tmp', 'capybara'))
+      = link_to("Capybara output", "/builds/capybara_output/#{@build.id}/tmp/capybara", :class => "btn btn-info")
 
 #build.row
   .span7
@@ -36,4 +37,4 @@
 
 - content_for :topbar do
   %li= link_to("#{@build.project.name} home", project_path(@build.project))
-  %li= link_to("RSS feed", feed_project_path(@build.project, :format => "atom"), :class => "rss")
+  %li= link_to(content_tag(:i, "&nbsp;".html_safe, :class => "icon-rss").html_safe, feed_project_path(@build.project, :format => "atom"), :class => "rss")
