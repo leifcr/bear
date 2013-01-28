@@ -23,9 +23,9 @@ class BuildsController < ApplicationController
     @build = Build.find(params[:id])
     # check if path exists, else redirect back one step
     unless Dir.exists?(File.join(@build.build_dir, params[:path]))
-      redirect_to :back
+      # redirect_to :back
       # rescue ActionController::RedirectBackError
-      #   redirect_to :show
+      redirect_to :show, :notice = "The path #{File.join(@build.build_dir, params[:path]).to_s} doesn't exist."
       # end
       return
     end
