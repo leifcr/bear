@@ -12,6 +12,12 @@ h2. Users and projects
 * Any user can see all projects
 * Only a user assigned on a project can edit/update/build/remove the project
 
+h2. Capybara output
+
+If you use either capybara-screenshot or call page.save_page("something.html"), you can view the files within the build on your BigTuna CI server. It requires the files to be saved in the default Capybara path (tmp/capybara) which is relative to the build dir.
+
+NOTE: This requires your nginx/passenger etc to handle the html/png/txt files as they are not served by the app itself. (If your setup is correct, any static html/png files should be served before hitting the BigTuna app)
+
 h2. Future plans
 
 It's up to what people want, but here are some thoughts:
