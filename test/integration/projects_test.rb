@@ -147,7 +147,7 @@ class ProjectsTest < ActionController::IntegrationTest
     login_as project.users.first, scope: :user    
     path = "/projects/#{[project.id, project.name.to_url].join("-")}"
     visit path
-    assert page.has_xpath?("//a[@href='#{path}/feed.atom']")
+    assert page.has_content?("RSS Feed")
   end
 
   test "project should have an atom feed" do
