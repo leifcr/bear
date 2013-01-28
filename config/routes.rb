@@ -17,7 +17,8 @@ BigTuna::Application.routes.draw do
   end
 
   resources :builds, :except => [:edit, :update, :create]
-  match '/builds/capybara_output/:id/*path', :to => "builds#capybara_output"
+  match '/builds/output/:id/*path', :to => "builds#output"
+  match '/builds/output/:id', :to => "builds#output"
 
   resources :step_lists
   resources :shared_variables

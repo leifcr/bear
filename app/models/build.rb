@@ -84,8 +84,8 @@ class Build < ActiveRecord::Base
     project.truncate_builds!
   end
 
-  def build_url_from_dir
-    self.build_dir.gsub(Rails.root.to_s + "/", "")    
+  def build_dir_public
+    File.join(Rails.root.to_s, "public", "builds", self.build_dir.gsub(Rails.root.to_s + "/", ""))
   end
 
   private
@@ -150,6 +150,27 @@ class Build < ActiveRecord::Base
     project.hooks.each do |hook|
       hook.build_finished(self)
     end
+    create_symlink_output_path()
+  end
+
+  def create_symlink_output_path
+    # verify that output_path exists
+    if (project.output_path != "") && (project.output_path != nil)
+      if Dir.exists?(File.join(self.build_dir, project.output_path))
+        # create build_dir 
+        FileUtils.mkdir_p(build_dir_public)
+        # create symlink
+        FileUtils.symlink(File.join(self.build_dir, project.output_path), File.join(build_dir_public, "output"))
+      end
+    end
+  end
+
+  def remove_symlink_output_path
+    if File.directory?(build_dir_public)
+      FileUtils.rm_rf(build_dir_public)
+    else
+      BigTuna.logger.info("Couldn't find public output dir to remove: %p" % build_dir_public)
+    end
   end
   
   def compute_build_dir
@@ -163,7 +184,7 @@ class Build < ActiveRecord::Base
   def fetch_project_sources(project)
     case project.fetch_type
     when :clone
-      fetch_project_sources_by_cloning
+      clone_project
     when :incremental
       fetch_project_sources_incrementally
     end
@@ -173,14 +194,10 @@ class Build < ActiveRecord::Base
     if project_sources_already_present?
       update_project
     else
-      fetch_project_sources_by_cloning
+      clone_project
     end
   end
-  
-  def fetch_project_sources_by_cloning
-    clone_project
-  end
-  
+    
   def clone_project
     project.vcs.clone(self.build_dir)
   end

@@ -19,8 +19,9 @@
     - if (current_user.projects.include?(@build.project))
       = link_to("Edit project", edit_project_path(@build.project), :class => "btn btn-primary")
       = link_to("Delete build", build_path(@build), :method => :delete, :confirm => "Are you sure?", :class => "btn btn-danger")
-    - if Dir.exists?(File.join(@build.build_dir, 'tmp', 'capybara'))
-      = link_to("Capybara output", "/builds/capybara_output/#{@build.id}/tmp/capybara", :class => "btn btn-info")
+    - if @build.project.output_path != "" and @build.project.output_path != nil
+      - if Dir.exists?(File.join(@build.build_dir, @build.project.output_path))
+        = link_to("Project output", "/builds/output/#{@build.id}/", :class => "btn btn-info")
 
 #build.row
   .span7

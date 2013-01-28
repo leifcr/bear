@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130116122850) do
+ActiveRecord::Schema.define(:version => 20130128193501) do
 
   create_table "build_parts", :force => true do |t|
     t.integer  "build_id",                               :null => false
@@ -82,6 +82,7 @@ ActiveRecord::Schema.define(:version => 20130116122850) do
     t.integer  "total_builds"
     t.integer  "failed_builds"
     t.string   "fetch_type",    :default => "clone"
+    t.string   "output_path",   :default => ""
   end
 
   create_table "projects_users", :id => false, :force => true do |t|

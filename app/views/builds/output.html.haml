@@ -10,15 +10,15 @@
   - @dirs.each do |dir|
     %li.span2
       .thumbnail
-        = link_to(content_tag(:i, "", :class => 'icon-160-120 icon-folder-open').html_safe, "/builds/capybara_output/#{@build.id}#{dir.gsub(@build.build_dir, "")}")
+        = link_to(content_tag(:i, "", :class => 'icon-160-120 icon-folder-open').html_safe, "/builds/output/#{@build.id}#{dir.gsub(@build.build_dir, "")}")
         .caption
           %p
             %strong
-              = link_to(File.basename(dir), "/builds/capybara_output/#{@build.id}#{dir.gsub(@build.build_dir, "")}")
+              = link_to(File.basename(dir), "/builds/output/#{@build.id}#{dir.gsub(@build.build_dir, "")}")
 
   - @files.each do |file|
   - if !Dir.exists?(file)
-    - file_url = fullpath_to_asset_inside_build(file)
+    - file_url = strip_rails_root(file)
       %li.span2
         .thumbnail
           - if file.end_with?(".jpg") || file.end_with?(".png")
@@ -30,4 +30,4 @@
 
           .caption
             %p
-              = link_to(File.basename(file), "/builds/capybara_output/#{@build.id}#{file.gsub(@build.build_dir, "")}") 
+              = link_to(File.basename(file), file_url) 

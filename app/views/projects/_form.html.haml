@@ -10,6 +10,7 @@
   = f.input :vcs_branch, :hint => "Branch for BigTuna to pull from", :input_html => {:class => "span3"}
   = f.input :fetch_type, :collection => [[:clone, 'Clone (New copy for each build)'] ,[:incremental, 'Incremental (Build over previous build, and save fetch time)']], :label_method => :last, :value_method => :first, :as => :radio_buttons
   = f.input :max_builds, :hint => "How many builds to keep in memory", :input_html => {:class => "span1"}
+  = f.input :output_path, :hint => "If your project outputs files in the build, add the path here to have accessible", :input_html => {:class => "span3"}
 
   .control-group
     %label.control-label.string Hooks
