@@ -13,7 +13,7 @@ module ApplicationHelper
   end
 
   def fullpath_to_asset_inside_build(asset)
-    "#{request.protocol}#{request.host_with_port}/#{strip_rails_root(asset)}"
+    "#{request.protocol}#{request.host_with_port}/#{strip_rails_root(File.realpath(asset))}"
   end
 
   def strip_shell_colorization(text)
