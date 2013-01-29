@@ -43,10 +43,6 @@
     = simple_form_for(StepList.new, :url => step_lists_path(:project_id => @project), :html => { :class => 'form-vertical'}) do |f|
       = render :partial => "step_lists/form", :locals => {:f => f}
 
-
-
-
-
 - content_for :topbar do
-  %li= link_to("#{@project.name}", project_path(@project), :class => "black_button")
+  %li= link_to("#{@project.name} home", project_path(@project), :class => "black_button")
 

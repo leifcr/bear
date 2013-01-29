@@ -4,30 +4,35 @@
     = "##{@build.build_no}"
     %br
     %small
-      Capybara output files
+      Build output files
 
 %ul.thumbnails.capybara
   - @dirs.each do |dir|
     %li.span2
       .thumbnail
-        = link_to(content_tag(:i, "", :class => 'icon-160-120 icon-folder-open').html_safe, "/builds/output/#{@build.id}#{dir.gsub(@build.build_dir, "")}")
+        = link_to(content_tag(:i, "", :class => 'icon-160-120 icon-folder-open').html_safe, dir[:url])
         .caption
           %p
             %strong
-              = link_to(File.basename(dir), "/builds/output/#{@build.id}#{dir.gsub(@build.build_dir, "")}")
+              = link_to(dir[:basename], dir[:url])
 
   - @files.each do |file|
-  - if !Dir.exists?(file)
-    - file_url = strip_rails_root(file)
-      %li.span2
-        .thumbnail
-          - if file.end_with?(".jpg") || file.end_with?(".png")
-            = link_to(image_tag(file_url, :class => 'image-160-120'), file_url)
-          - elsif file.end_with?(".html") || file.end_with?(".htm")
-            = link_to(content_tag(:i, "", :class => 'icon-160-120 icon-file-alt').html_safe, file_url)
-          - else
-            = link_to(content_tag(:i, "", :class => 'icon-160-120 icon-file').html_safe, file_url)
+    %li.span2
+      .thumbnail
+        - if file[:basename].end_with?(".jpg") || file[:basename].end_with?(".png")
+          = link_to(image_tag(file[:url], :class => 'image-160-120'), file[:url])
+        - elsif file[:basename].end_with?(".html") || file[:basename].end_with?(".htm")
+          = link_to(content_tag(:i, "", :class => 'icon-160-120 icon-file-alt').html_safe, file[:url])
+        - else
+          = link_to(content_tag(:i, "", :class => 'icon-160-120 icon-file').html_safe, file[:url])
 
-          .caption
-            %p
-              = link_to(File.basename(file), file_url) 
+        .caption
+          %p
+            = link_to(file[:basename], file[:url]) 
+
+
+- content_for :topbar do
+  %li= link_to("#{@build.project.name} home", project_path(@build.project))
+  %li= link_to(content_tag(:i, "&nbsp;".html_safe, :class => "icon-rss").html_safe, feed_project_path(@build.project, :format => "atom"), :class => "rss")
+  %li= link_to("Build ##{@build.build_no} home", build_path(@build))
+

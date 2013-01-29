@@ -23,7 +23,7 @@ class BuildsController < ApplicationController
     @build = Build.find(params[:id])
     params[:path] = "" if (params[:path] == nil)
     # check if path exists, else redirect back one step
-    unless Dir.exists?(File.join(@build.build_dir, params[:path])) && (Dir.exists?(@build.build_dir_public))
+    unless Dir.exists?(File.join(@build.build_dir, @build.project.output_path, params[:path])) && (Dir.exists?(@build.build_dir_public))
       begin
         redirect_to :back
       rescue ActionController::RedirectBackError
@@ -32,8 +32,23 @@ class BuildsController < ApplicationController
       return
     end
     # @files = Dir.glob(File.join(@build.build_dir, path, '*'))
-    @dirs = Dir.glob(File.join(@build.build_dir_public, params[:path], '*/'))
-    @files = Dir.glob(File.join(@build.build_dir_public, params[:path], '*'))
+    @dirs = Array.new
+    @files = Array.new
+    Dir.glob(File.join(@build.build_dir_public, 'output', params[:path], '*/')).each do |dir|
+      single_dir = Hash.new
+      single_dir[:basename] = File.basename(dir)
+      single_dir[:url]      = "/builds/output/#{@build.id}#{dir.gsub(File.join(@build.build_dir_public, 'output').to_s, "")}"
+      @dirs.push single_dir
+    end
+
+    Dir.glob(File.join(@build.build_dir_public, 'output', params[:path], '*')).each do |file|
+      unless File.directory?(file)
+        single_file = Hash.new
+        single_file[:basename] = File.basename(file)
+        single_file[:url]      = "/" + file.gsub(Rails.root.to_s + "/public/", "")
+        @files.push single_file
+      end
+    end
   end
 
 end
