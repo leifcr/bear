@@ -146,9 +146,9 @@ class Project < ActiveRecord::Base
     else
       # check if it's a symlinked path (could be if this is a deployment through capistrano)
       begin
-        real_path = Pathname.new(File.join(Rails.root, BigTuna.build_dir)).realpath()
+        real_path = Pathname.new(File.join(Rails.root, BigTuna.build_dir)).realpath().to_s
       rescue 
-        real_path = 
+        real_path = File.join(Rails.root, BigTuna.build_dir)
       end
       File.join(real_path, name.downcase.gsub(/[^A-Za-z0-9]/, "_"))
     end
