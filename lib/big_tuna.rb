@@ -1,5 +1,5 @@
 module BigTuna
-  VERSION = "0.4.6"
+  VERSION = "0.4.7"
 
   DEFAULT_CONFIG = {
     "build_dir" => "builds"

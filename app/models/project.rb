@@ -181,6 +181,7 @@ class Project < ActiveRecord::Base
     else 
       @changed_name = false
     end
+    true
   end
 
   def update_public_folder_symlinks
@@ -192,6 +193,7 @@ class Project < ActiveRecord::Base
         build.create_symlink_output_path
       end
     end
+    true
   end
 
   def rename_build_folder
@@ -200,6 +202,7 @@ class Project < ActiveRecord::Base
         FileUtils.mv(build_dir_from_name(self.name_was), build_dir_from_name(self.name))
       end
     end
+    true
   end
 
   def set_default_build_counts

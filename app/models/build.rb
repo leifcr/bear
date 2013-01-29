@@ -207,11 +207,12 @@ class Build < ActiveRecord::Base
   end
 
   def remove_symlink_output_path
-    if File.directory?(build_dir_public)
-      FileUtils.rm_rf(build_dir_public)
+    if File.directory?(build_dir_public_real_path)
+      FileUtils.rm_rf(build_dir_public_real_path)
     else
-      BigTuna.logger.info("Couldn't find public output dir to remove: %p" % build_dir_public)
+      BigTuna.logger.info("Couldn't find public output dir to remove: %p" % build_dir_public_real_path)
     end
+    true
   end
 
   def compute_build_dir
