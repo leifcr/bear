@@ -1,8 +1,7 @@
 module BigTuna
-  VERSION = "0.4.3"
+  VERSION = "0.4.4"
 
   DEFAULT_CONFIG = {
-    "read_only" => false,
     "build_dir" => "builds"
   }
 
@@ -14,7 +13,6 @@ module BigTuna
     if File.file?("config/bigtuna.yml")
       config.merge!(YAML.load_file("config/bigtuna.yml")[Rails.env] || {})
     end
-    config["read_only"] = true if to_bool(ENV["BIGTUNA_READONLY"])
     @config = config.symbolize_keys!
   end
 
@@ -23,8 +21,6 @@ module BigTuna
       config[key]
     end
   end
-
-  alias_method :read_only?, :read_only
 
   def logger
     @_logger ||= self.log ? Logger.new(self.log) : Rails.logger
