@@ -10,6 +10,8 @@ class Build < ActiveRecord::Base
   has_many :parts, :class_name => "BuildPart"
 
   before_destroy :remove_build_dir
+  before_destroy :remove_symlink_output_path
+  before_create :set_directories
   before_create :set_build_values
   serialize :output, Array
 
@@ -88,6 +90,24 @@ class Build < ActiveRecord::Base
     File.join(Rails.root.to_s, "public", self.build_dir.gsub(Rails.root.to_s + "/", ""))
   end
 
+  # must be public to be accessible from project
+  def update_symlink_output_path
+    remove_symlink_output_path()
+    create_symlink_output_path()
+  end
+
+  def set_directories
+    set_directores_with_dir(project.build_dir)
+  end
+
+  def set_directores_with_dir(project_directory)
+    if project.fetch_type == :incremental
+      self.build_dir = File.join(project_directory, "checkout")
+    else
+      self.build_dir = File.join(project_directory, "build_#{self.build_no}_#{self.scheduled_at.strftime("%Y%m%d%H%M%S")}")
+    end
+  end
+
   private
   def remove_build_dir
     if project.fetch_type == :clone
@@ -100,8 +120,6 @@ class Build < ActiveRecord::Base
   end
 
   def set_build_values
-    project_dir = project.build_dir
-    self.build_dir = compute_build_dir
     self.status = STATUS_IN_QUEUE
     self.scheduled_at = Time.now
     self.output = []
@@ -172,7 +190,7 @@ class Build < ActiveRecord::Base
       BigTuna.logger.info("Couldn't find public output dir to remove: %p" % build_dir_public)
     end
   end
-  
+
   def compute_build_dir
     if project.fetch_type == :incremental
       File.join(project.build_dir, "checkout")

@@ -7,7 +7,11 @@ class Project < ActiveRecord::Base
   has_many :builds, :dependent => :destroy
   has_many :step_lists, :dependent => :destroy
   before_destroy :remove_build_folder
+  before_destroy :remove_public_folder
+
   before_update :rename_build_folder
+  before_update :rename_public_folder
+
   before_create :set_default_build_counts
   after_save :update_hooks
   
@@ -45,6 +49,10 @@ class Project < ActiveRecord::Base
       new_step_list = step_list.dup
       new_step_list.project = project_clone
       new_step_list.save
+    end
+
+    self.users.each do |user|
+      project_clone.users << user
     end
 
     project_clone
@@ -140,11 +148,32 @@ class Project < ActiveRecord::Base
     end
   end
 
+  def public_dir_from_name(name)
+    File.join(Rails.root, "public", BigTuna.build_dir, name.downcase.gsub(/[^A-Za-z0-9]/, "_"))
+  end
+
   def remove_build_folder
     if File.directory?(self.build_dir)
       FileUtils.rm_rf(self.build_dir)
     else
       Rails.logger.debug("[BigTuna] Couldn't find build dir: %p" % [self.build_dir])
+    end
+  end
+
+  def remove_public_folder
+    FileUtils.rm_rf(public_dir_from_name(self.name))
+  end
+
+  def rename_public_folder
+    if self.name_changed? && self.total_builds != 0
+      if (File.directory?(build_dir_from_name(self.name_was)))
+        FileUtils.mv(public_dir_from_name(self.name_was), public_dir_from_name(self.name))
+      end
+      self.builds.each do |build|
+        build.set_directores_with_dir(build_dir_from_name(self.name))
+        build.save!
+        build.update_symlink_output_path
+      end
     end
   end
 
