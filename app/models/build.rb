@@ -88,7 +88,7 @@ class Build < ActiveRecord::Base
 
   def build_dir_public
     if project.fetch_type == :incremental
-      build_dir_append = "checkout")
+      build_dir_append = "checkout"
     else
       build_dir_append = "build_#{self.build_no}_#{self.scheduled_at.strftime("%Y%m%d%H%M%S")}"
     end
