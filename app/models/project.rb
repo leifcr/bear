@@ -144,7 +144,13 @@ class Project < ActiveRecord::Base
     if BigTuna.build_dir[0] == '/'[0]
       File.join(BigTuna.build_dir, name.downcase.gsub(/[^A-Za-z0-9]/, "_"))
     else
-      File.join(Rails.root, BigTuna.build_dir, name.downcase.gsub(/[^A-Za-z0-9]/, "_"))
+      # check if it's a symlinked path (could be if this is a deployment through capistrano)
+      begin
+        real_path = Pathname.new(File.join(Rails.root, BigTuna.build_dir)).realpath()
+      rescue 
+        real_path = 
+      end
+      File.join(real_path, name.downcase.gsub(/[^A-Za-z0-9]/, "_"))
     end
   end
 

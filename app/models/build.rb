@@ -87,7 +87,13 @@ class Build < ActiveRecord::Base
   end
 
   def build_dir_public
-    File.join(Rails.root.to_s, "public", self.build_dir.gsub(Rails.root.to_s + "/", ""))
+    if project.fetch_type == :incremental
+      build_dir_append = "checkout")
+    else
+      build_dir_append = "build_#{self.build_no}_#{self.scheduled_at.strftime("%Y%m%d%H%M%S")}"
+    end
+
+    File.join(Rails.root.to_s, "public", project.name.downcase.gsub(/[^A-Za-z0-9]/, "_"), build_dir_append)
   end
 
   # must be public to be accessible from project
@@ -178,8 +184,24 @@ class Build < ActiveRecord::Base
         # create build_dir 
         FileUtils.mkdir_p(build_dir_public)
         # create symlink
-        FileUtils.symlink(File.join(self.build_dir, project.output_path), File.join(build_dir_public, "output"))
+        FileUtils.symlink(File.join(build_dir_real_path, project.output_path), File.join(build_dir_public_real_path, "output"))
       end
+    end
+  end
+
+  def build_dir_public_real_path
+    begin
+      Pathname.new(build_dir_public).realpath.to_s
+    rescue
+      build_dir_public
+    end
+  end
+
+  def build_dir_real_path
+    begin
+      Pathname.new(self.build_dir).realpath.to_s
+    rescue
+      self.build_dir
     end
   end
 
