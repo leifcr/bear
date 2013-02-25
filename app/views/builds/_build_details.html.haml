@@ -7,7 +7,7 @@
   %tbody
     %tr
       %td
-        Status
+        %span.label.label-info Status
       %td
         = content_tag(:span, "In Queue", :class => "badge") if @build.status == Build::STATUS_IN_QUEUE
         = content_tag(:span, "In Progress", :class => "badge badge-inverse") if @build.status == Build::STATUS_PROGRESS
