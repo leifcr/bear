@@ -1,3 +1,4 @@
+require 'timeout'
 class BuildPart < ActiveRecord::Base
   STATUS_OK = "status_build_part_ok"
   STATUS_FAILED = "status_build_part_failed"
@@ -28,9 +29,10 @@ class BuildPart < ActiveRecord::Base
       begin
         out = BigTuna::Runner.execute(dir, command)
         self.output << out
+        exit_code = out.exit_code
         self.save!
       rescue BigTuna::Runner::Error => e
-        output << e.output
+        self.output << e.output
         exit_code = e.output.exit_code
         break
       end

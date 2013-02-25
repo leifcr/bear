@@ -4,17 +4,24 @@ module BigTuna
       end_command = "cd #{dir} && #{command}"
       BigTuna.logger.debug("Executing: #{end_command}")
       with_clean_env(dir) do
-        output = Output.new(dir, command)
-        buffer = []
-        status = Open4.popen4(end_command) do |_, _, stdout, stderr|
-          while !stdout.eof? or !stderr.eof?
-            output.append_stdout(stdout.read_nonblock(2 ** 10)) rescue Errno::EAGAIN
-            output.append_stderr(stderr.read_nonblock(2 ** 10)) rescue Errno::EAGAIN
+        begin
+          Timeout.timeout(Bigtuna.timeout) do # 15 minutes default timeout
+            @output = Output.new(dir, command)
+            buffer = []
+            status = Open4.popen4(end_command) do |_, _, stdout, stderr|
+              while !stdout.eof? or !stderr.eof?
+                @output.append_stdout(stdout.read_nonblock(2 ** 10)) rescue Errno::EAGAIN
+                @output.append_stderr(stderr.read_nonblock(2 ** 10)) rescue Errno::EAGAIN
+              end
+            end
+            @output.finish(status.exitstatus)
+            raise Error.new(@output) if @output.exit_code != 0
+            @output
           end
-        end
-        output.finish(status.exitstatus)
-        raise Error.new(output) if output.exit_code != 0
-        output
+      rescue Timeout::Error => e
+        @output.finish(999)
+        raise Error.new(@output) if @output.exit_code != 0
+        @output
       end
     end
 
@@ -44,7 +51,11 @@ module BigTuna
       end
 
       def message
-        "Error (#{@output.exit_code}) executing '#{@output.command}' in '#{@output.dir}'"
+        if @output.exit_code == 999
+          "Timeout error (#{@output.exit_code}) executing '#{@output.command}' in '#{@output.dir}'"
+        else
+          "Error (#{@output.exit_code}) executing '#{@output.command}' in '#{@output.dir}'"
+        end
       end
     end
   end
