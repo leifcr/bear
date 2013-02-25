@@ -10,7 +10,8 @@ class Project < ActiveRecord::Base
   before_destroy :remove_public_folder
 
   before_update :rename_build_folder
-  before_update :rename_public_folder
+  before_update :remove_old_public_folder
+  after_update  :update_public_folder_symlinks
 
   before_create :set_default_build_counts
   after_save :update_hooks
@@ -144,7 +145,13 @@ class Project < ActiveRecord::Base
     if BigTuna.build_dir[0] == '/'[0]
       File.join(BigTuna.build_dir, name.downcase.gsub(/[^A-Za-z0-9]/, "_"))
     else
-      File.join(Rails.root, BigTuna.build_dir, name.downcase.gsub(/[^A-Za-z0-9]/, "_"))
+      # check if it's a symlinked path (could be if this is a deployment through capistrano)
+      begin
+        real_path = Pathname.new(File.join(Rails.root, BigTuna.build_dir)).realpath().to_s
+      rescue 
+        real_path = File.join(Rails.root, BigTuna.build_dir)
+      end
+      File.join(real_path, name.downcase.gsub(/[^A-Za-z0-9]/, "_"))
     end
   end
 
@@ -160,21 +167,33 @@ class Project < ActiveRecord::Base
     end
   end
 
-  def remove_public_folder
-    FileUtils.rm_rf(public_dir_from_name(self.name))
+  def remove_public_folder(name = nil)
+    name = public_dir_from_name(self.name) if name == nil
+    if (File.directory?(public_dir_from_name(name)))
+      FileUtils.rm_rf(public_dir_from_name(name))
+    end
   end
 
-  def rename_public_folder
+  def remove_old_public_folder
     if self.name_changed? && self.total_builds != 0
-      if (File.directory?(build_dir_from_name(self.name_was)))
-        FileUtils.mv(public_dir_from_name(self.name_was), public_dir_from_name(self.name))
-      end
+      remove_public_folder(self.name_was)
+      @changed_name = true
+    else 
+      @changed_name = false
+    end
+    true
+  end
+
+  def update_public_folder_symlinks
+    if @changed_name == true
+      @changed_name == false
       self.builds.each do |build|
         build.set_directores_with_dir(build_dir_from_name(self.name))
         build.save!
-        build.update_symlink_output_path
+        build.create_symlink_output_path
       end
     end
+    true
   end
 
   def rename_build_folder
@@ -183,6 +202,7 @@ class Project < ActiveRecord::Base
         FileUtils.mv(build_dir_from_name(self.name_was), build_dir_from_name(self.name))
       end
     end
+    true
   end
 
   def set_default_build_counts

@@ -87,18 +87,16 @@ class Build < ActiveRecord::Base
   end
 
   def build_dir_public
-    File.join(Rails.root.to_s, "public", self.build_dir.gsub(Rails.root.to_s + "/", ""))
+    if project.fetch_type == :incremental
+      build_dir_append = "checkout"
+    else
+      build_dir_append = "build_#{self.build_no}_#{self.scheduled_at.strftime("%Y%m%d%H%M%S")}"
+    end
+
+    File.join(Rails.root.to_s, "public", BigTuna.build_dir, project.name.downcase.gsub(/[^A-Za-z0-9]/, "_"), build_dir_append)
   end
 
   # must be public to be accessible from project
-  def update_symlink_output_path
-    remove_symlink_output_path()
-    create_symlink_output_path()
-  end
-
-  def set_directories
-    set_directores_with_dir(project.build_dir)
-  end
 
   def set_directores_with_dir(project_directory)
     if project.fetch_type == :incremental
@@ -108,7 +106,28 @@ class Build < ActiveRecord::Base
     end
   end
 
+  def create_symlink_output_path
+    # verify that output_path exists
+    if (project.output_path != "") && (project.output_path != nil)
+      if Dir.exists?(File.join(self.build_dir, project.output_path))
+        # create build_dir 
+        FileUtils.mkdir_p(build_dir_public)
+        # create symlink
+        # check if symlink exists, if so, remove it (probably updating/replacing)
+        if File.symlink?(File.join(build_dir_public_real_path, "output"))
+          File.delete(File.join(build_dir_public_real_path, "output"))
+        end
+        FileUtils.symlink(File.join(build_dir_real_path, project.output_path), File.join(build_dir_public_real_path, "output"))
+      end
+    end
+  end
+
   private
+
+  def set_directories
+    set_directores_with_dir(project.build_dir)
+  end
+
   def remove_build_dir
     if project.fetch_type == :clone
       if File.directory?(self.build_dir)
@@ -171,24 +190,29 @@ class Build < ActiveRecord::Base
     create_symlink_output_path()
   end
 
-  def create_symlink_output_path
-    # verify that output_path exists
-    if (project.output_path != "") && (project.output_path != nil)
-      if Dir.exists?(File.join(self.build_dir, project.output_path))
-        # create build_dir 
-        FileUtils.mkdir_p(build_dir_public)
-        # create symlink
-        FileUtils.symlink(File.join(self.build_dir, project.output_path), File.join(build_dir_public, "output"))
-      end
+  def build_dir_public_real_path
+    begin
+      Pathname.new(build_dir_public).realpath.to_s
+    rescue
+      build_dir_public
+    end
+  end
+
+  def build_dir_real_path
+    begin
+      Pathname.new(self.build_dir).realpath.to_s
+    rescue
+      self.build_dir
     end
   end
 
   def remove_symlink_output_path
-    if File.directory?(build_dir_public)
-      FileUtils.rm_rf(build_dir_public)
+    if File.directory?(build_dir_public_real_path)
+      FileUtils.rm_rf(build_dir_public_real_path)
     else
-      BigTuna.logger.info("Couldn't find public output dir to remove: %p" % build_dir_public)
+      BigTuna.logger.info("Couldn't find public output dir to remove: %p" % build_dir_public_real_path)
     end
+    true
   end
 
   def compute_build_dir

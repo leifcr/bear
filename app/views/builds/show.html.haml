@@ -20,7 +20,7 @@
       = link_to("Edit project", edit_project_path(@build.project), :class => "btn btn-primary")
       = link_to("Delete build", build_path(@build), :method => :delete, :confirm => "Are you sure?", :class => "btn btn-danger")
     - if @build.project.output_path != "" and @build.project.output_path != nil
-      - if Dir.exists?(File.join(@build.build_dir, @build.project.output_path))
+      - if Dir.exists?(File.join(@build.build_dir, @build.project.output_path)) and Dir.exists?(File.join(@build.build_dir_public))
         = link_to("Project output", "/builds/output/#{@build.id}/", :class => "btn btn-info")
 
 #build.row

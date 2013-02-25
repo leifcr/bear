@@ -34,14 +34,14 @@ class BuildsController < ApplicationController
     # @files = Dir.glob(File.join(@build.build_dir, path, '*'))
     @dirs = Array.new
     @files = Array.new
-    Dir.glob(File.join(@build.build_dir_public, 'output', params[:path], '*/')).each do |dir|
+    Dir.glob(File.join(@build.build_dir_public, 'output', params[:path], '*/')).sort.each do |dir|
       single_dir = Hash.new
       single_dir[:basename] = File.basename(dir)
       single_dir[:url]      = "/builds/output/#{@build.id}#{dir.gsub(File.join(@build.build_dir_public, 'output').to_s, "")}"
       @dirs.push single_dir
     end
 
-    Dir.glob(File.join(@build.build_dir_public, 'output', params[:path], '*')).each do |file|
+    Dir.glob(File.join(@build.build_dir_public, 'output', params[:path], '*')).sort.each do |file|
       unless File.directory?(file)
         single_file = Hash.new
         single_file[:basename] = File.basename(file)
