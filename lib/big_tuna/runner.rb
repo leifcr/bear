@@ -5,7 +5,7 @@ module BigTuna
       BigTuna.logger.debug("Executing: #{end_command}")
       with_clean_env(dir) do
         begin
-          Timeout.timeout(Bigtuna.timeout) do # 15 minutes default timeout
+          Timeout.timeout(::BigTuna.timeout) do # 15 minutes default timeout
             @output = Output.new(dir, command)
             buffer = []
             status = Open4.popen4(end_command) do |_, _, stdout, stderr|
