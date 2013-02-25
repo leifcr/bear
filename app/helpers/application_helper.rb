@@ -77,4 +77,15 @@ module ApplicationHelper
     end
   end
 
+  def is_build_failed_due_to_timeout(build)
+    if @build.status == Build::STATUS_FAILED 
+      unless @build.parts.last.nil?
+        if @build.parts.last.output[0].exit_code == 999
+          return true
+        end
+      end
+    end
+    false
+  end
+
 end
