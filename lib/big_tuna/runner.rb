@@ -18,10 +18,11 @@ module BigTuna
             raise Error.new(@output) if @output.exit_code != 0
             @output
           end
-      rescue Timeout::Error => e
-        @output.finish(999)
-        raise Error.new(@output) if @output.exit_code != 0
-        @output
+        rescue Timeout::Error => e
+          @output.finish(999)
+          raise Error.new(@output) if @output.exit_code != 0
+          @output
+        end
       end
     end
 
