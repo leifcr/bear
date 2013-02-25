@@ -7,6 +7,16 @@
   %tbody
     %tr
       %td
+        Status
+      %td
+        = content_tag(:span, "In Queue", :class => "badge") if @build.status == Build::STATUS_IN_QUEUE
+        = content_tag(:span, "In Progress", :class => "badge badge-inverse") if @build.status == Build::STATUS_PROGRESS
+        = content_tag(:span, "Success", :class => "badge badge-success") if @build.status == Build::STATUS_OK
+        = content_tag(:span, "Failed", :class => "badge badge-important") if @build.status == Build::STATUS_FAILED
+        = content_tag(:span, "Build error", :class => "badge badge-important") if @build.status == Build::STATUS_BUILDER_ERROR
+        = content_tag(:span, "Status Hook error", :class => "badge badge-important") if @build.status == Build::STATUS_HOOK_ERROR
+    %tr
+      %td
         %span.label.label-info Commit
       %td
         %code.dark= @build.commit_data? ? @build.commit : "Commit hash not yet available"
