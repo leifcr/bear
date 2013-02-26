@@ -133,7 +133,7 @@ class AutobuildTest < ActionController::IntegrationTest
     payload = {
       "ref" => "refs/heads/#{project.vcs_branch}",
       "repository" => { "url" => url },
-      "commmits" => [
+      "commits" => [
         {"message" => "#{message}"}
       ]
     }
