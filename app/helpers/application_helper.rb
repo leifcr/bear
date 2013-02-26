@@ -78,8 +78,12 @@ module ApplicationHelper
   end
 
   def is_build_failed_due_to_timeout(build)
-    unless build.parts.last.nil?
-      return true if build.parts.last.output[0].exit_code == 999
+    unless build.parts.first.nil?
+      build.parts.each do |part|
+        part.output.each do |o|
+          return true if o.exit_code == 999
+        end
+      end
     end
     false
   end
