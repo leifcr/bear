@@ -13,11 +13,12 @@
         = content_tag(:span, "In Progress", :class => "badge badge-inverse") if @build.status == Build::STATUS_PROGRESS
         = content_tag(:span, "Success", :class => "badge badge-success") if @build.status == Build::STATUS_OK
         = content_tag(:span, "Build error", :class => "badge badge-important") if @build.status == Build::STATUS_BUILDER_ERROR
-        = content_tag(:span, "Status Hook error", :class => "badge badge-important") if @build.status == Build::STATUS_HOOK_ERROR
-        - if is_build_failed_due_to_timeout(@build)
-          = content_tag(:span, "Timeout!", :class => "badge badge-warning") 
-        - else
-          = content_tag(:span, "Failed", :class => "badge badge-important") 
+        = content_tag(:span, "Status Hook error", :class => "badge badge-warning") if @build.status == Build::STATUS_HOOK_ERROR
+        - if @build.status == Build::STATUS_FAILED
+          - if is_build_failed_due_to_timeout(@build)
+            = content_tag(:span, "Timeout!", :class => "badge badge-warning") 
+          - else
+            = content_tag(:span, "Failed", :class => "badge badge-important") 
 
     %tr
       %td
