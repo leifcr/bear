@@ -95,6 +95,18 @@ class AutobuildTest < ActionController::IntegrationTest
     end
   end
 
+
+  test "github post for a commit with [ci skip] instructions no build should occur" do
+    project = github_project(:name => 'seotool', :vcs_branch => 'master',
+                             :vcs_source => "git@github.com:company/secretrepo.git")
+    with_github_token do
+      assert_difference("project.builds.count", 0) do
+        post "/hooks/build/github/#{@token}", :payload => github_payload(project, "Don't build [ci skip]")
+        assert_status_code(200)
+      end
+    end
+  end
+
   private
   def github_project(opts = {})
     project = Project.make!({:vcs_source => "git://github.com/appelier/bigtuna.git", :vcs_branch => "master", :vcs_type => "git", :max_builds => 2}.merge(opts))
@@ -114,13 +126,16 @@ class AutobuildTest < ActionController::IntegrationTest
     end
   end
 
-  def github_payload(project)
+  def github_payload(project, message = "Normal commit")
     name = project.vcs_source.match( %r{github\.com[/:](.+)\.git$} )[1]
     url = "https://github.com/#{name}"
 
     payload = {
       "ref" => "refs/heads/#{project.vcs_branch}",
       "repository" => { "url" => url },
+      "commmits": [
+        {"message" => "#{message}"}
+      ]
     }
     payload.to_json
   end

@@ -67,6 +67,20 @@ class BitbucketAutobuildTest < ActionController::IntegrationTest
     end
   end
 
+  test 'bitbucket payload for skipping test' do
+    project1 = bitbucket_project(:name => "superproject1", :vcs_source => "ssh://hg@bitbucket.org/foo/bigtuna/", :vcs_branch => "default")
+    old_token = BigTuna.config[:bitbucket_secure]
+    begin
+      BigTuna.config[:bitbucket_secure] = "mytoken"
+      token = BigTuna.bitbucket_secure
+      assert_difference("project1.builds.count", 0) do
+        post "/hooks/build/bitbucket/#{token}", :payload => bitbucket_payload(project1, "Don't build [ci skip]")
+      end
+    ensure
+      BigTuna.config[:bitbucket_secure] = old_token
+    end
+  end
+
   private
   def bitbucket_project(opts = {})
     project = Project.make!({:vcs_source => "ssh://hg@bitbucket.org/foo/bigtuna/", :vcs_branch => "default", :vcs_type => "hg", :max_builds => 2}.merge(opts))
@@ -74,7 +88,7 @@ class BitbucketAutobuildTest < ActionController::IntegrationTest
     project
   end
 
-  def bitbucket_payload(project)
+  def bitbucket_payload(project, message = "Ahh.")
     "{
        \"repository\":{
           \"absolute_url\":\"/foo/bigtuna/\",
@@ -102,7 +116,7 @@ class BitbucketAutobuildTest < ActionController::IntegrationTest
                 \"e069646e9522\"
              ],
              \"branch\":\"#{project.vcs_branch}\",
-             \"message\":\"Ahh.\",
+             \"message\":\"#{message}\",
              \"size\":57,
              \"revision\":10
           }
@@ -110,4 +124,5 @@ class BitbucketAutobuildTest < ActionController::IntegrationTest
        \"user\":\"merp\"
     }"
   end
+
 end

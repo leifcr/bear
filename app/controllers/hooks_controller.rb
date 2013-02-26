@@ -16,6 +16,11 @@ class HooksController < ApplicationController
     github_project_path = payload["repository"]["url"].match( %r{github\.com/(.*)} )[1]
     search_term         = "%github.com_#{github_project_path}.git"
 
+    if payload["commits"].last["message"].include?("[ci skip]")
+      render :text => "Told to skip testing/ci'ing this commit", :status => 200
+      return
+    end
+
     projects = Project.where(["vcs_source LIKE ?", search_term]).where(:vcs_branch => branch).all
 
     if BigTuna.github_secure.nil?
@@ -33,7 +38,11 @@ class HooksController < ApplicationController
     payload  = JSON.parse(params[:payload])
     branches = Array.new
     payload["commits"].each do |commit|
-      branches.push commit["branch"] if (commit["branch"]  != nil)
+      branches.push commit["branch"] if (commit["branch"] != nil)
+    end
+    if payload["commits"].last["message"].include?("[ci skip]")
+      render :text => "Told to skip testing/ci'ing this commit", :status => 200
+      return
     end
     # get branches
     if (payload["repository"]["scm"] == "git")
