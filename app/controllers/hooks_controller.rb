@@ -16,9 +16,11 @@ class HooksController < ApplicationController
     github_project_path = payload["repository"]["url"].match( %r{github\.com/(.*)} )[1]
     search_term         = "%github.com_#{github_project_path}.git"
 
-    if payload["commits"].last["message"].include?("[ci skip]")
-      render :text => "Told to skip testing/ci'ing this commit", :status => 200
-      return
+    unless payload["commits"].nil?
+      if payload["commits"].last["message"].include?("[ci skip]")
+        render :text => "Told to skip testing/ci'ing this commit", :status => 200
+        return
+      end
     end
 
     projects = Project.where(["vcs_source LIKE ?", search_term]).where(:vcs_branch => branch).all
@@ -40,9 +42,11 @@ class HooksController < ApplicationController
     payload["commits"].each do |commit|
       branches.push commit["branch"] if (commit["branch"] != nil)
     end
-    if payload["commits"].last["message"].include?("[ci skip]")
-      render :text => "Told to skip testing/ci'ing this commit", :status => 200
-      return
+    unless payload["commits"].nil?
+      if payload["commits"].last["message"].include?("[ci skip]")
+        render :text => "Told to skip testing/ci'ing this commit", :status => 200
+        return
+      end
     end
     # get branches
     if (payload["repository"]["scm"] == "git")
