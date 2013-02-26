@@ -1,12 +1,12 @@
 source 'http://rubygems.org'
 
-gem "rails", "3.2.11"
+gem "rails", "3.2.12"
 
 gem "haml"
 gem "delayed_job"
 gem 'delayed_job_active_record'
 gem "stringex"
-gem "open4"
+# gem "open4"
 gem "json"
 gem "jquery-rails"
 gem 'acts_as_list'
@@ -42,15 +42,14 @@ end
 
 group :development do
   gem "thin"
-  gem "wirble"
-  gem "hirb"
-  gem "awesome_print"
   gem 'capistrano'
   gem 'rvm-capistrano'
   gem 'binding_of_caller'
   gem "better_errors"
   gem 'meta_request', '0.2.1'
+end
 
+group :development, :test do 
   platforms :mri_19 do
     gem "ruby-debug19"
   end
