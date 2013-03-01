@@ -27,7 +27,7 @@ class StepListTest < ActionController::IntegrationTest
     within("#step-#{@step2.id}") do
       fill_in "Name", :with => new_name
       fill_in "Steps", :with => new_steps
-      click_button "Update configuration"
+      click_button "Update step"
     end
     @step2.reload
     assert_equal new_name, @step2.name

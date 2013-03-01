@@ -9,7 +9,7 @@ class SharedVariablesTest < ActionController::IntegrationTest
     @project.users << @user
     login_as @project.users.first, scope: :user
     visit edit_project_path(@project)
-    click_link "Edit variables"
+    click_link "Add variables"
   end
 
   test "user can add shared variable to step" do

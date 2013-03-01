@@ -47,9 +47,6 @@ group :development do
   gem 'binding_of_caller'
   gem "better_errors"
   gem 'meta_request', '0.2.1'
-end
-
-group :development, :test do 
   platforms :mri_19 do
     gem "ruby-debug19"
   end
