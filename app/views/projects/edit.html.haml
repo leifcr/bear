@@ -1,7 +1,7 @@
 .page-header
   %h1
     = @project.name
-    %small Edit project options and configurations
+    %small Edit project options and steps
     = link_to("Build now", build_project_path(@project), :class => "btn crm btn-large btn-success pull-right")
 
 .row
@@ -10,7 +10,9 @@
     = simple_form_for(@project, :url => project_path(@project), :html => { :class => 'form-horizontal'}) do |f|
       = render :partial => "form", :locals => {:f => f}
   .span6.right-column
-    %h3 Edit configurations
+    %h3 Edit steps
+    %p.text-muted
+      Each step can have multiple commands.
 
     %h5
       Special variables are available.
@@ -24,22 +26,30 @@
     - unless @project.step_lists.empty?
       - @project.step_lists.each do |step_list|
         %div{:id => "step-#{step_list.id}"}
-          %hr
-          %h4.step-list-header= (step_count + 1).to_s + ": " + step_list.name
-          - unless step_list.new_record?
-            = link_to("Remove step", step_list_path(step_list, :project_id => @project.id), :method => :delete, :confirm => "Are you sure?", :class => "btn btn-danger btn-small pull-right btn-remove-step")
-          %div.step-variables
-            %h5
-              Shared variables
-            %p.shared_variables.text-info
-              - step_list.shared_variables.each do |variable|
-                %tt= "<b>%#{variable.name}%</b> #{variable.value}".html_safe
-                %br
-            = link_to("Edit variables", shared_variables_path(:step_list_id => step_list), :class => 'btn btn-mini btn-primary btn-edit-variables pull-right')
+          %hr.low-margin
+          .row-fluid
+            .span9
+              %h4.step-list-header= (step_count += 1).to_s + ": " + step_list.name
+            .span3
+              - unless step_list.new_record?
+                = link_to("Remove step", step_list_path(step_list, :project_id => @project.id), :method => :delete, :confirm => "Are you sure?", :class => "btn btn-danger btn-mini pull-right")
+          .row-fluid.step-variables
+            .span9
+              - if step_list.shared_variables.count > 0
+                %h5
+                  Shared variables
+                %p.shared_variables.text-info
+                  - step_list.shared_variables.each do |variable|
+                    %tt= "<b>%#{variable.name}%</b> #{variable.value}".html_safe
+            .span3
+              - if step_list.shared_variables.count > 0
+                = link_to("Edit variables", shared_variables_path(:step_list_id => step_list), :class => 'btn btn-mini btn-primary pull-right')
+              - else
+                = link_to("Add variables", shared_variables_path(:step_list_id => step_list), :class => 'btn btn-mini btn-primary pull-right')
           = simple_form_for(step_list, :url => step_list_path(step_list, :project_id => @project), :html => { :class => 'form-vertical', :method => "PUT"}) do |f|
             = render :partial => "step_lists/form", :locals => {:f => f}
 
-    %h3 New configuration
+    %h3 New Step
     = simple_form_for(StepList.new, :url => step_lists_path(:project_id => @project), :html => { :class => 'form-vertical'}) do |f|
       = render :partial => "step_lists/form", :locals => {:f => f}
 

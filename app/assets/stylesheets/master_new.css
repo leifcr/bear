@@ -115,7 +115,8 @@ ul.in-recent-builds {
   display:inline-block;
 }
 .steps-text-field {
-  height:190px;
+  height:4.5em;
+  font-family: Monaco, Menlo, Consolas, "Courier New", monospace;
 }
 .standard-low-text-field {
   height:60px;
@@ -132,4 +133,8 @@ ul.in-recent-builds {
 .control-label.checkbox {
   text-align: left;
   margin-left: 10px;
+}
+
+hr.low-margin {
+  margin: 10px 0;
 }

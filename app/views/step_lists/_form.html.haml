@@ -1,7 +1,7 @@
 = f.input :name, :input_html => {:class => "span6"}
 = f.input :steps, :input_html => {:class => "span6 steps-text-field"}
 
-.form-actions
+.form-actions-simple
   %button.btn.btn-primary{:type => "submit"}
-    = f.object.new_record? ? "Create configuration" : "Update configuration"
+    = f.object.new_record? ? "Create step" : "Update step"
 
