@@ -7,4 +7,4 @@ env:
 before_script:
   - "cp config/database.yml.travis.mysql config/database.yml"
   - "RAILS_ENV=test bundle exec rake db:create db:test:load"
-script: bundle exec rake test HGUSER='test@example.com'
+script: bundle exec rake test
