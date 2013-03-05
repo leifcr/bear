@@ -67,7 +67,7 @@ class BuildsController < ApplicationController
         single_file = Hash.new
         single_file[:basename] = File.basename(file)
         single_file[:url]      = "/" + file.gsub(Rails.root.to_s + "/public/", "")
-        single_dir[:date]      = File.mtime(file)
+        single_file[:date]      = File.mtime(file)
         @files.push single_file
       end
     end
