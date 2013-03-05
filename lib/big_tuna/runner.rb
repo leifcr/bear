@@ -1,3 +1,4 @@
+require 'open3'
 module BigTuna
   class Runner
     def self.execute(dir, command)
@@ -8,13 +9,26 @@ module BigTuna
           Timeout.timeout(::BigTuna.timeout) do # 15 minutes default timeout
             @output = Output.new(dir, command)
             buffer = []
-            status = Open4.popen4(end_command) do |_, _, stdout, stderr|
+            status = nil
+            Open3.popen3(end_command) do |_, stdout, stderr, wait_thr|
               while !stdout.eof? or !stderr.eof?
                 @output.append_stdout(stdout.read_nonblock(2 ** 10)) rescue Errno::EAGAIN
                 @output.append_stderr(stderr.read_nonblock(2 ** 10)) rescue Errno::EAGAIN
               end
+              status = wait_thr.value
             end
-            @output.finish(status.exitstatus)
+
+            # status = Open4.popen4(end_command) do |_, _, stdout, stderr|
+            #   while !stdout.eof? or !stderr.eof?
+            #     @output.append_stdout(stdout.read_nonblock(2 ** 10)) rescue Errno::EAGAIN
+            #     @output.append_stderr(stderr.read_nonblock(2 ** 10)) rescue Errno::EAGAIN
+            #   end
+            # end
+            if status != nil
+              @output.finish(status.exitstatus)
+            else
+              @output.finish(-1)
+            end
             raise Error.new(@output) if @output.exit_code != 0
             @output
           end
