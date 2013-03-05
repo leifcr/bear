@@ -18,6 +18,8 @@ class BuildPart < ActiveRecord::Base
 
   def perform
     self.update_attributes!(:status => STATUS_PROGRESS, :started_at => Time.now)
+    timeout = self.build.project.timeout
+
     all_steps = []
     steps.split("\n").each do |step|
       step = format_step_command(step)
@@ -27,7 +29,7 @@ class BuildPart < ActiveRecord::Base
     all_steps.each_with_index do |step, index|
       dir, command = step
       begin
-        out = BigTuna::Runner.execute(dir, command)
+        out = BigTuna::Runner.execute(dir, command, timeout)
         self.output << out
         exit_code = out.exit_code
         self.save!

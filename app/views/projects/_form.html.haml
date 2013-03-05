@@ -12,6 +12,7 @@
   = f.input :max_builds, :hint => "How many builds to keep in memory", :input_html => {:class => "span1"}
   = f.input :output_path, :hint => "If your project outputs files in the build, add the path here to have it accessible", :input_html => {:class => "span3"}
   = f.input :log_path, :hint => "If your project outputs logs in the build, add the path here to have it accessible", :input_html => {:class => "span3"}
+  = f.input :timeout, :hint => "Set the maximum time in seconds before aborting the tasks (Default: 15 minutes (900 seconds))", :input_html => {:class => "span3"}
 
   .control-group
     %label.control-label.string Hooks
