@@ -37,17 +37,17 @@ module ApplicationHelper
     when -1
       "not enough data"
     when 0
-      "abandon the project"
+      "None of the last five builds succeeded"
     when 1
-      "start fixing asap"
+      "One of the last five builds succeeded"
     when 2
-      "could be worse"
+      "On the right path. Two of the last five builds succeeded"
     when 3
-      "not bad"
+      "Getting there. Three of the last five builds succeeded"
     when 4
-      "looking good"
+      "Looking good. Four of the last five builds succeeded"
     when 5
-      "great"
+      "Great! All the last five builds succeeded"
     end
   end
 
