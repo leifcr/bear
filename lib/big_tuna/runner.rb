@@ -9,22 +9,11 @@ module BigTuna
         begin
           Timeout.timeout(timeout) do # 15 minutes default timeout
             @output = Output.new(dir, command)
-            buffer = []
             status = nil
-            Open3.popen3(end_command) do |_, stdout, stderr, wait_thr|
-              while !stdout.eof? or !stderr.eof?
-                @output.append_stdout(stdout.read_nonblock(2 ** 10)) rescue Errno::EAGAIN
-                @output.append_stderr(stderr.read_nonblock(2 ** 10)) rescue Errno::EAGAIN
-              end
-              status = wait_thr.value
-            end
+            stdout_str, stderr_str, status = Open3.capture3(end_command)
+            @output.append_stdout(stdout_str)
+            @output.append_stderr(stderr_str)
 
-            # status = Open4.popen4(end_command) do |_, _, stdout, stderr|
-            #   while !stdout.eof? or !stderr.eof?
-            #     @output.append_stdout(stdout.read_nonblock(2 ** 10)) rescue Errno::EAGAIN
-            #     @output.append_stderr(stderr.read_nonblock(2 ** 10)) rescue Errno::EAGAIN
-            #   end
-            # end
             if status != nil
               @output.finish(status.exitstatus)
             else
