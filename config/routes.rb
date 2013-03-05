@@ -19,6 +19,8 @@ BigTuna::Application.routes.draw do
   resources :builds, :except => [:edit, :update, :create]
   match '/builds/output/:id/*path', :to => "builds#output"
   match '/builds/output/:id', :to => "builds#output"
+  match '/builds/log/:id/*path', :to => "builds#log"
+  match '/builds/log/:id', :to => "builds#log"
 
   resources :step_lists
   resources :shared_variables
