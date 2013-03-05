@@ -10,7 +10,7 @@ class Build < ActiveRecord::Base
   has_many :parts, :class_name => "BuildPart"
 
   before_destroy :remove_build_dir
-  before_destroy :remove_symlink_output_path
+  before_destroy :remove_symlink_public_folder
   before_create :set_directories
   before_create :set_build_values
   serialize :output, Array
@@ -106,6 +106,11 @@ class Build < ActiveRecord::Base
     end
   end
 
+  def create_public_symlinks
+    create_symlink_output_path
+    create_symlink_log_path
+  end
+
   def create_symlink_output_path
     # verify that output_path exists
     if (project.output_path != "") && (project.output_path != nil)
@@ -118,6 +123,22 @@ class Build < ActiveRecord::Base
           File.delete(File.join(build_dir_public_real_path, "output"))
         end
         FileUtils.symlink(File.join(build_dir_real_path, project.output_path), File.join(build_dir_public_real_path, "output"))
+      end
+    end
+  end
+
+  def create_symlink_log_path
+    # verify that log path exists
+    if (project.log_path != "") && (project.log_path != nil)
+      if Dir.exists?(File.join(self.build_dir, project.log_path))
+        # create build_dir 
+        FileUtils.mkdir_p(build_dir_public)
+        # create symlink
+        # check if symlink exists, if so, remove it (probably updating/replacing)
+        if File.symlink?(File.join(build_dir_public_real_path, "log"))
+          File.delete(File.join(build_dir_public_real_path, "log"))
+        end
+        FileUtils.symlink(File.join(build_dir_real_path, project.log_path), File.join(build_dir_public_real_path, "log"))
       end
     end
   end
@@ -187,7 +208,7 @@ class Build < ActiveRecord::Base
     project.hooks.each do |hook|
       hook.build_finished(self)
     end
-    create_symlink_output_path()
+    create_public_symlinks
   end
 
   def build_dir_public_real_path
@@ -206,7 +227,7 @@ class Build < ActiveRecord::Base
     end
   end
 
-  def remove_symlink_output_path
+  def remove_symlink_public_folder
     if File.directory?(build_dir_public_real_path)
       FileUtils.rm_rf(build_dir_public_real_path)
     else

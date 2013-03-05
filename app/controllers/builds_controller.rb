@@ -31,24 +31,47 @@ class BuildsController < ApplicationController
       end
       return
     end
-    # @files = Dir.glob(File.join(@build.build_dir, path, '*'))
+    build_dirs_and_files("output", params[:path])
+  end
+
+  def log
+    @build = Build.find(params[:id])
+    params[:path] = "" if (params[:path] == nil)
+    # check if path exists, else redirect back one step
+    unless Dir.exists?(File.join(@build.build_dir, @build.project.log_path, params[:path])) && (Dir.exists?(@build.build_dir_public))
+      begin
+        redirect_to :back
+      rescue ActionController::RedirectBackError
+        redirect_to :show, :notice => "The log path #{File.join(@build.build_dir_public, params[:path]).to_s} doesn't exist."
+      end
+      return
+    end
+    build_dirs_and_files("log", params[:path])
+  end
+
+  private
+
+  def build_dirs_and_files(folder, params_path)
     @dirs = Array.new
     @files = Array.new
-    Dir.glob(File.join(@build.build_dir_public, 'output', params[:path], '*/')).sort.each do |dir|
+    Dir.glob(File.join(@build.build_dir_public, folder, params_path, '*/')).sort.each do |dir|
       single_dir = Hash.new
       single_dir[:basename] = File.basename(dir)
-      single_dir[:url]      = "/builds/output/#{@build.id}#{dir.gsub(File.join(@build.build_dir_public, 'output').to_s, "")}"
+      single_dir[:url]      = "/builds/#{folder}/#{@build.id}#{dir.gsub(File.join(@build.build_dir_public, folder).to_s, "")}"
+      single_dir[:date]     = File.mtime(dir)
       @dirs.push single_dir
     end
 
-    Dir.glob(File.join(@build.build_dir_public, 'output', params[:path], '*')).sort.each do |file|
+    Dir.glob(File.join(@build.build_dir_public, folder, params_path, '*')).sort.each do |file|
       unless File.directory?(file)
         single_file = Hash.new
         single_file[:basename] = File.basename(file)
         single_file[:url]      = "/" + file.gsub(Rails.root.to_s + "/public/", "")
+        single_dir[:date]      = File.mtime(file)
         @files.push single_file
       end
     end
+
   end
 
 end

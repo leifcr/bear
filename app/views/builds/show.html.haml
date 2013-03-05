@@ -22,6 +22,9 @@
     - if @build.project.output_path != "" and @build.project.output_path != nil
       - if Dir.exists?(File.join(@build.build_dir, @build.project.output_path)) and Dir.exists?(File.join(@build.build_dir_public))
         = link_to("Project output", "/builds/output/#{@build.id}/", :class => "btn btn-info")
+    - if @build.project.log_path != "" and @build.project.log_path != nil
+      - if Dir.exists?(File.join(@build.build_dir, @build.project.log_path)) and Dir.exists?(File.join(@build.build_dir_public))
+        = link_to("Project logs", "/builds/log/#{@build.id}/", :class => "btn btn-info")
 
 #build.row
   .span7

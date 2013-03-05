@@ -1,0 +1,23 @@
+%ul.thumbnails.capybara
+  - dirs.each do |dir|
+    %li.span2
+      .thumbnail
+        = link_to(content_tag(:i, "", :class => 'icon-160-120 icon-folder-open').html_safe, dir[:url])
+        .caption
+          %p
+            %strong
+              = link_to(dir[:basename], dir[:url])
+
+  - files.each do |file|
+    %li.span2
+      .thumbnail
+        - if file[:basename].end_with?(".jpg") || file[:basename].end_with?(".png")
+          = link_to(image_tag(file[:url], :class => 'image-160-120'), file[:url])
+        - elsif file[:basename].end_with?(".html") || file[:basename].end_with?(".htm") || file[:basename].end_with?(".log") || file[:basename].end_with?(".txt")
+          = link_to(content_tag(:i, "", :class => 'icon-160-120 icon-file-alt').html_safe, file[:url])
+        - else
+          = link_to(content_tag(:i, "", :class => 'icon-160-120 icon-file').html_safe, file[:url])
+
+        .caption
+          %p
+            = link_to(file[:basename], file[:url]) 

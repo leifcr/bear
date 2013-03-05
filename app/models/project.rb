@@ -175,7 +175,7 @@ class Project < ActiveRecord::Base
   end
 
   def remove_old_public_folder
-    if self.name_changed? && self.total_builds != 0
+    if (self.name_changed? or self.log_path_changed? or self.output_path_changed?) && self.total_builds != 0
       remove_public_folder(self.name_was)
       @changed_name = true
     else 
@@ -190,7 +190,7 @@ class Project < ActiveRecord::Base
       self.builds.each do |build|
         build.set_directores_with_dir(build_dir_from_name(self.name))
         build.save!
-        build.create_symlink_output_path
+        build.create_public_symlinks
       end
     end
     true
