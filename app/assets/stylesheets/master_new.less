@@ -16,35 +16,18 @@ pre.unobstrusive {
 
 pre.code {
   word-wrap: break-word;
-  line-height: 140%;
+  line-height: 130%;
   font-size: 90%;
-  margin-top: 5px;
+  margin-top: 4px;
   color: white;
   background-color: #444;
   text-shadow: none;
   text-shadow: 0 1px 0 #292929;
+  span.stderr {
+    color:rgb(230, 148, 147);
+  }
 }
 
-pre.code p {
-  margin: 0;
-  background-color: #555;
-  margin-left: -9px;
-  padding: 0 9px;
-  font-family: inherit;
-  line-height: inherit;
-  font-size: inherit;
-  width: 99.9%;
-  margin-top: 0px;
-}
-
-pre.code.failed {
-  background-color: #B94A48;
-  text-shadow: 0 1px 0 #333;
-}
-
-pre.code.failed p {
-  background-color: #d75b59;
-}
 
 a:hover {
   text-decoration: none;
@@ -137,4 +120,44 @@ ul.in-recent-builds {
 
 hr.low-margin {
   margin: 10px 0;
+}
+
+@in_progress_img: asset-path("failed.png");
+@failed_img:      asset-path("failed.png");
+@ok_img:          asset-path("ok.png");
+@hook_error_img:  asset-path("hook_error.png");
+@queue_img:       asset-path("queue.png");
+
+.list-with-status {
+  position: relative;
+  list-style-type: none;
+  padding: 0px;
+  margin: 0px;
+
+  li {
+    background-repeat: no-repeat;
+    background-position: 0px 0px; 
+    margin:0;
+    padding:0;
+    padding-left: 18px; 
+  }  
+
+  li.status_build_ok pre.step {
+    display:none; 
+  }  
+  li.status_build_in_progress, li.status_build_part_in_progress {
+    background-image: url(@in_progress_img);
+  }
+  li.status_build_ok, li.status_build_part_ok {
+    background-image: url(@ok_img);
+  }
+  li.status_hook_error {
+    background-image: url(@hook_error_img);
+  }
+  li.status_build_in_queue, li.status_build_part_in_queue {
+    background-image: url(@queue_img);
+  }
+  li.status_build_failed, li.status_build_part_failed {
+    background-image: url(@failed_img);
+  }
 }
