@@ -11,6 +11,10 @@ h4. Features:
 
 I'm currently running one instance on a VPS node, and it works quite well for Ruby (Rails/Sinatra), php, and node.js projects. As well as projects using QUnit tests in browsers (Running through selenium or poltergeist).
 
+h4. Why rename the project and drop the fork?
+
+It wasn't longer possible to do a pull request to the original project without breaking stuff for people. It is therefore better to continue this project as a separate project instead of a fork of BigTuna.
+
 h2. Users and projects
 
 * A project can have many users and a user can have many projects.
