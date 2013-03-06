@@ -54,7 +54,7 @@ module ApplicationHelper
   def formatted_status(status)
     case status
     when BuildPart::STATUS_OK
-      "works"
+      "ok"
     when BuildPart::STATUS_FAILED
       "failed"
     when BuildPart::STATUS_IN_QUEUE
@@ -74,6 +74,19 @@ module ApplicationHelper
       "notice"
     when BuildPart::STATUS_PROGRESS
       "warning"
+    end
+  end
+
+  def text_status_css_class(status)
+    case status
+    when BuildPart::STATUS_OK
+      "text-success"
+    when BuildPart::STATUS_FAILED
+      "text-error"
+    when BuildPart::STATUS_IN_QUEUE
+      "text-info"
+    when BuildPart::STATUS_PROGRESS
+      "text-warning"
     end
   end
 

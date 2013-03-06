@@ -13,29 +13,29 @@
 
   .btn-group.light
     - if params[:stderr].nil?
-      = link_to("Show stderr", build_path(@build, :stderr => 1), :class => "btn btn-inverse")
+      = link_to("Show stderr", build_path(@build, :stderr => 1), :class => "btn btn-small btn-inverse")
     - else
-      = link_to("Hide stderr", build_path(@build), :class => "btn btn-inverse")
+      = link_to("Hide stderr", build_path(@build), :class => "btn btn-small btn-inverse")
     - if (current_user.projects.include?(@build.project))
-      = link_to("Edit project", edit_project_path(@build.project), :class => "btn btn-primary")
-      = link_to("Delete build", build_path(@build), :method => :delete, :confirm => "Are you sure?", :class => "btn btn-danger")
+      = link_to("Edit project", edit_project_path(@build.project), :class => "btn btn-small btn-primary")
+      = link_to("Delete build", build_path(@build), :method => :delete, :confirm => "Are you sure?", :class => "btn btn-small btn-danger")
     - if @build.project.output_path != "" and @build.project.output_path != nil
       - if Dir.exists?(File.join(@build.build_dir, @build.project.output_path)) and Dir.exists?(File.join(@build.build_dir_public))
-        = link_to("Project output", "/builds/output/#{@build.id}/", :class => "btn btn-info")
+        = link_to("Project output", "/builds/output/#{@build.id}/", :class => "btn btn-small btn-info")
     - if @build.project.log_path != "" and @build.project.log_path != nil
       - if Dir.exists?(File.join(@build.build_dir, @build.project.log_path)) and Dir.exists?(File.join(@build.build_dir_public))
-        = link_to("Project logs", "/builds/log/#{@build.id}/", :class => "btn btn-info")
+        = link_to("Project logs", "/builds/log/#{@build.id}/", :class => "btn btn-small btn-info")
 
 #build.row
-  .span7
+  .span8
     #ajax-reload= @build.ajax_reload?
 
     = render :partial => 'build', :locals => { :build => @build }
 
     - unless @build.finished?
       - build_path_params = params[:stderr] ? {:format => :js, :stderr => 1} : {:format => :js}
-      = ajaxReload(build_path(@build, build_path_params))
-  .span5
+      =# ajaxReload(build_path(@build, build_path_params))
+  .span4
     %div.project-actions
       = render :partial => 'build_details'
 

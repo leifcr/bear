@@ -11,7 +11,7 @@ function ajaxReload(url){
   }
 }
 
-jQuery('ol.list-with-status div.command_box').click(function() {
+// jQuery('ol.list-with-status div.command_box').click(function() {
   //console.log($('pre.step', this));
-  console.log ('foo');
-});
+  // console.log ('foo');
+// });

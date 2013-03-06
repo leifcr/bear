@@ -1,0 +1,12 @@
+%div{:id => "step_outer_#{step_no}", :class => output.exit_code == 0 ? "status_build_ok output_box" : "status_build_failed output_box"}
+  - if output.exit_code.nil?
+    %samp.command= "Task was not executed"
+  - elsif output.exit_code != 0
+    %samp.command= "Exit code: <strong>#{output.exit_code}</strong>".html_safe
+
+  %pre.command= "$ #{output.command}"
+  %pre{:class => output.exit_code == 0 ? 'code' : 'code failed'}
+    - if !output.exit_code.nil? and output.has_output?
+      - output.all.each do |type, text|
+        %span{:class => "output_line #{type}"}= strip_shell_colorization(text)
+%br
