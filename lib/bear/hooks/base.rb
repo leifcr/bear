@@ -1,10 +1,10 @@
-module BigTuna::Hooks
+module Bear::Hooks
   class Base
     include Rails.application.routes.url_helpers
 
     def self.inherited(klass)
-      BigTuna.hooks << klass
-      BigTuna.logger.info("Registered hook: %s" % [klass])
+      Bear.hooks << klass
+      Bear.logger.info("Registered hook: %s" % [klass])
     end
 
     def default_url_options

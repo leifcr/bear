@@ -1,6 +1,6 @@
 require 'test_helper'
 
-if BigTuna::VCS::Mercurial.supported?
+if Bear::VCS::Mercurial.supported?
 
 class MercurialVCSTest < ActiveSupport::TestCase
   def setup
@@ -66,7 +66,7 @@ class MercurialVCSTest < ActiveSupport::TestCase
 
   private
   def init_repo(dir = "test/files/repo", branch = "default")
-    BigTuna::VCS::Mercurial.new(dir, branch)
+    Bear::VCS::Mercurial.new(dir, branch)
   end
 end
 

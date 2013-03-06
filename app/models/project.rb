@@ -18,7 +18,7 @@ class Project < ActiveRecord::Base
   
   validates :hook_name, :uniqueness => {:allow_blank => true}
   validates :name, :presence => true, :uniqueness => true
-  validates :vcs_type, :inclusion => BigTuna.vcses.map { |e| e::VALUE }
+  validates :vcs_type, :inclusion => Bear.vcses.map { |e| e::VALUE }
   validates :vcs_source, :presence => true
   validates :vcs_branch, :presence => true
   
@@ -27,7 +27,7 @@ class Project < ActiveRecord::Base
   acts_as_list
 
   def self.ajax_reload?
-    case BigTuna.ajax_reload
+    case Bear.ajax_reload
     when "always" then true
     when "building" then self.all.map(&:recent_build).compact.map(&:ajax_reload?).include?(true)
     else false
@@ -60,7 +60,7 @@ class Project < ActiveRecord::Base
   end
 
   def ajax_reload?
-    case BigTuna.ajax_reload
+    case Bear.ajax_reload
     when "always" then true
     when "building" then self.recent_build.try(:ajax_reload?)
     else false
@@ -83,7 +83,7 @@ class Project < ActiveRecord::Base
 
   def hooks
     hook_hash = {}
-    BigTuna.hooks.each do |hook|
+    Bear.hooks.each do |hook|
       hook_hash[hook::NAME] = hook
     end
     Hook.where(:project_id => self.id)
@@ -110,7 +110,7 @@ class Project < ActiveRecord::Base
 
   def vcs
     return @vcs if @vcs
-    klass = BigTuna.vcses.find { |e| e::VALUE == vcs_type }
+    klass = Bear.vcses.find { |e| e::VALUE == vcs_type }
     raise ArgumentError.new("VCS not supported: %p" % [vcs_type]) if klass.nil?
     @vcs = klass.new(self.vcs_source, self.vcs_branch)
   end
@@ -142,28 +142,28 @@ class Project < ActiveRecord::Base
   
   private
   def build_dir_from_name(name)
-    if BigTuna.build_dir[0] == '/'[0]
-      File.join(BigTuna.build_dir, name.downcase.gsub(/[^A-Za-z0-9]/, "_"))
+    if Bear.build_dir[0] == '/'[0]
+      File.join(Bear.build_dir, name.downcase.gsub(/[^A-Za-z0-9]/, "_"))
     else
       # check if it's a symlinked path (could be if this is a deployment through capistrano)
       begin
-        real_path = Pathname.new(File.join(Rails.root, BigTuna.build_dir)).realpath().to_s
+        real_path = Pathname.new(File.join(Rails.root, Bear.build_dir)).realpath().to_s
       rescue 
-        real_path = File.join(Rails.root, BigTuna.build_dir)
+        real_path = File.join(Rails.root, Bear.build_dir)
       end
       File.join(real_path, name.downcase.gsub(/[^A-Za-z0-9]/, "_"))
     end
   end
 
   def public_dir_from_name(name)
-    File.join(Rails.root, "public", BigTuna.build_dir, name.downcase.gsub(/[^A-Za-z0-9]/, "_"))
+    File.join(Rails.root, "public", Bear.build_dir, name.downcase.gsub(/[^A-Za-z0-9]/, "_"))
   end
 
   def remove_build_folder
     if File.directory?(self.build_dir)
       FileUtils.rm_rf(self.build_dir)
     else
-      Rails.logger.debug("[BigTuna] Couldn't find build dir: %p" % [self.build_dir])
+      Rails.logger.debug("[Bear] Couldn't find build dir: %p" % [self.build_dir])
     end
   end
 

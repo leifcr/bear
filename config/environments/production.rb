@@ -1,4 +1,4 @@
-BigTuna::Application.configure do
+Bear::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
 
   # The production environment is meant for finished, "live" apps.
@@ -53,10 +53,10 @@ BigTuna::Application.configure do
     warn "WARNING: config/email.yml does not exist. Email notifications will not work."
   end
 
-  if BigTuna.config[:url_host]
-    config.action_mailer.default_url_options = { :host => BigTuna.config[:url_host] }
+  if Bear.config[:url_host]
+    config.action_mailer.default_url_options = { :host => Bear.config[:url_host] }
   else
-    warn "WARNING: No url_host set in config/bigtuna.yml. Notification links will not work."
+    warn "WARNING: No url_host set in config/bear.yml. Notification links will not work."
   end
 
   config.assets.initialize_on_precompile = false

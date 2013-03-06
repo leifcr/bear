@@ -25,9 +25,9 @@ class HooksController < ApplicationController
 
     projects = Project.where(["vcs_source LIKE ?", search_term]).where(:vcs_branch => branch).all
 
-    if BigTuna.github_secure.nil?
+    if Bear.github_secure.nil?
       render :text => "github secure token is not set up", :status => 403
-    elsif projects.present? && params[:secure] == BigTuna.github_secure
+    elsif projects.present? && params[:secure] == Bear.github_secure
       trigger_and_respond(projects)
     elsif projects.empty?
       render :text => "project not found", :status => 404
@@ -57,9 +57,9 @@ class HooksController < ApplicationController
 
     projects = Project.where(:vcs_source => source).where(:vcs_branch => branches).all
 
-    if BigTuna.bitbucket_secure.nil?
+    if Bear.bitbucket_secure.nil?
       render :text => "bitbucket secure token is not set up", :status => 403
-    elsif projects and params[:secure] == BigTuna.bitbucket_secure
+    elsif projects and params[:secure] == Bear.bitbucket_secure
       trigger_and_respond(projects)
     else
       render :text => "invalid secure token", :status => 404

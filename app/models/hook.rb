@@ -7,7 +7,7 @@ class Hook < ActiveRecord::Base
   before_create :enable_all_hooks
 
   def backend
-    @backend ||= BigTuna.hooks.find { |e| e::NAME == hook_name }.new
+    @backend ||= Bear.hooks.find { |e| e::NAME == hook_name }.new
   end
 
   # def configuration=(attr={})
@@ -63,9 +63,9 @@ class Hook < ActiveRecord::Base
     begin
       blk.call
     rescue Exception => e
-      BigTuna.logger.error("Exception while running #{hook_name} hook")
-      BigTuna.logger.error(e.message)
-      BigTuna.logger.error(e.backtrace.join("\n"))
+      Bear.logger.error("Exception while running #{hook_name} hook")
+      Bear.logger.error(e.message)
+      Bear.logger.error(e.backtrace.join("\n"))
       build.status = Build::STATUS_HOOK_ERROR
       build.save!
     end

@@ -1,6 +1,6 @@
 require 'test_helper'
 
-if BigTuna::VCS::Git.supported?
+if Bear::VCS::Git.supported?
 
 class GitVCSTest < ActiveSupport::TestCase
 
@@ -64,7 +64,7 @@ class GitVCSTest < ActiveSupport::TestCase
   
   private
   def init_repo(dir = "test/files/repo", branch = "master")
-    BigTuna::VCS::Git.new(dir, branch)
+    Bear::VCS::Git.new(dir, branch)
   end
 end
 

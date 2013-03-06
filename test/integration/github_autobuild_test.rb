@@ -10,7 +10,7 @@ class AutobuildTest < ActionController::IntegrationTest
     assert response.body.include?("hook name \"not_found_halp\" not found")
   end
 
-  test "if github project does not exist in bigtuna, return 404" do
+  test "if github project does not exist in bear, return 404" do
     with_github_token do
       post("/hooks/build/github/#{@token}",
            :payload => {
@@ -88,7 +88,7 @@ class AutobuildTest < ActionController::IntegrationTest
   test "github token has to be set up" do
     project1 = github_project(:name => "obywatelgc", :vcs_branch => "master")
     with_github_token(nil) do
-      assert_equal nil, BigTuna.github_secure
+      assert_equal nil, Bear.github_secure
       post "/hooks/build/github/4ff", :payload => github_payload(project1)
       assert_status_code(403)
       assert response.body.include?("github secure token is not set up")
@@ -109,19 +109,19 @@ class AutobuildTest < ActionController::IntegrationTest
 
   private
   def github_project(opts = {})
-    project = Project.make!({:vcs_source => "git://github.com/appelier/bigtuna.git", :vcs_branch => "master", :vcs_type => "git", :max_builds => 2}.merge(opts))
+    project = Project.make!({:vcs_source => "git://github.com/appelier/bear.git", :vcs_branch => "master", :vcs_type => "git", :max_builds => 2}.merge(opts))
     step_list = StepList.make!(:project => project, :steps => "ls")
     project
   end
 
   def with_github_token(token = Array.new(8) { ('a'..'z').to_a.sample }.join)
     @token = token
-    old_token = BigTuna.config[:github_secure]
+    old_token = Bear.config[:github_secure]
     begin
-      BigTuna.config[:github_secure] = token
+      Bear.config[:github_secure] = token
       yield
     ensure
-      BigTuna.config[:github_secure] = old_token
+      Bear.config[:github_secure] = old_token
       @token = nil
     end
   end

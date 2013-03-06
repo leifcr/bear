@@ -1,10 +1,10 @@
 require 'open3'
-module BigTuna
+module Bear
   class Runner
     def self.execute(dir, command, timeout = nil)
-      timeout = ::BigTuna.timeout if timeout.nil? or timeout == 0
+      timeout = ::Bear.timeout if timeout.nil? or timeout == 0
       end_command = "cd #{dir} && #{command}"
-      BigTuna.logger.debug("Executing: #{end_command}")
+      Bear.logger.debug("Executing: #{end_command}")
       with_clean_env(dir) do
         begin
           Timeout.timeout(timeout) do # 15 minutes default timeout

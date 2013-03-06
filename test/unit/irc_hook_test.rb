@@ -5,7 +5,7 @@ class IrcHookTest < ActiveSupport::TestCase
   include WithTestRepo
 
   test "IRC message stating that build failed is sent when build failed" do
-    # BigTuna::Hooks::Irc::Job.any_instance.expects(:perform).at_least_once.returns(true)
+    # Bear::Hooks::Irc::Job.any_instance.expects(:perform).at_least_once.returns(true)
 
     project = irc_project_with_steps("ls invalid_file_here")
     hook = project.hooks.first
@@ -17,7 +17,7 @@ class IrcHookTest < ActiveSupport::TestCase
   end
 
   # test "IRC message stating that build is back to normal is sent when build fixed" do
-  #   # BigTuna::Hooks::Irc::Job.any_instance.expects(:perform).at_least_once.returns(true)
+  #   # Bear::Hooks::Irc::Job.any_instance.expects(:perform).at_least_once.returns(true)
 
   #   project = irc_project_with_steps("ls invalid_file_here")
   #   hook = project.hooks.first
@@ -31,7 +31,7 @@ class IrcHookTest < ActiveSupport::TestCase
   # end
 
   test "irc message sent when the build passed" do
-    # BigTuna::Hooks::Irc::Job.any_instance.expects(:perform).at_least_once.returns(true)
+    # Bear::Hooks::Irc::Job.any_instance.expects(:perform).at_least_once.returns(true)
 
     project = irc_project_with_steps("ls .")
     hook = project.hooks.first

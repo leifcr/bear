@@ -1,5 +1,5 @@
 require 'lib/shout-bot' # note : this should be updated in newer versions
-module BigTuna
+module Bear
   class Hooks::Irc < Hooks::Base
     NAME = "irc"
 

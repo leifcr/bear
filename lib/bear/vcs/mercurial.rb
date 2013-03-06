@@ -1,4 +1,4 @@
-module BigTuna::VCS
+module Bear::VCS
   class Mercurial < Base
     NAME = "Mercurial"
     VALUE = "hg"
@@ -6,8 +6,8 @@ module BigTuna::VCS
     def self.supported?
       return @_supported unless @_supported.nil?
       begin
-        @_supported = BigTuna::Runner.execute(Dir.pwd, "hg --version").ok?
-      rescue BigTuna::Runner::Error => e
+        @_supported = Bear::Runner.execute(Dir.pwd, "hg --version").ok?
+      rescue Bear::Runner::Error => e
         @_supported = false
       end
       @_supported
@@ -17,8 +17,8 @@ module BigTuna::VCS
       info = {}
       command = "hg log --limit 1 --rev #{self.branch} --template='{node}\n{author|person}\n{author|email}\n{date|date}\n{desc}'"
       begin
-        output = BigTuna::Runner.execute(self.source, command)
-      rescue BigTuna::Runner::Error => e
+        output = Bear::Runner.execute(self.source, command)
+      rescue Bear::Runner::Error => e
         raise VCS::Error.new("Couldn't access repository log")
       end
       head_hash = output.stdout
@@ -32,12 +32,12 @@ module BigTuna::VCS
 
     def clone(where_to)
       command = "hg clone -u #{self.branch} #{self.source} #{where_to}"
-      BigTuna::Runner.execute(Dir.pwd, command)
+      Bear::Runner.execute(Dir.pwd, command)
     end
 
     def update(where_to)
       command = "hg pull -u"
-      BigTuna::Runner.execute(where_to, command)
+      Bear::Runner.execute(where_to, command)
     end
   end
 end

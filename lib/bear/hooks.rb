@@ -1,4 +1,4 @@
-module BigTuna
+module Bear
   module Hooks
   end
 end

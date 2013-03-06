@@ -13,7 +13,7 @@ class ActiveSupport::TestCase
 
   def teardown
     DatabaseCleaner.clean
-    FileUtils.rm_rf(File.join(Rails.root.to_s, BigTuna.build_dir))
+    FileUtils.rm_rf(File.join(Rails.root.to_s, Bear.build_dir))
   end
 
   def assert_invalid(klass, field, &block)
@@ -25,18 +25,18 @@ class ActiveSupport::TestCase
   end
 
   def with_hook_enabled(hook, &blk)
-    BigTuna.hooks << hook
+    Bear.hooks << hook
     blk.call
   ensure
-    BigTuna.hooks.pop
+    Bear.hooks.pop
   end
 
   def with_config(key, new_value, &blk)
-    old_value = BigTuna.config[key]
-    BigTuna.config[key] = new_value
+    old_value = Bear.config[key]
+    Bear.config[key] = new_value
     blk.call
   ensure
-    BigTuna.config[key] = old_value
+    Bear.config[key] = old_value
   end
 
   def project_with_steps(project_attrs, *steps)

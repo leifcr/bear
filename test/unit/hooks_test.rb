@@ -1,6 +1,6 @@
 require 'test_helper'
 
-module BigTuna
+module Bear
   class Hooks::RaisingHook
     NAME = "raising_hook"
 
@@ -14,7 +14,7 @@ class HooksUnitTest < ActiveSupport::TestCase
   include WithTestRepo
 
   test "if hook produces error it is handled and marks build as hook failed" do
-    with_hook_enabled(BigTuna::Hooks::RaisingHook) do
+    with_hook_enabled(Bear::Hooks::RaisingHook) do
       project = project_with_steps({
         :name => "repo",
         :vcs_source => "test/files/repo",
@@ -30,7 +30,7 @@ class HooksUnitTest < ActiveSupport::TestCase
   end
 
   test "if hook is not enabled it won't get executed" do
-    with_hook_enabled(BigTuna::Hooks::RaisingHook) do
+    with_hook_enabled(Bear::Hooks::RaisingHook) do
       project = project_with_steps({
         :name => "repo",
         :vcs_source => "test/files/repo",

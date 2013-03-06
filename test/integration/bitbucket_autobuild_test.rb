@@ -18,12 +18,12 @@ class BitbucketAutobuildTest < ActionController::IntegrationTest
   end
 
   test "if bitbucket posts hook we look for specified branch to build" do
-    project1 = bitbucket_project(:name => "superproject1", :vcs_source => "ssh://hg@bitbucket.org/foo/bigtuna/", :vcs_branch => "default")
-    project2 = bitbucket_project(:name => "superproject2", :vcs_source => "ssh://hg@bitbucket.org/foo/bigtuna/", :vcs_branch => "development")
-    old_token = BigTuna.config[:bitbucket_secure]
+    project1 = bitbucket_project(:name => "superproject1", :vcs_source => "ssh://hg@bitbucket.org/foo/bear/", :vcs_branch => "default")
+    project2 = bitbucket_project(:name => "superproject2", :vcs_source => "ssh://hg@bitbucket.org/foo/bear/", :vcs_branch => "development")
+    old_token = Bear.config[:bitbucket_secure]
     begin
-      BigTuna.config[:bitbucket_secure] = "mytoken"
-      token = BigTuna.bitbucket_secure
+      Bear.config[:bitbucket_secure] = "mytoken"
+      token = Bear.bitbucket_secure
       assert_difference("project1.builds.count", +1) do
         assert_difference("project2.builds.count", 0) do
           post "/hooks/build/bitbucket/#{token}", :payload => bitbucket_payload(project1)
@@ -32,16 +32,16 @@ class BitbucketAutobuildTest < ActionController::IntegrationTest
         end
       end
     ensure
-      BigTuna.config[:bitbucket_secure] = old_token
+      Bear.config[:bitbucket_secure] = old_token
     end
   end
 
   test "bitbucket post with invalid token won't build anything" do
-    project1 = bitbucket_project(:name => "obywatelgc",  :vcs_source => "ssh://hg@bitbucket.org/foo/bigtuna/", :vcs_branch => "default")
-    old_token = BigTuna.config[:bitbucket_secure]
+    project1 = bitbucket_project(:name => "obywatelgc",  :vcs_source => "ssh://hg@bitbucket.org/foo/bear/", :vcs_branch => "default")
+    old_token = Bear.config[:bitbucket_secure]
     begin
-      BigTuna.config[:bitbucket_secure] = "mytoken"
-      token = BigTuna.bitbucket_secure
+      Bear.config[:bitbucket_secure] = "mytoken"
+      token = Bear.bitbucket_secure
       invalid_token = token + "a"
       assert_difference("Build.count", 0) do
         post "/hooks/build/bitbucket/#{invalid_token}", :payload => bitbucket_payload(project1)
@@ -49,41 +49,41 @@ class BitbucketAutobuildTest < ActionController::IntegrationTest
         assert response.body.include?("invalid secure token")
       end
     ensure
-      BigTuna.config[:bitbucket_secure] = old_token
+      Bear.config[:bitbucket_secure] = old_token
     end
   end
 
   test "bitbucket token has to be set up" do
     project1 = bitbucket_project(:name => "obywatelgc", :vcs_branch => "default")
-    old_token = BigTuna.config[:bitbucket_secure]
+    old_token = Bear.config[:bitbucket_secure]
     begin
-      BigTuna.config[:bitbucket_secure] = nil
-      assert_equal nil, BigTuna.bitbucket_secure
+      Bear.config[:bitbucket_secure] = nil
+      assert_equal nil, Bear.bitbucket_secure
       post "/hooks/build/bitbucket/4ff", :payload => bitbucket_payload(project1)
       assert_status_code(403)
       assert response.body.include?("bitbucket secure token is not set up")
     ensure
-      BigTuna.config[:bitbucket_secure] = old_token
+      Bear.config[:bitbucket_secure] = old_token
     end
   end
 
   test 'bitbucket payload for skipping test' do
-    project1 = bitbucket_project(:name => "superproject1", :vcs_source => "ssh://hg@bitbucket.org/foo/bigtuna/", :vcs_branch => "default")
-    old_token = BigTuna.config[:bitbucket_secure]
+    project1 = bitbucket_project(:name => "superproject1", :vcs_source => "ssh://hg@bitbucket.org/foo/bear/", :vcs_branch => "default")
+    old_token = Bear.config[:bitbucket_secure]
     begin
-      BigTuna.config[:bitbucket_secure] = "mytoken"
-      token = BigTuna.bitbucket_secure
+      Bear.config[:bitbucket_secure] = "mytoken"
+      token = Bear.bitbucket_secure
       assert_difference("project1.builds.count", 0) do
         post "/hooks/build/bitbucket/#{token}", :payload => bitbucket_payload(project1, "Don't build [ci skip]")
       end
     ensure
-      BigTuna.config[:bitbucket_secure] = old_token
+      Bear.config[:bitbucket_secure] = old_token
     end
   end
 
   private
   def bitbucket_project(opts = {})
-    project = Project.make!({:vcs_source => "ssh://hg@bitbucket.org/foo/bigtuna/", :vcs_branch => "default", :vcs_type => "hg", :max_builds => 2}.merge(opts))
+    project = Project.make!({:vcs_source => "ssh://hg@bitbucket.org/foo/bear/", :vcs_branch => "default", :vcs_type => "hg", :max_builds => 2}.merge(opts))
     step_list = StepList.make!(:project => project, :steps => "ls")
     project
   end
@@ -91,13 +91,13 @@ class BitbucketAutobuildTest < ActionController::IntegrationTest
   def bitbucket_payload(project, message = "Ahh.")
     "{
        \"repository\":{
-          \"absolute_url\":\"/foo/bigtuna/\",
+          \"absolute_url\":\"/foo/bear/\",
           \"fork\": false, 
           \"is_private\": false,
           \"name\":\"#{project.name}\",
           \"owner\":\"foo\",
           \"scm\": \"hg\",
-          \"slug\":\"bigtuna\",
+          \"slug\":\"bear\",
           \"website\":\"\"
        },
        \"commits\":[

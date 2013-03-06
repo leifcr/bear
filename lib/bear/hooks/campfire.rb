@@ -1,4 +1,4 @@
-module BigTuna
+module Bear
   class Hooks::Campfire < Hooks::Base
     NAME = 'campfire'
 

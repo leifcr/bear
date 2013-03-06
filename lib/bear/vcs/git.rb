@@ -1,4 +1,4 @@
-module BigTuna::VCS
+module Bear::VCS
   class Git < Base
     NAME = "Git"
     VALUE = "git"
@@ -6,8 +6,8 @@ module BigTuna::VCS
     def self.supported?
       return @_supported unless @_supported.nil?
       begin
-        @_supported = BigTuna::Runner.execute(Dir.pwd, "git --version").ok?
-      rescue BigTuna::Runner::Error => e
+        @_supported = Bear::Runner.execute(Dir.pwd, "git --version").ok?
+      rescue Bear::Runner::Error => e
         @_supported = false
       end
       @_supported &&= self.version_at_least?("1.5.1")
@@ -15,7 +15,7 @@ module BigTuna::VCS
 
     def self.version_at_least?(version)
       if @_version.nil?
-        output = BigTuna::Runner.execute(Dir.pwd, "git --version").stdout.first
+        output = Bear::Runner.execute(Dir.pwd, "git --version").stdout.first
         @_version = output.match(/\d+\.\d+\.\d+/)[0].split(".").map { |e| e.to_i }
       end
       parts = version.split(".").map { |e| e.to_i }
@@ -33,9 +33,9 @@ module BigTuna::VCS
       info = {}
       command = "git log --max-count=1 --pretty=format:%H%n%an%n%ae%n%ad%n%s #{self.branch}"
       begin
-        output = BigTuna::Runner.execute(self.source, command)
-      rescue BigTuna::Runner::Error => e
-        raise BigTuna::VCS::Error.new("Couldn't access repository log")
+        output = Bear::Runner.execute(self.source, command)
+      rescue Bear::Runner::Error => e
+        raise Bear::VCS::Error.new("Couldn't access repository log")
       end
       head_hash = output.stdout
       info[:commit] = head_hash.shift
@@ -52,12 +52,12 @@ module BigTuna::VCS
       else
         command = "mkdir -p #{where_to} && cd #{where_to} && git init && git pull #{self.source} #{self.branch} && git branch -M master #{self.branch}"
       end
-      BigTuna::Runner.execute(Dir.pwd, command)
+      Bear::Runner.execute(Dir.pwd, command)
     end
     
     def update(where_to)
       command = 'git clean -fd && git pull'
-      BigTuna::Runner.execute(where_to, command)
+      Bear::Runner.execute(where_to, command)
     end
   end
 end

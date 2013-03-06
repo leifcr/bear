@@ -1,10 +1,15 @@
 h1. About
 
-BigTuna is a continuous integration software built on top of the Rails 3 framework. It aims to be project--agnostic and extendible.
+Bear is a continuous integration software built on top of the Rails 3 framework. If you can do it through command line, Bear can handle it.
 
-This version implements Devise for authentication, it is updated to Rails 3.2, and uses newer bootstrap integration.
+h4. Features:
+  
+  * Authentication through Devise
+  * Projects with multiple configurations/scenarios
+  * Configurations can have several steps/command lines to run
+  * RSS/Atom feed to get your latest build status
 
-I'm currently running one instance on a VPS node, and it works quite well for Ruby (Rails/Sinatra), php, and node.js projects. As well as projects using QUnit tests in browsers (Running through selenium).
+I'm currently running one instance on a VPS node, and it works quite well for Ruby (Rails/Sinatra), php, and node.js projects. As well as projects using QUnit tests in browsers (Running through selenium or poltergeist).
 
 h2. Users and projects
 
@@ -16,15 +21,19 @@ h2. Project output files
 
 If your project has any files that is passed on during test, be sure to setup the output directory on your project, so it's properly symlinked through the public folder.
 
-NOTE: This requires your nginx/passenger etc to handle the html/png/txt files as they are not served by the app itself. (If your setup is correct, any static html/png files should be served before hitting the BigTuna app)
+NOTE: This requires your nginx/passenger etc to handle the html/png/txt files as they are not served by the app itself. (If your setup is correct, any static html/png files should be served before hitting the Bear app)
+
+h2. Project log files
+
+Same as for project output. Working on some sort of ANSI/HTML conversion with colours. Please do a pull-request if you know how to do this
 
 h2. Skipping a build
 
-Add [ci skip] in your commit message, and BigTuna CI will skip that build. same as Travis-ci does.
+Add [ci skip] in your commit message, and Bear CI will skip that build. same as Travis-ci does.
 
 h3. Capybara
 
-If you use either capybara-screenshot or call page.save_page("something.html"), you can view the files within the build on your BigTuna CI server. It requires you to setup Capybara.save_and_open_page_path to the same as you setup as project output folder.
+If you use either capybara-screenshot or call page.save_page("something.html"), you can view the files within the build on your Bear CI server. It requires you to setup Capybara.save_and_open_page_path to the same as you setup as project output folder.
 
 h2. Future plans
 
@@ -34,29 +43,22 @@ It's up to what people want, but here are some thoughts:
 * Removal of unused hooks, and perhaps implement new ones
 * Multiple post hooks
 
-h1. Contributors
+h1. History
 
-This updated version is maintained by "Leif Ringstad":http://twitter.com/leifcr
+Bear evolved from BigTuna, as I needed a CI, and I wanted to run it on my own box
 
-BigTuna was originally created by "Michał Bugno":http://twitter.com/michalbugno and "Antek Piechnik":http://twitter.com/antekpiechnik. The following people have kindly contributed to make it a better project:
+Bear is maintained by "Leif Ringstad":http://twitter.com/leifcr
 
-* "David Rouchy":https://github.com/drouchy
-* "François Lamontagne":http://twitter.com/franklamontagne
-* "Víctor Martínez":http://twitter.com/knoopx
-* "unsay":http://twitter.com/unsay
-* "Jonathan Dance":https://github.com/wuputah
-* "Pawel Obrok":https://github.com/obrok
-* "Pawel Pierzchala":https://github.com/wrozka
-* ...and others (some mentioned in the "pull request * list":https://github.com/appelier/bigtuna/pulls)
+BigTuna was originally created by "Michał Bugno":http://twitter.com/michalbugno and "Antek Piechnik":http://twitter.com/antekpiechnik. A lot of have kindly contributed to make it a better project.
 
 h1. Test Status 
 
-!https://travis-ci.org/leifcr/bigtuna.png?branch=master!:http://travis-ci.org/leifcr/bigtuna
+!https://travis-ci.org/leifcr/bear.png?branch=master!:http://travis-ci.org/leifcr/bear
 
 h1. License
 
-bc.. Copyright (c) 2010  Michal Bugno, Antek Piechnik
-Copyright (c) 2012 Leif Ringstad
+bc.. Bear: Copyright (c) 2012 Leif Ringstad
+BigTuna: Copyright (c) 2010  Michal Bugno, Antek Piechnik
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

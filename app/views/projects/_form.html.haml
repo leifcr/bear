@@ -5,9 +5,9 @@
 .inputs
   = f.input :name, :input_html => {:class => "span3"}
   = f.input :vcs_type do 
-    = f.select(:vcs_type, BigTuna.vcses.map { |klass| [klass::NAME, klass::VALUE] }, {}, {:class => 'span3'})
+    = f.select(:vcs_type, Bear.vcses.map { |klass| [klass::NAME, klass::VALUE] }, {}, {:class => 'span3'})
   = f.input :vcs_source, :hint => "Typically the address of your repo", :input_html => {:class => "span3"}
-  = f.input :vcs_branch, :hint => "Branch for BigTuna to pull from", :input_html => {:class => "span3"}
+  = f.input :vcs_branch, :hint => "Branch for Bear to pull from", :input_html => {:class => "span3"}
   = f.input :fetch_type, :collection => [[:clone, 'Clone (New copy for each build)'] ,[:incremental, 'Incremental (Build over previous build, and save fetch time)']], :label_method => :last, :value_method => :first, :as => :radio_buttons
   = f.input :max_builds, :hint => "How many builds to keep in memory", :input_html => {:class => "span1"}
   = f.input :output_path, :hint => "If your project outputs files in the build, add the path here to have it accessible", :input_html => {:class => "span3"}
@@ -18,7 +18,7 @@
     %label.control-label.string Hooks
     .controls
       .hooks_input
-        - BigTuna.hooks.each do |hook|
+        - Bear.hooks.each do |hook|
           %div{:id => "hook_#{hook::NAME}", :class => "single_hook"}
             %label{:class => 'checkbox', :for => "project_hooks_#{hook::NAME}"}
               = check_box_tag("project[hooks][#{hook::NAME}]", hook::NAME, f.object.hooks.map { |e| e.hook_name }.include?(hook::NAME))

@@ -1,4 +1,4 @@
-module BigTuna
+module Bear
   class Runner::Output
     TYPE_STDOUT = "stdout"
     TYPE_STDERR = "stderr"

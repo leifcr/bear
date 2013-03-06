@@ -5,4 +5,4 @@ ENV['HGUSER'] = 'test@example.com'
 require File.expand_path('../config/application', __FILE__)
 require 'rake'
 
-BigTuna::Application.load_tasks
+Bear::Application.load_tasks

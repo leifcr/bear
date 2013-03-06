@@ -1,6 +1,6 @@
 require "integration_test_helper"
 
-module BigTuna
+module Bear
   class Hooks::NoConfig
     NAME = "no_config"
   end
@@ -32,7 +32,7 @@ class HooksTest < ActionController::IntegrationTest
   end
 
   test "hooks with no config work as usually" do
-    with_hook_enabled(BigTuna::Hooks::NoConfig) do
+    with_hook_enabled(Bear::Hooks::NoConfig) do
       project = project_with_steps({
         :name => "Koss",
         :vcs_source => "test/files/repo",

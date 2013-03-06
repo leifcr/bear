@@ -1,4 +1,4 @@
-module BigTuna
+module Bear
   class Hooks::Mailer < Hooks::Base
     NAME = "mailer"
 
@@ -18,7 +18,7 @@ module BigTuna
     end
 
     class Sender < ActionMailer::Base
-      self.append_view_path("lib/big_tuna/hooks")
+      self.append_view_path("lib/bear/hooks")
       default :from => "ci-foo@foo.bar"
 
       def build_passed(build, recipients)

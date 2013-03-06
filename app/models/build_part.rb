@@ -29,11 +29,11 @@ class BuildPart < ActiveRecord::Base
     all_steps.each_with_index do |step, index|
       dir, command = step
       begin
-        out = BigTuna::Runner.execute(dir, command, timeout)
+        out = Bear::Runner.execute(dir, command, timeout)
         self.output << out
         exit_code = out.exit_code
         self.save!
-      rescue BigTuna::Runner::Error => e
+      rescue Bear::Runner::Error => e
         self.output << e.output
         exit_code = e.output.exit_code
         break
@@ -41,7 +41,7 @@ class BuildPart < ActiveRecord::Base
     end
     self.status = exit_code == 0 ? STATUS_OK : STATUS_FAILED
     all_steps[output.size .. -1].each do |dir, command|
-      self.output << BigTuna::Runner::Output.new(dir, command)
+      self.output << Bear::Runner::Output.new(dir, command)
     end
     save!
   ensure

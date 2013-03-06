@@ -60,7 +60,7 @@ class MailerHookTest < ActiveSupport::TestCase
        :hooks => {"mailer" => "mailer"},
     }, steps)
     hook = project.hooks.first
-    hook.configuration = {"recipients" => "bigtunatest@mailinator.com"}
+    hook.configuration = {"recipients" => "beartest@mailinator.com"}
     hook.save!
     project
   end
@@ -68,7 +68,7 @@ class MailerHookTest < ActiveSupport::TestCase
   def find_ran_mail_jobs(ran_jobs, mail_method)
     found_mail_jobs = 0
     ran_jobs.each do |job|
-      if (job.handler.include?("BigTuna::Hooks::Mailer::Sender"))
+      if (job.handler.include?("Bear::Hooks::Mailer::Sender"))
         found_mail_jobs += 1 if job.handler.include?("method_name: :#{mail_method}")
       end
     end

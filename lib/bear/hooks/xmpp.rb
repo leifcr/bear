@@ -1,4 +1,4 @@
-module BigTuna
+module Bear
   class Hooks::Xmpp < Hooks::Base
     NAME = "xmpp"
 

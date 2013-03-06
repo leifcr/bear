@@ -1,4 +1,4 @@
-module BigTuna::VCS
+module Bear::VCS
   class Base
     attr_reader :source, :branch
 
@@ -12,8 +12,8 @@ module BigTuna::VCS
     end
 
     def self.inherited(klass)
-      BigTuna.vcses << klass
-      BigTuna.logger.info("Registered VCS: %s" % [klass])
+      Bear.vcses << klass
+      Bear.logger.info("Registered VCS: %s" % [klass])
     end
     
     def support_incremental_build?

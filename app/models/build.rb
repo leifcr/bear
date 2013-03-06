@@ -16,7 +16,7 @@ class Build < ActiveRecord::Base
   serialize :output, Array
 
   def ajax_reload?
-    case BigTuna.ajax_reload
+    case Bear.ajax_reload
     when "always" then true
     when "building" then [STATUS_IN_QUEUE, STATUS_PROGRESS].include?(self.status)
     else false
@@ -31,7 +31,7 @@ class Build < ActiveRecord::Base
       out = fetch_project_sources(project)
       self.update_attributes!(vcs.head_info[0].merge(:output => [out]))
       vcs_ok = true
-    rescue BigTuna::Runner::Error => e
+    rescue Bear::Runner::Error => e
       self.status = STATUS_FAILED
       self.output = [e.output]
       self.save!
@@ -64,7 +64,7 @@ class Build < ActiveRecord::Base
     return @vcs if @vcs
     vcs_type = self.project.vcs_type
     vcs_branch = self.project.vcs_branch
-    klass = BigTuna.vcses.find { |e| e::VALUE == vcs_type }
+    klass = Bear.vcses.find { |e| e::VALUE == vcs_type }
     raise ArgumentError.new("VCS not supported: %p" % [vcs_type]) if klass.nil?
     @vcs = klass.new(self.build_dir, vcs_branch)
   end
@@ -93,7 +93,7 @@ class Build < ActiveRecord::Base
       build_dir_append = "build_#{self.build_no}_#{self.scheduled_at.strftime("%Y%m%d%H%M%S")}"
     end
 
-    File.join(Rails.root.to_s, "public", BigTuna.build_dir, project.name.downcase.gsub(/[^A-Za-z0-9]/, "_"), build_dir_append)
+    File.join(Rails.root.to_s, "public", Bear.build_dir, project.name.downcase.gsub(/[^A-Za-z0-9]/, "_"), build_dir_append)
   end
 
   # must be public to be accessible from project
@@ -154,7 +154,7 @@ class Build < ActiveRecord::Base
       if File.directory?(self.build_dir)
         FileUtils.rm_rf(self.build_dir)
       else
-        BigTuna.logger.info("Couldn't find build dir to remove: %p" % [self.build_dir])
+        Bear.logger.info("Couldn't find build dir to remove: %p" % [self.build_dir])
       end
     end
   end
@@ -231,7 +231,7 @@ class Build < ActiveRecord::Base
     if File.directory?(build_dir_public_real_path)
       FileUtils.rm_rf(build_dir_public_real_path)
     else
-      BigTuna.logger.info("Couldn't find public output dir to remove: %p" % build_dir_public_real_path)
+      Bear.logger.info("Couldn't find public output dir to remove: %p" % build_dir_public_real_path)
     end
     true
   end

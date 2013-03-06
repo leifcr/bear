@@ -16,7 +16,7 @@ class ProjectTest < ActiveSupport::TestCase
   end
 
   test "Project.ajax_reload? method with ajax_reload => always" do
-    BigTuna.stubs(:ajax_reload).returns('always')
+    Bear.stubs(:ajax_reload).returns('always')
 
     project = project_with_steps({
       :name => "Project",
@@ -53,7 +53,7 @@ class ProjectTest < ActiveSupport::TestCase
   end
 
   test "Project.ajax_reload? method with ajax_reload => building" do
-    BigTuna.stubs(:ajax_reload).returns('building')
+    Bear.stubs(:ajax_reload).returns('building')
 
 
     project = project_with_steps({
@@ -90,7 +90,7 @@ class ProjectTest < ActiveSupport::TestCase
   end
 
   test "Project.ajax_reload? method with ajax_reload => false" do
-    BigTuna.stubs(:ajax_reload).returns(false)
+    Bear.stubs(:ajax_reload).returns(false)
 
 
 
@@ -130,7 +130,7 @@ class ProjectTest < ActiveSupport::TestCase
 
 
   test "ajax_reload? method with ajax_reload => always" do
-    BigTuna.stubs(:ajax_reload).returns('always')
+    Bear.stubs(:ajax_reload).returns('always')
 
     project = project_with_steps({
       :name => "Project",
@@ -164,7 +164,7 @@ class ProjectTest < ActiveSupport::TestCase
   end
 
   test "ajax_reload? method with ajax_reload => building" do
-    BigTuna.stubs(:ajax_reload).returns('building')
+    Bear.stubs(:ajax_reload).returns('building')
 
 
     project = project_with_steps({
@@ -202,7 +202,7 @@ class ProjectTest < ActiveSupport::TestCase
   end
 
   test "ajax_reload? method with ajax_reload => false" do
-    BigTuna.stubs(:ajax_reload).returns(false)
+    Bear.stubs(:ajax_reload).returns(false)
 
 
 
@@ -315,9 +315,9 @@ class ProjectTest < ActiveSupport::TestCase
   end
 
   def assert_project_lifecycle(project)
-    assert project.build_dir.include?(BigTuna.config[:build_dir])
+    assert project.build_dir.include?(Bear.config[:build_dir])
     assert File.exist?(project.build_dir)
-    assert_difference("Dir[File.join(BigTuna.build_dir, '*')].size", -1) do
+    assert_difference("Dir[File.join(Bear.build_dir, '*')].size", -1) do
       project.destroy
     end
     assert !File.exist?(project.build_dir)
@@ -337,7 +337,7 @@ class ProjectTest < ActiveSupport::TestCase
     tmp_dir = Dir::tmpdir
     # only run this test if the system gives us an absolute tmp path
     if tmp_dir[0] == '/'[0]
-      with_config(:build_dir, File.join(tmp_dir, 'bigtuna_builds')) do
+      with_config(:build_dir, File.join(tmp_dir, 'bear_builds')) do
         assert_project_lifecycle build_and_run_project_with_steps
       end
     end

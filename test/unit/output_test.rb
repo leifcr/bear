@@ -3,12 +3,12 @@ require 'test_helper'
 class OutputTest < ActiveSupport::TestCase
   
   
-  OUT = BigTuna::Runner::Output::TYPE_STDOUT
-  ERR = BigTuna::Runner::Output::TYPE_STDERR
+  OUT = Bear::Runner::Output::TYPE_STDOUT
+  ERR = Bear::Runner::Output::TYPE_STDERR
   
   
   setup do
-    @output = BigTuna::Runner::Output.new 'test-dir', 'test-command'
+    @output = Bear::Runner::Output.new 'test-dir', 'test-command'
   end
   
   

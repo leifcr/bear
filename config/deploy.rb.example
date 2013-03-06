@@ -1,4 +1,4 @@
-# This is an example deployment file for capistrano and BigTuna
+# This is an example deployment file for capistrano and Bear
 #
 # You need to put github.com/leifcr/capistrano-recipes in /code/github/capistrano-recipes/ 
 # or change the line LOAD_PATH
@@ -13,12 +13,12 @@
 # 
 # You need to setup your mysql server with proper accounts.
 # 
-# I suggest setting up a user account bigtuna_test with bigtuna_test
+# I suggest setting up a user account bear_test with bear_test
 # as password and lock your mysql instance to localhost only
-# The account should have full access to all bigtuna_test_% databases, as well as create rights
+# The account should have full access to all bear_test_% databases, as well as create rights
 # 
-# You can then setup your applications to use bigtuna_test_my_app_test as DB and 
-# username bigtuna_test password bigtuna_test
+# You can then setup your applications to use bear_test_my_app_test as DB and 
+# username bear_test password bear_test
 #
 
 $LOAD_PATH << '/code/github/capistrano-recipes/lib/'
@@ -28,9 +28,9 @@ load "deploy/assets"
 set :rvm_type, :system
 set :app_server, 'puma'
 set :web_server, 'nginx'
-set :application, 'bigtuna'
+set :application, 'bear'
 set :deploy_via, :remote_cache
-set :repository,  "git://github.com/leifcr/bigtuna.git"
+set :repository,  "git://github.com/leifcr/bear.git"
 set :scm, :git
 set :database, 'mysql'
 set :keep_releases, 3 # only need 3 releases to be kept for production
@@ -63,34 +63,34 @@ namespace :deploy do
   end
 end
 
-namespace :bigtuna do
-  desc "Link bigtuna configs"
+namespace :bear do
+  desc "Link bear configs"
   task :link_config, :roles => :app, :on_error => :continue do
-    run "ln -s #{shared_path}/config/bigtuna.yml #{latest_release}/config/bigtuna.yml"      
+    run "ln -s #{shared_path}/config/bear.yml #{latest_release}/config/bear.yml"      
     run "ln -s #{shared_path}/config/email.yml #{latest_release}/config/email.yml"      
   end
-  desc "Link bigtuna build folder"
+  desc "Link bear build folder"
   task :link_builds_folder, :roles => :app, :on_error => :continue do
     run "rm -rf #{latest_release}/builds"
     run "mkdir -p #{shared_path}/builds"
     run "ln -s #{shared_path}/builds #{latest_release}/builds"
   end
   namespace :setup do
-    desc "Upload bigtuna email config"
+    desc "Upload bear email config"
     task :email_config, :roles => :app, :on_error => :continue do
       upload("config/email.yml", "#{shared_path}/config/email.yml")
     end
-    desc "Upload bigtuna config"
+    desc "Upload bear config"
     task :config, :roles => :app, :on_error => :continue do
-      upload("config/bigtuna.yml", "#{shared_path}/config/bigtuna.yml")
+      upload("config/bear.yml", "#{shared_path}/config/bear.yml")
     end
   end
 end
 
-after "deploy:setup", "bigtuna:setup:email_config"
-after "deploy:setup", "bigtuna:setup:config"
+after "deploy:setup", "bear:setup:email_config"
+after "deploy:setup", "bear:setup:config"
 
 after "deploy:update_code", "deploy:link_cache_folder"
-after "deploy:update_code", "bigtuna:link_config"
-after "deploy:update_code", "bigtuna:link_builds_folder"
+after "deploy:update_code", "bear:link_config"
+after "deploy:update_code", "bear:link_builds_folder"
 

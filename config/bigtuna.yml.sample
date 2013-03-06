@@ -3,4 +3,4 @@
 #   url_host: "ci.yoursite.com"
 #   ajax_reload: false                     # "building" or "always"
 #   build_dir: "tmp"                       # default: "builds"
-#   log: "log/bigtuna.log"                 # default: use Rails log
+#   log: "log/bear.log"                 # default: use Rails log

@@ -1,4 +1,4 @@
-module BigTuna
+module Bear
   class Hooks::Talker < Hooks::Base
     NAME = "talker"
 

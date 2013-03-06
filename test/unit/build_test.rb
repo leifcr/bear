@@ -5,7 +5,7 @@ class BuildTest < ActiveSupport::TestCase
   include WithTestRepo
 
   test "Project.ajax_reload? method with ajax_reload => always" do
-    BigTuna.stubs(:ajax_reload).returns('always')
+    Bear.stubs(:ajax_reload).returns('always')
 
     build = Build.new
 
@@ -29,7 +29,7 @@ class BuildTest < ActiveSupport::TestCase
   end
 
   test "Project.ajax_reload? method with ajax_reload => building" do
-    BigTuna.stubs(:ajax_reload).returns('building')
+    Bear.stubs(:ajax_reload).returns('building')
 
     build = Build.new
 
@@ -53,7 +53,7 @@ class BuildTest < ActiveSupport::TestCase
   end
 
   test "Project.ajax_reload? method with ajax_reload => false" do
-    BigTuna.stubs(:ajax_reload).returns('false')
+    Bear.stubs(:ajax_reload).returns('false')
 
     build = Build.new
 

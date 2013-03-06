@@ -1,4 +1,4 @@
-module BigTuna
+module Bear
   VERSION = "0.4.8"
 
   DEFAULT_CONFIG = {
@@ -11,8 +11,8 @@ module BigTuna
   def config
     return @config if @config
     config = DEFAULT_CONFIG.dup
-    if File.file?("config/bigtuna.yml")
-      config.merge!(YAML.load_file("config/bigtuna.yml")[Rails.env] || {})
+    if File.file?("config/bear.yml")
+      config.merge!(YAML.load_file("config/bear.yml")[Rails.env] || {})
     end
     @config = config.symbolize_keys!
   end
