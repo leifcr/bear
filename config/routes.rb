@@ -28,5 +28,9 @@ Bear::Application.routes.draw do
   match "/hooks/build/:hook_name",        :to => "hooks#autobuild",   :via => :post
   match "/hooks/build/github/:secure",    :to => "hooks#github",      :via => :post
   match "/hooks/build/bitbucket/:secure", :to => "hooks#bitbucket",   :via => :post
+  authenticate(:user) do
+    match "/delayed_job" => DelayedJobWeb, :anchor => false
+  end
+
   root :to => "projects#index"
 end

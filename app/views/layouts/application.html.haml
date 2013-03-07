@@ -19,10 +19,13 @@
           = content_tag :a, "Bear-CI #{Bear::VERSION}", :class => "brand"
           .nav-collapse.collapse
             %ul.nav
-              %li
-                = link_to("Projects", root_path)
-              %li
-                = link_to("Users", users_path)
+              - unless current_user.nil?
+                %li
+                  = link_to("Projects", root_path)
+                %li
+                  = link_to("Users", users_path)
+                %li 
+                  = link_to("Jobs", "/delayed_job")
             %ul.nav.projects
               = yield :topbar
             %ul.nav.pull-right

@@ -1,5 +1,5 @@
 module Bear
-  VERSION = "0.4.9"
+  VERSION = "0.5.0"
 
   DEFAULT_CONFIG = {
     "build_dir" => "builds",

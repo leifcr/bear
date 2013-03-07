@@ -1,10 +1,11 @@
 source 'http://rubygems.org'
 
 gem "rails", "3.2.12"
-
 gem "haml"
 gem "delayed_job"
 gem 'delayed_job_active_record'
+gem "delayed_job_web", :git => "git://github.com/leifcr/delayed_job_web.git"
+
 gem "stringex"
 # gem "open4"
 gem "json"
@@ -37,7 +38,7 @@ group :assets do
   gem 'less-rails'
   gem 'uglifier', '>= 1.2.6'
   gem 'libv8', '3.11.8.13'
-  gem 'therubyracer', '>= 0.11.3'
+  gem 'therubyracer', '>= 0.11'
 end
 
 group :development do
