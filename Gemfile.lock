@@ -1,8 +1,8 @@
 GIT
   remote: git://github.com/leifcr/delayed_job_web.git
-  revision: 0d25600dddd0c97aaf6a577ea59844d7c96bdc9c
+  revision: 540fea2cb6d70e78df797f1e55669625e0a99921
   specs:
-    delayed_job_web (1.1.2)
+    delayed_job_web (1.0.3)
       activerecord (> 3.0.0)
       delayed_job (> 2.0.3)
       haml (>= 4.0.0)
