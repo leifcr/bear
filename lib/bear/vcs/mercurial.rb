@@ -14,20 +14,8 @@ module Bear::VCS
     end
 
     def head_info
-      info = {}
-      command = "hg log --limit 1 --rev #{self.branch} --template='{node}\n{author|person}\n{author|email}\n{date|date}\n{desc}'"
-      begin
-        output = Bear::Runner.execute(self.source, command)
-      rescue Bear::Runner::Error => e
-        raise VCS::Error.new("Couldn't access repository log")
-      end
-      head_hash = output.stdout
-      info[:commit] = head_hash.shift
-      info[:author] = head_hash.shift
-      info[:email] = head_hash.shift
-      info[:committed_at] = Time.parse(head_hash.shift)
-      info[:commit_message] = head_hash.join("\n")
-      [info, command]
+      command = "hg log --limit 1 --rev #{self.branch} --template='COMMITDATA:{node},{author|person},{author|email},{date|date},{desc}'"
+      head_info_common(self.source, command)
     end
 
     def clone(where_to)

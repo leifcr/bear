@@ -30,20 +30,8 @@ module Bear::VCS
     end
 
     def head_info
-      info = {}
-      command = "git log --max-count=1 --pretty=format:%H%n%an%n%ae%n%ad%n%s #{self.branch}"
-      begin
-        output = Bear::Runner.execute(self.source, command)
-      rescue Bear::Runner::Error => e
-        raise Bear::VCS::Error.new("Couldn't access repository log")
-      end
-      head_hash = output.stdout
-      info[:commit] = head_hash.shift
-      info[:author] = head_hash.shift
-      info[:email] = head_hash.shift
-      info[:committed_at] = Time.parse(head_hash.shift)
-      info[:commit_message] = head_hash.join("\n")
-      [info, command]
+      command = "git log --max-count=1 --pretty=format:COMMITDATA:%H,%an,%ae,%ad,%s #{self.branch}"
+      head_info_common(self.source, command)
     end
 
     def clone(where_to)
