@@ -4,7 +4,7 @@ module Bear
     def self.execute(dir, command, timeout = nil, shell = "zsh --login")
       timeout = ::Bear.timeout if timeout.nil? or timeout == 0
       # end_command = "#{command}"
-      shell = "sh --login" if verify_shell(shell).nil? # safety catch. sh is always there.
+      shell = find_available_shell if verify_shell(shell).nil? # safety catch, to find best 
       end_command = ""
       if File.exists?(File.join(File.expand_path("~"), ".bash_profile"))
         end_command = "source #{File.join(File.expand_path("~"), ".bash_profile")};"
@@ -61,6 +61,7 @@ module Bear
     end
 
     def self.verify_shell(shell)
+      return nil if shell == nil or shell == ""
       s = shell.split(" ")
       if !s[0].nil? and s[0] != ""
         unless cross_which(s[0]).nil?
@@ -84,7 +85,14 @@ module Bear
         }
       end
       return nil
-    end    
+    end
+
+    def find_available_shell
+      return "zsh --login" unless self.cross_which("zsh")
+      return "bash --login" unless self.cross_which("bash")
+      return "sh -l" unless self.cross_which("sh")
+      return "csh -l" unless self.cross_which("csh")
+    end
 
     class Error < Exception
       attr_reader :output
