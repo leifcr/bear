@@ -87,7 +87,7 @@ module Bear
       return nil
     end
 
-    def find_available_shell
+    def self.find_available_shell
       return "zsh --login" unless self.cross_which("zsh")
       return "bash --login" unless self.cross_which("bash")
       return "sh -l" unless self.cross_which("sh")
