@@ -127,6 +127,9 @@ class BuildTest < ActiveSupport::TestCase
     run_delayed_jobs()
     build = project.recent_build
     assert_equal Build::STATUS_OK, build.status
+    # due to rvm putting out "Using /home/USERNAME/.rvm/gems/RUBY with gemset ZZZ"
+    # this might assert incorrectly.
+    # RVM using output must be disabled while testing...
     assert_equal [], build.parts[0].output[-1].stdout
   end
 

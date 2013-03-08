@@ -9,6 +9,12 @@ GIT
       rdoc
       sinatra (>= 0.9.2)
 
+GIT
+  remote: git://github.com/leifcr/systemu.git
+  revision: 16cf443351ee0a86733d1e2fbafb829246defab9
+  specs:
+    systemu (2.5.2)
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -311,6 +317,7 @@ DEPENDENCIES
   shout-bot
   simple_form
   stringex
+  systemu!
   therubyracer (>= 0.11)
   thin
   tinder

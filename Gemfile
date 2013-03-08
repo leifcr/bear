@@ -8,6 +8,7 @@ gem "delayed_job_web", :git => "git://github.com/leifcr/delayed_job_web.git"
 
 gem "stringex"
 # gem "open4"
+gem 'systemu',  :git => 'git://github.com/leifcr/systemu.git'
 gem "json"
 gem "jquery-rails"
 gem 'acts_as_list'
