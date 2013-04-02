@@ -10,4 +10,6 @@ before_install:
 before_script:
   - "cp config/database.yml.travis.mysql config/database.yml"
   - "RAILS_ENV=test bundle exec rake db:create db:test:load"
+  - git config --global user.email "bear@ci-bear.com"
+  - git config --global user.name "CI Bear"
 script: bundle exec rake test
