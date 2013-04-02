@@ -3,7 +3,7 @@ module Bear
 
   DEFAULT_CONFIG = {
     "build_dir" => "builds",
-    "timeout"   => 900
+    "timeout"   => 900,
     "url_host"  => "ci.zz-change-me.com"
   }
 
