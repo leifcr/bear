@@ -47,6 +47,16 @@ It's up to what people want, but here are some thoughts:
 * Removal of unused hooks, and perhaps implement new ones
 * Multiple post hooks
 
+h1. Deployment
+
+Setup your database.yml
+
+Copy bear.yml.sample to bear.yml and setup the parameters in the file.
+
+See deploy.rb.example for a capistrano deployment example.
+
+Deployment has been tested with nginx/puma and nginx/unicorn enviorment. Passenger hasn't been tested, but it should work.
+
 h1. History
 
 Bear evolved from BigTuna, as I needed a CI, and I wanted to run it on my own box

@@ -53,7 +53,7 @@ Bear::Application.configure do
     warn "WARNING: config/email.yml does not exist. Email notifications will not work."
   end
 
-  if Bear.config[:url_host]
+  if Bear.config[:url_host] != "ci.zz-change-me.com"
     config.action_mailer.default_url_options = { :host => Bear.config[:url_host] }
   else
     warn "WARNING: No url_host set in config/bear.yml. Notification links will not work."

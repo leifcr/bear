@@ -1,6 +1,6 @@
 # production:
 #   github_secure: "think_of_secure_token" # default: nil
-#   url_host: "ci.yoursite.com"
+#   url_host: "ci.yoursite.com" # this MUST be setup for emails notifications to work
 #   ajax_reload: false                     # "building" or "always"
 #   build_dir: "tmp"                       # default: "builds"
-#   log: "log/bear.log"                 # default: use Rails log
+#   log: "log/bear.log"                    # default: use Rails log
