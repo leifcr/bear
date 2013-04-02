@@ -48,7 +48,7 @@ group :development do
   gem 'rvm-capistrano'
   gem 'binding_of_caller'
   gem "better_errors"
-  gem 'meta_request', '0.2.1'
+  gem 'meta_request', '>= 0.2.1'
   gem 'awesome_print'
   gem 'wirble'
   gem 'hirb'
