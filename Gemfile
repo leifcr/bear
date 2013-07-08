@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-gem "rails", "3.2.13"
+gem "rails", "~> 3.2.13"
 gem "haml"
 gem "delayed_job"
 gem 'delayed_job_active_record'
@@ -46,6 +46,8 @@ group :development do
   gem "thin"
   gem 'capistrano'
   gem 'rvm-capistrano'
+  gem 'capistrano-pumaio'
+  gem 'capistrano-delayed_job'
   gem 'binding_of_caller'
   gem "better_errors"
   gem 'meta_request', '>= 0.2.1'
@@ -68,7 +70,6 @@ group :test do
 end
 
 group :production do
-  gem "bluepill", "~> 0.0.60"
   gem "puma"
 end
 
