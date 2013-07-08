@@ -35,11 +35,10 @@ gem 'mysql2', '~> 0.3.10'
 gem "twitter-bootstrap-rails"
 
 group :assets do
+  gem 'execjs'
   gem 'coffee-rails', '~> 3.2.2'
   gem 'less-rails'
   gem 'uglifier', '>= 1.2.6'
-  gem 'libv8', '3.11.8.13'
-  gem 'therubyracer', '>= 0.11'
 end
 
 group :development do
