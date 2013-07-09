@@ -290,6 +290,7 @@ DEPENDENCIES
   jquery-rails
   json
   launchy
+  less
   less-rails
   machinist
   meta_request (>= 0.2.1)

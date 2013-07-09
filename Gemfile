@@ -38,6 +38,7 @@ group :assets do
   gem 'execjs'
   gem 'coffee-rails', '~> 3.2.2'
   gem 'less-rails'
+  gem 'less'
   gem 'uglifier', '>= 1.2.6'
 end
 
