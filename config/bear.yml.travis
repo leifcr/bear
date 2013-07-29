@@ -1,0 +1,13 @@
+# need to setup homedir for travis, as it is unlikely to ever be /home/deploy...
+
+production:
+  homedir: "~"
+  loadenv: true
+
+test:
+  homedir: "~"
+  loadenv: true
+
+development:
+  homedir: "~"
+  loadenv: true
