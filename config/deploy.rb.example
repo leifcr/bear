@@ -111,3 +111,9 @@ require 'capistrano/puma'
 require 'capistrano/delayed_job'
 
 
+before "deploy", "monit:unmonitor"
+before "deploy", "delayed_job:runit:stop"
+after "deploy", "delayed_job:runit:start"
+after "deploy", "puma:runit:restart"
+after "deploy", "monit:monitor"
+
