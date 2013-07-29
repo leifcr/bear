@@ -4,7 +4,9 @@ module Bear
   DEFAULT_CONFIG = {
     "build_dir" => "builds",
     "timeout"   => 900,
-    "url_host"  => "ci.zz-change-me.com"
+    "url_host"  => "ci.zz-change-me.com",
+    "homedir"   => "/home/deploy",
+    "loadenv"   => true
   }
 
   extend self
@@ -18,7 +20,7 @@ module Bear
     @config = config.symbolize_keys!
   end
 
-  [:ajax_reload, :github_secure, :log, :bitbucket_secure, :build_dir, :read_only, :username, :password, :timeout].each do |key|
+  [:ajax_reload, :github_secure, :log, :bitbucket_secure, :build_dir, :username, :password, :timeout, :homedir, :loadenv, :url_host].each do |key|
     define_method key do
       config[key]
     end

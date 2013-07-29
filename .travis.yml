@@ -9,6 +9,7 @@ before_install:
  - sudo apt-get update -qq
  - sudo apt-get install -qq zsh nodejs
 before_script:
+  - "cp config/bear.yml.travis config/bear.yml"
   - "cp config/database.yml.travis.mysql config/database.yml"
   - "RAILS_ENV=test bundle exec rake db:create db:test:load"
   - git config --global user.email "bear@ci-bear.com"

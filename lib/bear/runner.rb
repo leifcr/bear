@@ -6,10 +6,13 @@ module Bear
       # end_command = "#{command}"
       shell = find_available_shell if verify_shell(shell).nil? # safety catch, to find best 
       end_command = ""
-      if File.exists?(File.join(File.expand_path("~"), ".bash_profile"))
-        end_command = "source #{File.join(File.expand_path("~"), ".bash_profile")};"
-      elsif File.exists?(File.join(File.expand_path("~"), ".profile"))          
-        end_command = "source #{File.join(File.expand_path("~"), ".profile")};"
+      if Bear.config[:loadenv] == true
+        homedir = Bear.config[:homedir]
+        if File.exists?(File.join(File.expand_path(homedir), ".bash_profile"))
+          end_command = "source #{File.join(File.expand_path(homedir), ".bash_profile")};"
+        elsif File.exists?(File.join(File.expand_path(homedir), ".profile"))          
+          end_command = "source #{File.join(File.expand_path(homedir), ".profile")};"
+        end
       end
       end_command += "cd #{dir} && #{command};"
       Bear.logger.debug("Executing: '#{end_command}' with shell: '#{shell}'")
@@ -20,7 +23,7 @@ module Bear
             @output = Output.new(dir, command)
             status = nil
 
-            # use systememu instead, as we need a blocking runner. 
+            # use systememu, as we need a blocking runner. 
             status, stdout_str, stderr_str = systemu shell, :stdin => end_command
             # stdout_str, stderr_str, status = Open3.capture3(end_command)
             @output.append_stdout(stdout_str)
