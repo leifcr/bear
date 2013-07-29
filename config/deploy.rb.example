@@ -1,12 +1,13 @@
 # This is an example deployment file for capistrano and Bear
 #
-# You need to put github.com/leifcr/capistrano-recipes in /code/github/capistrano-recipes/ 
-# or change the line LOAD_PATH
-#
-# The recipes uses Bluepill to monitor both delayed_job and puma
-# It sets up
+# You need to setup runit, mysql, nginx and rvm on the server before deploying
 # 
-# You need to setup mysql, nginx and rvm on the server before deploying
+# On ubuntu:
+# apt-get install mysql-server runit nginx
+# 
+# For rvm, goto rvm.io and read the install docs. you probably know how to do this already
+# 
+# RVM should be setup SYSTEM wide
 # 
 # 
 # Notes on apps you want to run through the CI:
@@ -21,13 +22,22 @@
 # username bear_test password bear_test
 #
 
-$LOAD_PATH << '/code/github/capistrano-recipes/lib/'
-require 'capistrano_recipes'
+default_run_options[:pty] = true
 
 load "deploy/assets"
+
+require "bundler/capistrano"
+require "rvm/capistrano"
+
 set :rvm_type, :system
-set :app_server, 'puma'
-set :web_server, 'nginx'
+
+set :rvm_ruby_string, '1.9.3-p448@bear'
+before 'deploy:setup', 'rvm:install_ruby' # install Ruby and create gemset (You probably want to to this...)
+
+# Use gemset instead of bundle directory
+set :bundle_dir, ''
+set :bundle_flags, '--system --quiet'
+
 set :application, 'bear'
 set :deploy_via, :remote_cache
 set :repository,  "git://github.com/leifcr/bear.git"
@@ -44,15 +54,10 @@ after "deploy:update", "deploy:cleanup"
 set :rails_env, "production"
 set :deploy_env, "#{rails_env}"
 set :deploy_to, "/web/#{rails_env}/#{application}"
-#set :branch, 'master'
+
+#set :branch, 'master' # In case you want a different branch
+
 set :server_names, 'ci.example.com'
-set :bluepill_use_delayed_job, true
-# RVM stuff
-namespace :rvm do
-  task :trust_rvmrc do
-    run "rvm rvmrc trust #{release_path}"
-  end
-end
 
 # keep cache in shared path...
 namespace :deploy do
@@ -64,6 +69,10 @@ namespace :deploy do
 end
 
 namespace :bear do
+  desc "Symlink database.yml"
+  task :link_database_yml, :roles => :app, :on_error => :continue do
+    run "ln -s #{shared_path}/config/database.yml #{latest_release}/config/database.yml"      
+  end
   desc "Link bear configs"
   task :link_config, :roles => :app, :on_error => :continue do
     run "ln -s #{shared_path}/config/bear.yml #{latest_release}/config/bear.yml"      
@@ -74,6 +83,11 @@ namespace :bear do
     run "rm -rf #{latest_release}/builds"
     run "mkdir -p #{shared_path}/builds"
     run "ln -s #{shared_path}/builds #{latest_release}/builds"
+  end
+  desc "Link bear public build folder"
+  task :link_public_builds_folder, :roles => :app, :on_error => :continue do
+    run "mkdir -p #{shared_path}/public/builds"
+    run "ln -s #{shared_path}/public/builds #{latest_release}/public/builds"
   end
   namespace :setup do
     desc "Upload bear email config"
@@ -87,10 +101,13 @@ namespace :bear do
   end
 end
 
-after "deploy:setup", "bear:setup:email_config"
-after "deploy:setup", "bear:setup:config"
-
+before "bundle:install", "bear:link_database_yml"
 after "deploy:update_code", "deploy:link_cache_folder"
 after "deploy:update_code", "bear:link_config"
 after "deploy:update_code", "bear:link_builds_folder"
+after "deploy:update_code", "bear:link_public_builds_folder"
+
+require 'capistrano/puma'
+require 'capistrano/delayed_job'
+
 
