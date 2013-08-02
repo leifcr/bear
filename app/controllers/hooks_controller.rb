@@ -17,9 +17,11 @@ class HooksController < ApplicationController
     search_term         = "%github.com_#{github_project_path}.git"
 
     unless payload["commits"].nil?
-      if payload["commits"].last["message"].include?("[ci skip]")
-        render :text => "Told to skip testing/ci'ing this commit", :status => 200
-        return
+      if payload["commits"].length > 0
+        if payload["commits"].last["message"].include?("[ci skip]")
+          render :text => "Told to skip testing/ci'ing this commit", :status => 200
+          return
+        end
       end
     end
 
@@ -39,16 +41,22 @@ class HooksController < ApplicationController
   def bitbucket
     payload  = JSON.parse(params[:payload])
     branches = Array.new
+    # get branches
     payload["commits"].each do |commit|
       branches.push commit["branch"] if (commit["branch"] != nil)
     end
+
+    # If there are no branches, assume there was a merge to master
+    branches.push "master" unless branches.length > 0
+
     unless payload["commits"].nil?
-      if payload["commits"].last["message"].include?("[ci skip]")
-        render :text => "Told to skip testing/ci'ing this commit", :status => 200
-        return
+      if payload["commits"].length > 0
+        if payload["commits"].last["message"].include?("[ci skip]")
+          render :text => "Told to skip testing/ci'ing this commit", :status => 200
+          return
+        end
       end
     end
-    # get branches
     if (payload["repository"]["scm"] == "git")
       source = "git@bitbucket.org:#{payload["repository"]["owner"]}/#{payload["repository"]["slug"]}.git"
     else
