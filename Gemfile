@@ -29,7 +29,7 @@ gem "tinder"
 gem 'mysql2', '~> 0.3.10'
 
 # Error Tracking
-# gem 'airbrake', '3.1.2'
+gem 'airbrake'
 
 group :assets do
   gem 'therubyracer'

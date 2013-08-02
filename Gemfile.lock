@@ -48,6 +48,10 @@ GEM
     acts_as_list (0.2.0)
       activerecord (>= 3.0)
     addressable (2.3.3)
+    airbrake (3.1.12)
+      activesupport
+      builder
+      json
     arel (3.0.2)
     awesome_print (1.1.0)
     bcrypt-ruby (3.1.1)
@@ -273,6 +277,7 @@ PLATFORMS
 
 DEPENDENCIES
   acts_as_list
+  airbrake
   awesome_print
   better_errors
   binding_of_caller
