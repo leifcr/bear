@@ -46,8 +46,8 @@ group :development do
   gem "thin"
   gem 'capistrano'
   gem 'rvm-capistrano'
-  gem 'capistrano-pumaio'
-  gem 'capistrano-delayed_job'
+  gem 'capistrano-pumaio', :require => false
+  gem 'capistrano-delayed_job', :require => false
   gem 'binding_of_caller'
   gem "better_errors"
   gem 'meta_request', '>= 0.2.1'
