@@ -1,6 +1,6 @@
 module Bear
-  VERSION = "0.5.0"
-
+  VERSION = "0.5.1"
+≈y
   DEFAULT_CONFIG = {
     "build_dir" => "builds",
     "timeout"   => 900,
