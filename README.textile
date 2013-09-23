@@ -1,3 +1,18 @@
+h1. Development has stopped
+
+Due to the number of really great CI system that has come to life over the last months, I do not see a reason to continue
+development on this project. If you use it and find a bug, or want to take on the project, feel free to send me a message.
+
+If you are going to use a CI for your projects, I would recommend Jenkins if you are setting up a inhouse server.
+It is a bit "overkill", it uses tons of resources, but it is highly likely, that the plugin you need to build your project
+is already made. 
+
+If you are going to buy into a service provided CI, use travis, droid, codeship or any other ci out there. They all
+have pros/cons.
+
+I am currently useing codeship for one project, travis for some oss projects and jenkins for some windows/osx projects,
+as they are easier to maintain if you are close to the hardware.
+
 h1. About
 
 Bear is a continuous integration software built on top of the Rails 3 framework. If you can do it through command line, Bear can handle it.
