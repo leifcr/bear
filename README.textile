@@ -1,11 +1,10 @@
 h1. Development has stopped
 
-Due to the number of really great CI system that has come to life over the last months, I do not see a reason to continue
-development on this project. If you use it and find a bug, or want to take on the project, feel free to send me a message.
+Due to the number of really great CI system that has come to life over the last months, I do not see a reason to continue development on this project. If you use it and find a bug, or want to take on the project, feel free to send me a message.
 
-If you are going to use a CI for your projects, I would recommend Jenkins if you are setting up a inhouse server.
-It is a bit "overkill", it uses tons of resources, but it is highly likely, that the plugin you need to build your project
-is already made. 
+If you need a CI, I recommend "codeship.io":http://codeship.io or jenkins. Setting up codeship.io is a breeze, while Jenkins requires you to do som sysadmin work once in a while.
+ 
+-If you are going to use a CI for your projects, I would recommend Jenkins if you are setting up a inhouse server. It is a bit "overkill", it uses tons of resources, but the plugin eco system is good.-
 
 If you are going to buy into a service provided CI, use travis, droid, codeship or any other ci out there. They all
 have pros/cons.
