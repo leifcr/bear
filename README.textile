@@ -9,8 +9,7 @@ If you need a CI, I recommend "codeship.io":http://codeship.io or jenkins. Setti
 If you are going to buy into a service provided CI, use travis, droid, codeship or any other ci out there. They all
 have pros/cons.
 
-I am currently useing codeship for one project, travis for some oss projects and jenkins for some windows/osx projects,
-as they are easier to maintain if you are close to the hardware.
+I am currently using codeship for one project, travis for some oss projects and jenkins for some windows/*nix and osx projects.
 
 h1. About
 
